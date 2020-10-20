@@ -2,14 +2,12 @@ package com.idnp.musicfit;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 import com.idnp.musicfit.activities.LoginActivity;
 import com.idnp.musicfit.auth.AuthenticationService;
+import com.idnp.musicfit.fragments.FragmentManager;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -35,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_training, R.id.nav_gallery, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -76,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         /*
         Se deben de alistar todas las variables en este y otros componentes segun la coniguración que se necesite.
          */
+        FragmentManager.fragmentManager = new FragmentManager(this);
     }
 
 }
