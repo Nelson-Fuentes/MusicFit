@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/fragment"
-        android:name="com.idnp.musicfit.fragments.TrainingMapFragment"
+        android:name="com.idnp.musicfit.views.fragments.trainingReportView.TrainingMapFragment"
         android:layout_width="0dp"
         android:layout_height="400dp"
         app:layout_constraintEnd_toEndOf="parent"

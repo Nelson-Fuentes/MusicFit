@@ -1,4 +1,4 @@
-package com.idnp.musicfit.fragments;
+package com.idnp.musicfit.models.services.fragmentManager;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;

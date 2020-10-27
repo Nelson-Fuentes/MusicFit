@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/nav_training"
-        android:name="com.idnp.musicfit.fragments.TrainingControllerFragment"
+        android:name="com.idnp.musicfit.views.fragments.trainingControllerView.TrainingControllerFragment"
         android:label="@string/training_title"
         tools:layout="@layout/fragment_training_controller" />
 
@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/nav_report_training"
-        android:name="com.idnp.musicfit.fragments.TrainingReportFragment"
+        android:name="com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment"
         android:label=""
         tools:layout="@layout/fragment_training_report" />
 </navigation>

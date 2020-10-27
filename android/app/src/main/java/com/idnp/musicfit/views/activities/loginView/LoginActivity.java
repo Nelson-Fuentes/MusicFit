@@ -1,4 +1,4 @@
-package com.idnp.musicfit.activities;
+package com.idnp.musicfit.views.activities.loginView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,18 +7,25 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import com.idnp.musicfit.MainActivity;
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.auth.AuthenticationConstant;
-import com.idnp.musicfit.auth.AuthenticationService;
+import com.idnp.musicfit.models.services.authenticationService.AuthenticationConstant;
+import com.idnp.musicfit.models.services.authenticationService.AuthenticationService;
+import com.idnp.musicfit.presenter.loginPresenter.LoginPresenter;
+import com.idnp.musicfit.presenter.loginPresenter.iLoginPresenter;
+import com.idnp.musicfit.views.activities.mainView.MainActivity;
+import com.idnp.musicfit.views.activities.registerView.RegisterActivity;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements iLoginView{
+
+    private iLoginPresenter loginPresenter;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.getSupportActionBar().hide();
+        this.loginPresenter = new LoginPresenter(this);
     }
 
     public void startRegisterActivity(View view){
@@ -41,15 +48,18 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void login(View view){
-        AuthenticationService service = new AuthenticationService();
-        if (service.auth("juanperez123", "123456")){
-            Intent intent = new Intent(this, MainActivity.class);
-            this.startActivity(intent);
-            this.finish();
-        } else {
-            /*
-            Notificar al usaurio que no se pudo iniciar una sesion y porque
-             */
-        }
+        this.loginPresenter.auth("juanperez123", "123456");
+    }
+
+    @Override
+    public void authValid() {
+        Intent intent = new Intent(this, MainActivity.class);
+        this.startActivity(intent);
+        this.finish();
+    }
+
+    @Override
+    public void showError(String error) {
+        //Ingresar mensaje de error dentro de un textview
     }
 }

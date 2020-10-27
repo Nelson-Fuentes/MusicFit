@@ -1,4 +1,4 @@
-package com.idnp.musicfit.fragments;
+package com.idnp.musicfit.views.fragments.trainingReportView;
 
 import android.os.Bundle;
 
@@ -10,15 +10,19 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.Training;
+import com.idnp.musicfit.models.entities.Training;
+import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
+import com.idnp.musicfit.presenter.trainingReportPresenter.TrainingReportPresenter;
+import com.idnp.musicfit.presenter.trainingReportPresenter.iTrainingReportPresenter;
 
 
-public class TrainingReportFragment extends Fragment {
-    private Training training;
+public class TrainingReportFragment extends Fragment implements iTrainingReportView{
+
     private View view;
+    private iTrainingReportPresenter trainingReportPresenter;
 
     public TrainingReportFragment(Training training) {
-        this.training = training;
+        this.trainingReportPresenter = new TrainingReportPresenter(this, training);
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,6 @@ public class TrainingReportFragment extends Fragment {
                         FragmentManager.fragmentManager.popBackStack();
                     }
                 });
-
         return this.view;
     }
 }

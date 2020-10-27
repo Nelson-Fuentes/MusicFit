@@ -1,6 +1,6 @@
-package com.idnp.musicfit.remoteServices;
+package com.idnp.musicfit.models.services.musicFitRemoteService;
 
-import com.idnp.musicfit.models.User;
+import com.idnp.musicfit.models.entities.User;
 
 public class MusicFitService {
     /*

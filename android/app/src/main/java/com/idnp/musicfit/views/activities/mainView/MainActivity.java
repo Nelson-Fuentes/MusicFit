@@ -1,14 +1,16 @@
-package com.idnp.musicfit;
+package com.idnp.musicfit.views.activities.mainView;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 
 import com.google.android.material.navigation.NavigationView;
-import com.idnp.musicfit.activities.LoginActivity;
-import com.idnp.musicfit.auth.AuthenticationService;
-import com.idnp.musicfit.fragments.FragmentManager;
+import com.idnp.musicfit.R;
+import com.idnp.musicfit.presenter.mainPresenter.MainPresenter;
+import com.idnp.musicfit.presenter.mainPresenter.iMainPresenter;
+import com.idnp.musicfit.views.activities.loginView.LoginActivity;
 
+import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -17,16 +19,15 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity  implements  iMainView{
 
     private AppBarConfiguration mAppBarConfiguration;
+    private iMainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        this.validateUserSession();
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -39,8 +40,10 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+        this.mainPresenter = new MainPresenter(this);
+        this.mainPresenter.loadDefaultServices();
+        this.mainPresenter.verifySession();
 
-        this.prepareMetaData();
     }
 
     @Override
@@ -57,24 +60,15 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void validateUserSession(){
-        /*
-        Se debe de revisar si hay alguna sesion abierta ya sea de un ususario registrado o de un usuario anonimo
-        Si no se tiene ninguna sesion creada se debe de salir del activity con finish e ir al activity de login
-         */
-        AuthenticationService service = new AuthenticationService();
-        if (!service.isLogged()){
-            Intent intent = new Intent(this, LoginActivity.class);
-            this.startActivity(intent);
-            this.finish();
-        }
+    @Override
+    public void showNoOpenSessionFoundAction() {
+        Intent intent = new Intent(this, LoginActivity.class);
+        this.startActivity(intent);
+        this.finish();
     }
 
-    private void prepareMetaData(){
-        /*
-        Se deben de alistar todas las variables en este y otros componentes segun la coniguración que se necesite.
-         */
-        FragmentManager.fragmentManager = new FragmentManager(this);
+    @Override
+    public FragmentActivity getActivityFragment() {
+        return this;
     }
-
 }

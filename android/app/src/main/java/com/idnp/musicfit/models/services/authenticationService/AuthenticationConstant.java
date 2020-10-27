@@ -1,4 +1,4 @@
-package com.idnp.musicfit.auth;
+package com.idnp.musicfit.models.services.authenticationService;
 
 public final class  AuthenticationConstant {
 

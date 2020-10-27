@@ -1,4 +1,4 @@
-package com.idnp.musicfit.fragments;
+package com.idnp.musicfit.views.fragments.trainingReportView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;

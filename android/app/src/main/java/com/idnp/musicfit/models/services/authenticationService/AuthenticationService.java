@@ -1,8 +1,10 @@
-package com.idnp.musicfit.auth;
+package com.idnp.musicfit.models.services.authenticationService;
 
-import com.idnp.musicfit.models.User;
+import com.idnp.musicfit.models.entities.User;
 
 public class AuthenticationService {
+
+    public static AuthenticationService authenticationService;
 
 
     private static User currentUser;

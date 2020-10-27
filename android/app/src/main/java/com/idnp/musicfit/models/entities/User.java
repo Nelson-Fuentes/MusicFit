@@ -1,4 +1,4 @@
-package com.idnp.musicfit.models;
+package com.idnp.musicfit.models.entities;
 
 public class User {
 
