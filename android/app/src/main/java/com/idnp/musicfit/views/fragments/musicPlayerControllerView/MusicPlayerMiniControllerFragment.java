@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
+import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
 
 public class MusicPlayerMiniControllerFragment extends MusicPlayerControllerFragment {
 
@@ -39,8 +40,4 @@ public class MusicPlayerMiniControllerFragment extends MusicPlayerControllerFrag
         FragmentManager.fragmentManager.hide(this);
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
 }

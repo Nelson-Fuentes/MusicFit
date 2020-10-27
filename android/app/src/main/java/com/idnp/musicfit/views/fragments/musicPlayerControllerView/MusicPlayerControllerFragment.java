@@ -18,6 +18,8 @@ import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.iMusicPlayerCo
 
 public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView {
 
+    public static boolean isBigMusicPlayerController = false;
+
     protected View view;
     private TextView text_state;
     private Button playButton;
@@ -28,6 +30,9 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if (!(this instanceof MusicPlayerMiniControllerFragment)){
+            isBigMusicPlayerController = true;
+        }
     }
 
     @Override
@@ -73,13 +78,18 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     public void onResume() {
         super.onResume();
         for (Fragment fragment: FragmentManager.fragmentManager.getFragments()){
-            if (fragment instanceof  MusicPlayerMiniControllerFragment && fragment !=this){
+            if (fragment instanceof  MusicPlayerMiniControllerFragment && fragment!=this){
                 this.miniControllerFragment = (MusicPlayerMiniControllerFragment) fragment;
             }
         }
         if (MusicPlayerControllerPresenter.musicPlayerControllerPresenter==null)
             MusicPlayerControllerPresenter.musicPlayerControllerPresenter  = new MusicPlayerControllerPresenter(this);
-        MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
+        if (this instanceof  MusicPlayerMiniControllerFragment){
+            if (!isBigMusicPlayerController)
+                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
+        } else {
+            MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
+        }
     }
 
 
@@ -99,8 +109,27 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-        MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this.miniControllerFragment);
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (!(this instanceof  MusicPlayerMiniControllerFragment)){
+            isBigMusicPlayerController =false;
+            MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this.miniControllerFragment);
+        }
+/*        boolean flag = true;
+        for (Fragment fragment: FragmentManager.fragmentManager.getFragments()){
+            if (fragment instanceof  MusicPlayerControllerFragment && !(fragment instanceof MusicPlayerMiniControllerFragment)){
+                flag = false;
+            }
+        }
+        if (flag && !(this instanceof MusicPlayerMiniControllerFragment))
+            MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this.miniControllerFragment);
+*/
+    }
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
     }
 }

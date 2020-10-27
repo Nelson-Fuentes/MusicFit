@@ -1,5 +1,6 @@
 package com.idnp.musicfit.presenter.musicPlayerControllerPresenter;
 
+import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
 import com.idnp.musicfit.views.fragments.musicPlayerControllerView.iMusicPlayerControllerView;
 
@@ -35,19 +36,22 @@ public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPre
 
     @Override
     public void setView(iMusicPlayerControllerView view) {
-        this.musicPlayerControllerView.stop();
-        this.musicPlayerControllerView = view;
-        switch (MusicPlayerService.musicPlayerService.getState()){
-            case MusicPlayerService.PLAYED:
-                this.musicPlayerControllerView.play();
-                break;
-            case MusicPlayerService.PAUSED:
-                this.musicPlayerControllerView.pause();
-                break;
-            case MusicPlayerService.STOPPED:
-                this.musicPlayerControllerView.stop();
-                break;
+        if (view != null){
+            this.musicPlayerControllerView.stop();
+            this.musicPlayerControllerView = view;
+            switch (MusicPlayerService.musicPlayerService.getState()){
+                case MusicPlayerService.PLAYED:
+                    this.musicPlayerControllerView.play();
+                    break;
+                case MusicPlayerService.PAUSED:
+                    this.musicPlayerControllerView.pause();
+                    break;
+                case MusicPlayerService.STOPPED:
+                    this.musicPlayerControllerView.stop();
+                    break;
+            }
         }
+
     }
 
 }
