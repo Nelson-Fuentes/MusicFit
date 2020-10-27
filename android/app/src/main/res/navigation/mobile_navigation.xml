@@ -18,8 +18,8 @@
         tools:layout="@layout/fragment_training_report_list" />
 
     <fragment
-        android:id="@+id/nav_slideshow"
-        android:name="com.idnp.musicfit.ui.slideshow.SlideshowFragment"
+        android:id="@+id/nav_music_player"
+        android:name="com.idnp.musicfit.views.fragments.musicPlayerControllerView.MusicPlayerControllerFragment"
         android:label="@string/menu_slideshow"
         tools:layout="@layout/fragment_slideshow" />
 

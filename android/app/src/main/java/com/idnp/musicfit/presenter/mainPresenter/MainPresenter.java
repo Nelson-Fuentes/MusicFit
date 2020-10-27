@@ -2,6 +2,7 @@ package com.idnp.musicfit.presenter.mainPresenter;
 
 
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationService;
+import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
 import com.idnp.musicfit.models.services.trainingService.TrainingService;
 import com.idnp.musicfit.models.services.userService.UserService;
 import com.idnp.musicfit.views.activities.mainView.iMainView;
@@ -23,6 +24,7 @@ public class MainPresenter implements iMainPresenter {
         AuthenticationService.authenticationService = new AuthenticationService();
         UserService.userService = new UserService();
         TrainingService.trainingService = new TrainingService();
+        MusicPlayerService.musicPlayerService = new MusicPlayerService();
     }
 
     @Override

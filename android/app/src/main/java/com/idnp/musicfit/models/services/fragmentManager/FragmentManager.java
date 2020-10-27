@@ -38,4 +38,13 @@ public class FragmentManager {
         return this.activity.getSupportFragmentManager().getFragments();
     }
 
+
+    public void hide(Fragment fragment){
+        this.activity.getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+    }
+
+    public void show(Fragment fragment){
+        this.activity.getSupportFragmentManager().beginTransaction().show(fragment).commit();
+    }
+
 }

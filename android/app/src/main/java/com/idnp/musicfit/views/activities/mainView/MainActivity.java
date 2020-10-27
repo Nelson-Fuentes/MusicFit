@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_training, R.id.nav_training_list, R.id.nav_slideshow)
+                R.id.nav_training, R.id.nav_training_list, R.id.nav_music_player)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
