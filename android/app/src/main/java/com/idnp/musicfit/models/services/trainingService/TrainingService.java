@@ -2,6 +2,8 @@ package com.idnp.musicfit.models.services.trainingService;
 
 import com.idnp.musicfit.models.entities.Training;
 
+import java.util.ArrayList;
+
 public class TrainingService {
 
     public static TrainingService trainingService;
@@ -26,7 +28,10 @@ public class TrainingService {
 
     }
 
-    public void getTrainingList(Training training){
-
+    public ArrayList<Training> getTrainingList(){
+        ArrayList<Training> trainings = new ArrayList<Training>();
+        trainings.add(new Training());
+        trainings.add(new Training());
+        return  trainings;
     }
 }

@@ -6,10 +6,13 @@ import android.view.Menu;
 
 import com.google.android.material.navigation.NavigationView;
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.mainPresenter.MainPresenter;
 import com.idnp.musicfit.presenter.mainPresenter.iMainPresenter;
 import com.idnp.musicfit.views.activities.loginView.LoginActivity;
+import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -34,7 +37,7 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_training, R.id.nav_gallery, R.id.nav_slideshow)
+                R.id.nav_training, R.id.nav_training_list, R.id.nav_slideshow)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
@@ -70,5 +73,15 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
     @Override
     public FragmentActivity getActivityFragment() {
         return this;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        for (Fragment fragment: FragmentManager.fragmentManager.getFragments()){
+            if (fragment instanceof TrainingReportFragment){
+                FragmentManager.fragmentManager.remove(fragment);
+            }
+        }
     }
 }

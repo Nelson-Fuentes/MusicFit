@@ -41,9 +41,11 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
         button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        FragmentManager.fragmentManager.popBackStack();
+                        FragmentManager.fragmentManager.remove(TrainingReportFragment.this);
                     }
                 });
         return this.view;
     }
+
+
 }

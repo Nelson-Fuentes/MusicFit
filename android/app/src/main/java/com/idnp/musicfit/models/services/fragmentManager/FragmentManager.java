@@ -6,6 +6,8 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.idnp.musicfit.R;
 
+import java.util.List;
+
 public class FragmentManager {
 
 
@@ -28,9 +30,12 @@ public class FragmentManager {
         transaction.commitAllowingStateLoss();
     }
 
-    public void popBackStack(){
-        if (this.activity.getSupportFragmentManager().getBackStackEntryCount() != 0){
-            this.activity.getSupportFragmentManager().popBackStack();
-        }
+    public void remove(Fragment fragment){
+        this.activity.getSupportFragmentManager().beginTransaction().remove(fragment).commitAllowingStateLoss();
     }
+
+    public List<Fragment> getFragments(){
+        return this.activity.getSupportFragmentManager().getFragments();
+    }
+
 }

@@ -9,9 +9,9 @@
             android:icon="@drawable/ic_menu_camera"
             android:title="@string/training_title" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_training_list"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="@string/menu_gallery" />
+            android:title="@string/trainings" />
         <item
             android:id="@+id/nav_slideshow"
             android:icon="@drawable/ic_menu_slideshow"

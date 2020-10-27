@@ -12,10 +12,10 @@
         tools:layout="@layout/fragment_training_controller" />
 
     <fragment
-        android:id="@+id/nav_gallery"
-        android:name="com.idnp.musicfit.ui.gallery.GalleryFragment"
-        android:label="@string/menu_gallery"
-        tools:layout="@layout/fragment_gallery" />
+        android:id="@+id/nav_training_list"
+        android:name="com.idnp.musicfit.views.fragments.trainingReportListView.TrainingReportListFragment"
+        android:label="@string/trainings"
+        tools:layout="@layout/fragment_training_report_list" />
 
     <fragment
         android:id="@+id/nav_slideshow"

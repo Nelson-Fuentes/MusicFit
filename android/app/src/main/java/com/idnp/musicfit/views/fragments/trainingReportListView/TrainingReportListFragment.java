@@ -7,60 +7,61 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ListView;
 
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.adapters.TrainingAdapter;
+import com.idnp.musicfit.models.entities.Training;
+import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
+import com.idnp.musicfit.presenter.trainingReportListPresenter.TrainingReportListPresenter;
+import com.idnp.musicfit.presenter.trainingReportListPresenter.iTrainingReportListPresenter;
+import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link TrainingReportListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class TrainingReportListFragment extends Fragment {
+import java.util.ArrayList;
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+public class TrainingReportListFragment extends Fragment implements iTrainingReportListView {
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private View view;
+    private TrainingAdapter trainingAdapter;
+    private ListView trainingListView;
+    private iTrainingReportListPresenter trainingReportListPresenter;
 
-    public TrainingReportListFragment() {
-        // Required empty public constructor
-    }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment TrainingReportListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static TrainingReportListFragment newInstance(String param1, String param2) {
-        TrainingReportListFragment fragment = new TrainingReportListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_training_report_list, container, false);
+        if (this.view == null){
+            this.view  = inflater.inflate(R.layout.fragment_training_report_list, container, false);
+            this.loadComponents(this.view);
+        }
+        return  this.view;
+
+    }
+
+    private  void loadComponents(View view){
+        this.trainingAdapter = new TrainingAdapter(this.getContext());
+        this.trainingListView = (ListView) view.findViewById(R.id.training_list);
+        this.trainingListView.setAdapter(this.trainingAdapter);
+        this.trainingReportListPresenter = new TrainingReportListPresenter(this);
+        this.trainingReportListPresenter.loadTrainingList();
+        this.trainingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FragmentManager.fragmentManager.changeFragment( new TrainingReportFragment(TrainingReportListFragment.this.trainingAdapter.getItem(position)));
+            }
+        });
+
+    }
+
+    @Override
+    public void showReportList(ArrayList<Training> trainings) {
+        this.trainingAdapter.setDataSet(trainings);
     }
 }
