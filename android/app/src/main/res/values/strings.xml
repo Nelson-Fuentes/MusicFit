@@ -16,4 +16,5 @@
     <string name="training_title">Entrenamiento</string>
     <string name="music_player">Reproductor de Musica</string>
     <string name="username_label">Nombre de Usuario</string>
+    <string name="password_label">Contraseña</string>
 </resources>

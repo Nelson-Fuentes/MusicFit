@@ -31,4 +31,8 @@
         <item name="android:radius">40dp</item>
 
     </style>
+
+    <style name="SplashTheme" parent="@style/Theme.MusicFit.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_layout</item>
+    </style>
 </resources>
