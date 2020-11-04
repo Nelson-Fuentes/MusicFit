@@ -12,4 +12,5 @@
     <color name="first_background">#ffffff</color>
     <color name="second_background">#F6F5FD</color>
     <color name="stroke">#C3C5D0</color>
+    <color name="error_text_color">#fa2b1b</color>
 </resources>
