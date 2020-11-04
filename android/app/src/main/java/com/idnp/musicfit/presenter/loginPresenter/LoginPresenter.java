@@ -14,17 +14,38 @@ public class LoginPresenter implements iLoginPresenter {
         this.loginView = loginView;
     }
 
+    private boolean validateAuthenticationCredentials(String username, String password){
+        if (username.trim().length() == 0){
+            this.loginView.showError("Ingrese un nombre de usuario.");
+            return false;
+        } else if (password.length()==0){
+            this.loginView.showError("Ingrese su contraseña");
+            return false;
+        }
+        return  true;
+    }
     @Override
     public void auth(String username, String password) {
-        if (AuthenticationService.authenticationService.auth(username, password)){
-            this.loginView.authValid();
-        } else {
-            this.loginView.showError("Soy un error"); //Notificar al usaurio que no se pudo iniciar una sesion y porque
-        }
+        if (this.validateAuthenticationCredentials(username, password))
+            if (AuthenticationService.authenticationService.auth(username, password)){
+                this.loginView.authValid();
+            } else {
+                this.loginView.showError("Soy un error");
+            }
     }
 
     @Override
     public void loadRegisterView() {
 
     }
+
+    @Override
+    public void authIncognite() {
+        if (AuthenticationService.authenticationService.autheticationIncognite()){
+            this.loginView.authValid();
+        } else {
+            this.loginView.showError("Soy un error");
+        }
+    }
+
 }

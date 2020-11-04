@@ -25,4 +25,9 @@ public class AuthenticationService {
     public User getCurrentUser() {
         return currentUser;
     }
+
+    public boolean autheticationIncognite(){
+        currentUser = new User("incognite", "Modo", "Incognito", "musicfit@noreply.com");
+        return true;
+    }
 }
