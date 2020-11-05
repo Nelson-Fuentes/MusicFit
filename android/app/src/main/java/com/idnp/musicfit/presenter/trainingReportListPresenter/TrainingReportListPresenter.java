@@ -10,7 +10,6 @@ public class TrainingReportListPresenter implements iTrainingReportListPresenter
 
     private iTrainingReportListView trainingReportListView;
 
-
     public TrainingReportListPresenter(iTrainingReportListView trainingReportListView){
         this.trainingReportListView = trainingReportListView;
     }
