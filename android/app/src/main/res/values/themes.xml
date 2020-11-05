@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.MusicFit" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimary">@color/main_color</item>
+        <item name="colorPrimaryVariant">@color/second_color</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -22,4 +22,17 @@
     <style name="Theme.MusicFit.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="Theme.MusicFit.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="button_background" xmlns:android="http://schemas.android.com/apk/res/android">
+        <item name="android:shape">rectangle</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:color">@color/second_color</item>
+        <item name="android:radius">40dp</item>
+
+    </style>
+
+    <style name="SplashTheme" parent="@style/Theme.MusicFit.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash_screen_layout</item>
+    </style>
 </resources>
