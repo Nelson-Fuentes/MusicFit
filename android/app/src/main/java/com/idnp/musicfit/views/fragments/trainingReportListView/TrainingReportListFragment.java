@@ -9,18 +9,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.adapters.ReportAdapter;
 import com.idnp.musicfit.models.entities.Report;
-import com.idnp.musicfit.models.entities.Training;
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.trainingReportListPresenter.TrainingReportListPresenter;
 import com.idnp.musicfit.presenter.trainingReportListPresenter.iTrainingReportListPresenter;
-import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
 
 import java.util.ArrayList;
 

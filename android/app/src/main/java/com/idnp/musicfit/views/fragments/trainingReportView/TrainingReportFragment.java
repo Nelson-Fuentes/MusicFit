@@ -11,7 +11,7 @@ import android.widget.Button;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Training;
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
+import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.trainingReportPresenter.TrainingReportPresenter;
 import com.idnp.musicfit.presenter.trainingReportPresenter.iTrainingReportPresenter;
 

@@ -3,7 +3,6 @@ package com.idnp.musicfit.views.fragments.trainingControllerView;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,7 +11,7 @@ import android.widget.Button;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Training;
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
+import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.trainingControllerPresenter.TrainingControllerPresenter;
 import com.idnp.musicfit.presenter.trainingControllerPresenter.iTrainingControllerPresenter;
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;

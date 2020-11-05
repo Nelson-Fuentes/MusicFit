@@ -20,4 +20,7 @@
     <string name="password_label">Contraseña</string>
     <string name="go_to_register_view">Si no tienes una cuenta puedes registrarte.</string>
     <string name="login_with" >o inicia sesión con:</string>
+    <string name="login_incognite">Incio de Sesión incognito</string>
+    <string name="login_facebook">Inicio de Sesión con Facebook</string>
+    <string name="login_google">Inicio de Sesión con Google</string>
 </resources>

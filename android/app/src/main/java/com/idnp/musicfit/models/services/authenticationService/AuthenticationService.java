@@ -26,8 +26,17 @@ public class AuthenticationService {
         return currentUser;
     }
 
-    public boolean autheticationIncognite(){
+    public boolean authenticationIncognite(){
         currentUser = new User("incognite", "Modo", "Incognito", "musicfit@noreply.com");
+        return true;
+    }
+    public boolean authenticationFacebook(){
+        currentUser = new User("Facebook", "Modo", "Incognito", "musicfit@noreply.com");
+        return true;
+    }
+
+    public boolean authenticationGoogle(){
+        currentUser = new User("Google", "Modo", "Incognito", "musicfit@noreply.com");
         return true;
     }
 }

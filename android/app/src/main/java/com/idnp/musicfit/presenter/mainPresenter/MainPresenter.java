@@ -6,7 +6,8 @@ import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
 import com.idnp.musicfit.models.services.trainingService.TrainingService;
 import com.idnp.musicfit.models.services.userService.UserService;
 import com.idnp.musicfit.views.activities.mainView.iMainView;
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
+import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
+import com.idnp.musicfit.views.toastManager.ToastManager;
 
 public class MainPresenter implements iMainPresenter {
     private iMainView mainView;
@@ -25,6 +26,7 @@ public class MainPresenter implements iMainPresenter {
         UserService.userService = new UserService();
         TrainingService.trainingService = new TrainingService();
         MusicPlayerService.musicPlayerService = new MusicPlayerService();
+        ToastManager.toastManager = new ToastManager(this.mainView.getActivityFragment().getApplicationContext());
     }
 
     @Override

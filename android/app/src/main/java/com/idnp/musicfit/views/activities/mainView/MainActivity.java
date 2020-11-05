@@ -6,7 +6,7 @@ import android.view.Menu;
 
 import com.google.android.material.navigation.NavigationView;
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
+import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.mainPresenter.MainPresenter;
 import com.idnp.musicfit.presenter.mainPresenter.iMainPresenter;
 import com.idnp.musicfit.views.activities.loginView.LoginActivity;

@@ -235,6 +235,7 @@
                 android:layout_marginRight="2dp"
                 android:layout_weight="1"
                 android:background="@null"
+                android:onClick="authFacebook"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/logo_facebook" />
 
@@ -245,6 +246,7 @@
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
                 android:background="@null"
+                android:onClick="authGoogle"
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/google_logo" />
         </LinearLayout>
