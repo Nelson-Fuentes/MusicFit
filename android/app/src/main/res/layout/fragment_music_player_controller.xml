@@ -121,15 +121,69 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:layout_marginTop="15dp">
 
                 <ImageButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:background="@color/white"
+                    android:paddingTop="7dp"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     app:srcCompat="@drawable/button_player_random_mp3">
 
                 </ImageButton>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    app:srcCompat="@drawable/button_player_back_mp3">
+                </ImageButton>
+                <ImageButton
+                    android:id="@+id/play_button"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_player_play_mp3"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                   >
+                </ImageButton>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    app:srcCompat="@drawable/button_player_advance_mp3">
+                </ImageButton>
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/white"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
+                    app:srcCompat="@drawable/button_player_repeat_mp3">
+                </ImageButton>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="20dp">
+
+                <Button
+                    android:id="@+id/button10"
+                    style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/button_addsong_background"
+                    android:scrollbarStyle="outsideInset"
+                    android:text="Añadir Cancion" />
 
             </LinearLayout>
 

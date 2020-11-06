@@ -14,5 +14,6 @@
     <color name="stroke">#C3C5D0</color>
     <color name="error_text_color">#fa2b1b</color>
     <color name="background_player_large">#dee2ff</color>
-    <color name="background_player_smoll">#b8b8ff</color>
+    <color name="background_player_small">#b8b8ff</color>
+    <color name="background_add_song">#dd1c1a</color>
 </resources>
