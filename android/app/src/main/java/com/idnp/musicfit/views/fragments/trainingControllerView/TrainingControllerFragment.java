@@ -4,7 +4,6 @@ import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
-import androidx.navigation.NavController;
 
 import android.os.Handler;
 import android.os.SystemClock;
@@ -21,7 +20,7 @@ import android.widget.Toast;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Training;
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
+import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.trainingControllerPresenter.TrainingControllerPresenter;
 import com.idnp.musicfit.presenter.trainingControllerPresenter.iTrainingControllerPresenter;
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;

@@ -2,15 +2,12 @@ package com.idnp.musicfit.views.fragments.musicPlayerControllerView;
 
 import android.os.Bundle;
 
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
-import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
+import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 
 public class MusicPlayerMiniControllerFragment extends MusicPlayerControllerFragment {
 

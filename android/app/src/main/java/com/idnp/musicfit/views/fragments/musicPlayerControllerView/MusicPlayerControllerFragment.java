@@ -11,10 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
-import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
+import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
-import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.iMusicPlayerControllerPresenter;
 
 public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView {
 

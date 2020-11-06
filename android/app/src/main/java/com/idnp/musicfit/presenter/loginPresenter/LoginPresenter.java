@@ -1,10 +1,7 @@
 package com.idnp.musicfit.presenter.loginPresenter;
 
-import android.content.Intent;
-
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationService;
 import com.idnp.musicfit.views.activities.loginView.iLoginView;
-import com.idnp.musicfit.views.activities.mainView.MainActivity;
 
 public class LoginPresenter implements iLoginPresenter {
 
@@ -41,8 +38,26 @@ public class LoginPresenter implements iLoginPresenter {
 
     @Override
     public void authIncognite() {
-        if (AuthenticationService.authenticationService.autheticationIncognite()){
-            this.loginView.authValid();
+        if (AuthenticationService.authenticationService.authenticationIncognite()){
+            this.loginView.authIncognite();
+        } else {
+            this.loginView.showError("Soy un error");
+        }
+    }
+
+    @Override
+    public void authFacebook() {
+        if (AuthenticationService.authenticationService.authenticationFacebook()){
+            this.loginView.authFacebook();
+        } else {
+            this.loginView.showError("Soy un error");
+        }
+    }
+
+    @Override
+    public void authGoogle() {
+        if (AuthenticationService.authenticationService.authenticationGoogle()){
+            this.loginView.authGoogle();
         } else {
             this.loginView.showError("Soy un error");
         }

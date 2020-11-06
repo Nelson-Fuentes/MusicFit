@@ -20,4 +20,19 @@
     <string name="password_label">Contraseña</string>
     <string name="go_to_register_view">Si no tienes una cuenta puedes registrarte.</string>
     <string name="login_with" >o inicia sesión con:</string>
+    <string name="login_incognite">Incio de Sesión incognito</string>
+    <string name="login_facebook">Inicio de Sesión con Facebook</string>
+    <string name="login_google">Inicio de Sesión con Google</string>
+    <string name="register_title">Registrarse</string>
+    <string name="first_name_label">Nombre</string>
+    <string name="lastname_label">Apellidos</string>
+    <string name="email_value">Correo Electronico</string>
+    <string name="username_error_label">No se ingreso nombre de usuario.</string>
+    <string name="firstname_error_label">No se ingresaron nombres.</string>
+    <string name="lastname_error_label">No se ingresaron apellidos.</string>
+    <string name="email_error_label">Correo no valido.</string>
+    <string name="password_again_label">Repetir Contraseña</string>
+    <string name="password_error_label">No se ingreso contraseña.</string>
+    <string name="password_2_error_label">No coinciden las contraseñas.</string>
+
 </resources>

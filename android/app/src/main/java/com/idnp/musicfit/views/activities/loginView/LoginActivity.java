@@ -18,6 +18,7 @@ import com.idnp.musicfit.presenter.loginPresenter.LoginPresenter;
 import com.idnp.musicfit.presenter.loginPresenter.iLoginPresenter;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
 import com.idnp.musicfit.views.activities.registerView.RegisterActivity;
+import com.idnp.musicfit.views.toastManager.ToastManager;
 
 public class LoginActivity extends AppCompatActivity implements iLoginView{
 
@@ -102,8 +103,33 @@ public class LoginActivity extends AppCompatActivity implements iLoginView{
         this.errorTextView.setText(error);
     }
 
+    @Override
+    public void authIncognite() {
+        this.authValid();
+        ToastManager.toastManager.showToast(R.string.login_incognite);
+    }
+
+    @Override
+    public void authFacebook() {
+        this.authValid();
+        ToastManager.toastManager.showToast(R.string.login_facebook);
+    }
+
+    @Override
+    public void authGoogle() {
+        this.authValid();
+        ToastManager.toastManager.showToast(R.string.login_google);
+    }
+
     public void authIncognite(View view){
         this.loginPresenter.authIncognite();
-        this.authValid();
+    }
+
+    public void authFacebook(View view){
+        this.loginPresenter.authFacebook();
+    }
+
+    public void authGoogle(View view){
+        this.loginPresenter.authGoogle();
     }
 }

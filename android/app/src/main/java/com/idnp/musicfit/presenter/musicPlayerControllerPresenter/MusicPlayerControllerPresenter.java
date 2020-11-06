@@ -1,10 +1,7 @@
 package com.idnp.musicfit.presenter.musicPlayerControllerPresenter;
 
-import com.idnp.musicfit.models.services.fragmentManager.FragmentManager;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
 import com.idnp.musicfit.views.fragments.musicPlayerControllerView.iMusicPlayerControllerView;
-
-import java.util.ArrayList;
 
 public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPresenter {
 
