@@ -13,5 +13,6 @@
     <color name="second_background">#F6F5FD</color>
     <color name="stroke">#C3C5D0</color>
     <color name="error_text_color">#fa2b1b</color>
-    <color name="background_player">#dee2ff</color>
+    <color name="background_player_large">#dee2ff</color>
+    <color name="background_player_smoll">#b8b8ff</color>
 </resources>
