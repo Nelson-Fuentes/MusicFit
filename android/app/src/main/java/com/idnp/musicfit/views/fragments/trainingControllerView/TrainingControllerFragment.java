@@ -80,6 +80,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                 chronometer.setText(t);
             }
         });
+        chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.setText("00:00:00");
 
         play_button.setOnClickListener(new View.OnClickListener() {
@@ -138,10 +139,11 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         stop_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                running = false;
+                chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 pauseOffSet = 0;
                 chronometer.setText("00:00:00");
+                running = false;
               //  Toast.makeText(getActivity(),"yeah stop works",Toast.LENGTH_SHORT).show();
                 //just for animation
                 new Handler().postDelayed(new Runnable() {
