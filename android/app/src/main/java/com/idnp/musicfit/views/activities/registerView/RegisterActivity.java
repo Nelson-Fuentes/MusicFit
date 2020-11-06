@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationConstant;
@@ -16,6 +18,13 @@ import com.idnp.musicfit.presenter.registerPresenter.iRegisterPresenter;
 public class RegisterActivity extends AppCompatActivity implements iRegisterView {
 
     private iRegisterPresenter registerPresenter;
+    private EditText usernameEditText;
+    private EditText firstNameEditText;
+    private EditText lastNameEditText;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private EditText password2EditText;
+    private TextView errorTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,15 +32,34 @@ public class RegisterActivity extends AppCompatActivity implements iRegisterView
         setContentView(R.layout.activity_register);
         this.getSupportActionBar().hide();
         this.registerPresenter = new RegisterPresenter(this);
+        this.loadComponentes();
+    }
+
+    private void loadComponentes(){
+        this.usernameEditText = (EditText) this.findViewById(R.id.username_edit_text);
+        this.firstNameEditText = (EditText) this.findViewById(R.id.firstname_edit_text);
+        this.lastNameEditText = (EditText) this.findViewById(R.id.lastname_edit_text);
+        this.emailEditText = (EditText) this.findViewById(R.id.email_edit_text);
+        this.passwordEditText = (EditText) this.findViewById(R.id.password_edit_text);
+        this.password2EditText = (EditText) this.findViewById(R.id.password2_edit_text);
+        this.errorTextView = (TextView) this.findViewById(R.id.error_text_view);
     }
 
     public void registerUserClickListener(View view){
-        this.registerPresenter.registerUser(new User("", "", "", "")); //cargar datos con lo que se recibe del formulario
+
+        this.registerPresenter.registerUser(
+                this.usernameEditText.getText().toString(),
+                this.firstNameEditText.getText().toString(),
+                this.lastNameEditText.getText().toString(),
+                this.emailEditText.getText().toString(),
+                this.passwordEditText.getText().toString(),
+                this.password2EditText.getText().toString()
+        );
     }
 
     @Override
-    public void showError(String error) {
-        //Muestra errores en la interfaz grafica
+    public void showError(int error) {
+        this.errorTextView.setText(this.getString(error));
     }
 
     @Override

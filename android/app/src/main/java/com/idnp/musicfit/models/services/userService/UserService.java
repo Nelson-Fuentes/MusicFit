@@ -6,7 +6,7 @@ public class UserService {
 
     public static UserService userService;
 
-    public User registerUser(User user){
-        return user;
+    public User registerUser(String username,  String firstname, String lastname, String email, String password){
+        return new User(", ", ", ", "", "");
     }
 }
