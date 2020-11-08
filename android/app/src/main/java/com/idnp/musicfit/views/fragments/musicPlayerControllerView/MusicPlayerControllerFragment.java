@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.idnp.musicfit.R;
@@ -19,10 +20,10 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     public static boolean isBigMusicPlayerController = false;
 
     protected View view;
-    private TextView text_state;
-    private Button playButton;
-    private Button pauseButton;
-    private Button stopButton;
+    //private TextView text_state;
+    private ImageButton playButton;
+
+
     private MusicPlayerMiniControllerFragment miniControllerFragment;
 
     @Override
@@ -45,31 +46,25 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     }
 
     protected void loadComponents(){
-        this.text_state = (TextView) this.view.findViewById(R.id.text_state);
-        this.playButton = (Button) this.view.findViewById(R.id.play_button);
-        this.pauseButton = (Button) this.view.findViewById(R.id.pause_button);
-        this.stopButton = (Button) this.view.findViewById(R.id.stop_button);
+        //this.text_state = (TextView) this.view.findViewById(R.id.text_state);
+        this.playButton = (ImageButton) this.view.findViewById(R.id.play_button_player);
+
     }
 
     protected void loadClickListeners(){
-        this.playButton.setOnClickListener(new View.OnClickListener() {
+        /*this.playButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MusicPlayerControllerPresenter.musicPlayerControllerPresenter.play();
             }
-        });
-        this.pauseButton.setOnClickListener(new View.OnClickListener() {
+        });*/
+        /*this.pauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 MusicPlayerControllerPresenter.musicPlayerControllerPresenter.pause();
             }
-        });
-        this.stopButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.stop();
-            }
-        });
+        });*/
+
     }
 
     @Override
@@ -93,17 +88,17 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     @Override
     public void play() {
-        this.text_state.setText("PLAY");
+        //this.text_state.setText("PLAY");
     }
 
     @Override
     public void pause() {
-        this.text_state.setText("PAUSE");
+        //this.text_state.setText("PAUSE");
     }
 
     @Override
     public void stop() {
-        this.text_state.setText("STOP");
+        //this.text_state.setText("STOP");
     }
 
     @Override
