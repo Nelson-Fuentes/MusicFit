@@ -16,4 +16,5 @@
     <color name="background_player_large">#dee2ff</color>
     <color name="background_player_small">#b8b8ff</color>
     <color name="background_add_song">#dd1c1a</color>
+    <color name="main_color_dark">#140c73</color>
 </resources>

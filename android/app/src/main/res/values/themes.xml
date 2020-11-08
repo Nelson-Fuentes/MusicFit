@@ -33,6 +33,7 @@
     </style>
 
     <style name="SplashTheme" parent="@style/Theme.MusicFit.NoActionBar">
-        <item name="android:windowBackground">@drawable/splash_screen_layout</item>
+        <item name="android:windowBackground">@drawable/splash_screen_drawable</item>
+        <item name="android:windowFullscreen">false</item>
     </style>
 </resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent">
+    <item>
+        <shape
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:shape="rectangle">
+            <gradient
+                android:angle="90"
+                android:centerX="50%"
+                android:centerY="100%"
+                android:endColor="@color/main_color"
+                android:startColor="@color/main_color_dark"
+                android:type="linear" />
+        </shape>
+    </item>
+    <item
+        android:drawable="@drawable/ic_musicfit_logo_white"
+        android:gravity="center"
+        android:scaleType="centerInside"
+        android:width="250dp"
+        android:height="84dp"/>
+</layer-list>
