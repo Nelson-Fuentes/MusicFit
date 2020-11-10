@@ -1,0 +1,1 @@
+web: gunicorn musicfit.wsgi --log-file -
