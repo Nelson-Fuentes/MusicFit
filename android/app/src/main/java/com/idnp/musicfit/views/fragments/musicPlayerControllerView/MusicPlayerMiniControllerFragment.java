@@ -15,8 +15,6 @@ public class MusicPlayerMiniControllerFragment extends MusicPlayerControllerFrag
                              Bundle savedInstanceState) {
         if (this.view == null){
             this.view =  inflater.inflate(R.layout.fragment_music_player_mini_controller, container, false);
-            this.loadComponents();
-            this.loadClickListeners();
         }
         return  this.view;
     }

@@ -1,22 +1,44 @@
 package com.idnp.musicfit.presenter.musicPlayerControllerPresenter;
 
+import android.app.Activity;
+import android.content.Intent;
+
+import com.idnp.musicfit.models.entities.Song;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
+import com.idnp.musicfit.views.activities.mainView.MainActivity;
 import com.idnp.musicfit.views.fragments.musicPlayerControllerView.iMusicPlayerControllerView;
 
 public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPresenter {
+
+    public static final int STOPPED = -1;
+    public static final int PAUSED = 0;
+    public static final int PLAYED = 1;
 
     public static iMusicPlayerControllerPresenter musicPlayerControllerPresenter;
 
     private iMusicPlayerControllerView musicPlayerControllerView;
 
+
     public MusicPlayerControllerPresenter(iMusicPlayerControllerView musicPlayerControllerView) {
+
         this.musicPlayerControllerView = musicPlayerControllerView;
+
+    }
+
+    public Song getCurrentMusic(){
+        return MusicPlayerService.musicPlayerService.getCurrentMusic();
     }
 
     @Override
     public void play() {
-        MusicPlayerService.musicPlayerService.play();
-        this.musicPlayerControllerView.play();
+
+        if(MusicPlayerService.musicPlayerService.getState() != PLAYED){
+            this.musicPlayerControllerView.play();
+        }
+        else{
+            pause();
+        }
+
     }
 
     @Override

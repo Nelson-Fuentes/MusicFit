@@ -1,5 +1,6 @@
 package com.idnp.musicfit.views.activities.mainView;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -84,4 +85,5 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
             }
         }
     }
+
 }
