@@ -54,6 +54,28 @@ public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPre
     }
 
     @Override
+    public void back() {
+        MusicPlayerService.musicPlayerService.back();
+        this.musicPlayerControllerView.back();
+    }
+
+    @Override
+    public void advance() {
+        MusicPlayerService.musicPlayerService.advance();
+        this.musicPlayerControllerView.advance();
+    }
+
+    @Override
+    public void random() {
+
+    }
+
+    @Override
+    public void repeat() {
+
+    }
+
+    @Override
     public void setView(iMusicPlayerControllerView view) {
         if (view != null){
             this.musicPlayerControllerView.stop();

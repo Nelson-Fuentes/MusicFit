@@ -63,6 +63,7 @@
                 android:background="@drawable/icon_music_player"/>
 
             <TextView
+                android:id="@+id/name_song_player"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
@@ -75,6 +76,7 @@
                 android:textStyle="bold" />
 
             <TextView
+                android:id="@+id/name_artist_player"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="12dp"
