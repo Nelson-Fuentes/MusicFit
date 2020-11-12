@@ -49,8 +49,10 @@ public class LoginActivity extends AppCompatActivity implements iLoginView{
 
         if (resultCode == RESULT_OK){
             if (requestCode == AuthenticationConstant.REGISTER_REQUEST_CODE){
-                String username = (String) data.getExtras().get(AuthenticationConstant.USERNAME_TAG_KEY);
-                String password = (String) data.getExtras().get(AuthenticationConstant.PASSWORD_TAG_KEY);
+                String username = (String) data.getExtras().get(AuthenticationConstant.USERNAME_LABEL);
+                String password = (String) data.getExtras().get(AuthenticationConstant.PASSWORD_LABEL);
+                this.usernameEditView.setText(username);
+                this.passwordEditView.setText(password);
                 this.loginPresenter.auth(username, password);
             }
         }
@@ -58,6 +60,8 @@ public class LoginActivity extends AppCompatActivity implements iLoginView{
     }
 
     public void login(View view){
+        this.errorTextView.setText("");
+        ToastManager.toastManager.showToast(R.string.auth_process);
         String username = this.usernameEditView.getText().toString();
         String password = this.passwordEditView.getText().toString();
         this.loginPresenter.auth(username, password);
@@ -65,9 +69,15 @@ public class LoginActivity extends AppCompatActivity implements iLoginView{
 
     @Override
     public void authValid() {
+        ToastManager.toastManager.showToast(R.string.auth_sucess);
         Intent intent = new Intent(this, MainActivity.class);
         this.startActivity(intent);
         this.finish();
+    }
+
+    @Override
+    public void showError(int error) {
+        this.errorTextView.setText(getString(error));
     }
 
     public void loadComponents(){

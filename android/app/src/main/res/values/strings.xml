@@ -38,4 +38,8 @@
     <string name="execution_exception">Ocurrio un problema al ejecutar.</string>
     <string name="json_exception">Ocurrio una excepción al convertir a JSON</string>
     <string name="user_registered">Usuario registrado con exito.</string>
+    <string name="auth_invalid">Usuario o contraseña no validos.</string>
+    <string name="server_error">Ocurrio un error desconocido.</string>
+    <string name="auth_process">Verificando credenciales.</string>
+    <string name="auth_sucess">Credendenciales valdiades ¡Bienvenid@!.</string>
 </resources>

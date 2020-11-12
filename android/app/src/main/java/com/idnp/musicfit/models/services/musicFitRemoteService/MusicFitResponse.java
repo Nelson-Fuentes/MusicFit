@@ -1,5 +1,11 @@
 package com.idnp.musicfit.models.services.musicFitRemoteService;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.Iterator;
+
 public class MusicFitResponse {
 
     private String body;
@@ -39,5 +45,14 @@ public class MusicFitResponse {
     public void throwException() throws Exception {
         if (this.exception != null)
             throw this.exception;
+    }
+
+    public String getErrorBody() throws JSONException, MusicFitException {
+        JSONObject jsonError = new JSONObject(this.getBody());
+        for (Iterator<String> it = jsonError.keys(); it.hasNext(); ) {
+            String key = it.next();
+            return  key.toUpperCase() + ": " + (new JSONArray(jsonError.getString(key)).get(0));
+        }
+        return null;
     }
 }

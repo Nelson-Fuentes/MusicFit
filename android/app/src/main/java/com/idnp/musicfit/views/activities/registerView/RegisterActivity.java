@@ -10,12 +10,9 @@ import android.widget.TextView;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationConstant;
-import com.idnp.musicfit.models.services.musicFitRemoteService.MusicfitConnection;
 import com.idnp.musicfit.presenter.registerPresenter.RegisterPresenter;
 import com.idnp.musicfit.presenter.registerPresenter.iRegisterPresenter;
 import com.idnp.musicfit.views.toastManager.ToastManager;
-
-import java.util.concurrent.ExecutionException;
 
 public class RegisterActivity extends AppCompatActivity implements iRegisterView {
 
@@ -74,8 +71,8 @@ public class RegisterActivity extends AppCompatActivity implements iRegisterView
     public void successfullyRegister() {
         ToastManager.toastManager.showToast(R.string.user_registered);
         Intent intent = new Intent();
-        intent.putExtra(AuthenticationConstant.USERNAME_TAG_KEY, "JuanPerez");
-        intent.putExtra(AuthenticationConstant.PASSWORD_TAG_KEY, "123456");
+        intent.putExtra(AuthenticationConstant.USERNAME_LABEL, "JuanPerez");
+        intent.putExtra(AuthenticationConstant.PASSWORD_LABEL, "123456");
         this.setResult(RESULT_OK, intent);
         this.finish();
     }
