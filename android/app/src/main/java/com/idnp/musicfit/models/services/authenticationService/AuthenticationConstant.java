@@ -7,7 +7,7 @@ public final class  AuthenticationConstant {
 
 
     //Claves para indentificar
-    public static final String USERNAME_TAG_KEY = "USERNAME";
-    public static final String PASSWORD_TAG_KEY = "PASSWORD";
+    public static final String USERNAME_LABEL = "USERNAME";
+    public static final String PASSWORD_LABEL = "PASSWORD";
 
 }

@@ -4,15 +4,12 @@ import com.idnp.musicfit.models.entities.User;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitResponse;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
-import com.idnp.musicfit.models.services.musicFitRemoteService.MusicfitConnection;
 
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.net.HttpURLConnection;
 import java.util.Iterator;
-import java.util.concurrent.ExecutionException;
 
 public class UserService {
 
@@ -31,7 +28,7 @@ public class UserService {
         jsonObject.put(LAST_NAME_LABEL, lastname);
         jsonObject.put(FIRST_NAME_LABEL, firstname);
         jsonObject.put(EMAIL_LABEL, email);
-        MusicFitResponse response = MusicFitService.musicfitService.post(MusicFitService.USER_REGISTRATION, jsonObject);
+        MusicFitResponse response = MusicFitService.musicfitService.post(MusicFitService.USER_REGISTRATION_PATH, jsonObject);
         response.throwException();
         if (response.getRequestCode()!= HttpURLConnection.HTTP_NO_CONTENT){
             String error_body = "";

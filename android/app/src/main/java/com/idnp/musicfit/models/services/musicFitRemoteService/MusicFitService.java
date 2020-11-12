@@ -15,7 +15,8 @@ public class MusicFitService {
     private static final String MUSICTFIT_API_URI = "http://musicfit2020.herokuapp.com/api/v1/";
 
     public static MusicFitService musicfitService;
-    public static final String USER_REGISTRATION = "user/create";
+    public static final String USER_REGISTRATION_PATH = "user/create";
+    public static final String AUTHENTICATION_PATH = "auth/";
 
     public MusicFitResponse post(String path, JSONObject jsonObject) throws ExecutionException, InterruptedException {
         MusicfitConnection connection = new MusicfitConnection();
