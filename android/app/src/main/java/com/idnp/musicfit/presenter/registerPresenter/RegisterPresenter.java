@@ -5,8 +5,14 @@ import android.content.Intent;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.User;
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationConstant;
+import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
+import com.idnp.musicfit.models.services.musicFitRemoteService.MusicfitConnection;
 import com.idnp.musicfit.models.services.userService.UserService;
 import com.idnp.musicfit.views.activities.registerView.iRegisterView;
+
+import org.json.JSONException;
+
+import java.util.concurrent.ExecutionException;
 
 public class RegisterPresenter implements iRegisterPresenter {
 
@@ -48,13 +54,25 @@ public class RegisterPresenter implements iRegisterPresenter {
     @Override
     public void registerUser(String username,  String firstname, String lastname, String email, String password, String password2) {
         if (validateUserData(username, firstname, lastname, email, password, password2)){
-            User user_registered = UserService.userService.registerUser(username, firstname, lastname, email, password);
-            if (user_registered == null) {
-                this.registerView.showError(0); //Notificar que no se creo el usuario y porque
-            } else {
-
+            User user_registered = null;
+            try {
+                user_registered = UserService.userService.registerUser(username, firstname, lastname, email, password);
+                this.registerView.successfullyRegister();
+            } catch (ExecutionException e) {
+                this.registerView.showError(R.string.execution_exception);
+            } catch (InterruptedException e) {
+                this.registerView.showError(R.string.interruption_exception);
+            } catch (JSONException e) {
+                this.registerView.showError(R.string.json_exception);
+            } catch (MusicFitException e){
+                if (e.getMessage()!=null){
+                    this.registerView.showError(e.getMessage());
+                } else {
+                    this.registerView.showError(e.getStringCode());
+                }
+            } catch (Exception e) {
+                this.registerView.showError(e.getMessage());
             }
-            this.registerView.successfullyRegister();
         }
     }
 }
