@@ -38,7 +38,7 @@ public class UserService {
             JSONObject jsonError = new JSONObject(response.getBody());
             for (Iterator<String> it = jsonError.keys(); it.hasNext(); ) {
                 String key = it.next();
-                throw  new MusicFitException(key + ": " + (new JSONArray(jsonError.getString(key)).get(0)));
+                throw  new MusicFitException(key.toUpperCase() + ": " + (new JSONArray(jsonError.getString(key)).get(0)));
             }
         }
         return new User(username, firstname, lastname, email);
