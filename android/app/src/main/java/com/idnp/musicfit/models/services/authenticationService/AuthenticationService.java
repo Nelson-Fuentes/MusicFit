@@ -20,7 +20,7 @@ public class AuthenticationService {
     private static final String PASSWORD_LABEL = "password";
     private static User currentUser;
 
-    public  boolean auth(String username, String password) throws Exception {
+    public  String auth(String username, String password) throws Exception {
         JSONObject jsonObject = new JSONObject();
         jsonObject.put(USERNAME_LABEL, username);
         jsonObject.put(PASSWORD_LABEL, password);
@@ -28,12 +28,8 @@ public class AuthenticationService {
         response.throwException();
         if (response.getRequestCode()==HttpURLConnection.HTTP_OK) {
             isLogged = true;
-            try {
-                System.out.println(new JSONObject(response.getBody()).get("token")+"--------------------------------");
-            } catch (JSONException e){
-                System.out.println("++++++++++++++++++++++++" + e.getMessage() );
-            }
-            return true;
+            String token = (new JSONObject(response.getBody())).get("token").toString();
+            return token;
         } else if (response.getRequestCode()==HttpURLConnection.HTTP_BAD_REQUEST) {
             throw new MusicFitException(R.string.auth_invalid);
         } else if (response.getRequestCode() == HttpURLConnection.HTTP_SERVER_ERROR) {

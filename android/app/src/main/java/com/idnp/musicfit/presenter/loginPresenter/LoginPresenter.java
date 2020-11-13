@@ -31,11 +31,9 @@ public class LoginPresenter implements iLoginPresenter {
     public void auth(String username, String password) {
         if (this.validateAuthenticationCredentials(username, password)) {
             try {
-                if (AuthenticationService.authenticationService.auth(username, password)) {
-                    this.loginView.authValid();
-                } else {
-                    this.loginView.showError("Soy un error");
-                }
+                AuthenticationService.authenticationService.auth(username, password);
+                this.loginView.authValid();
+
             } catch (ExecutionException e) {
                 this.loginView.showError(R.string.execution_exception);
             } catch (InterruptedException e) {
