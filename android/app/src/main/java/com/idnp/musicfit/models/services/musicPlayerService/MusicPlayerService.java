@@ -31,7 +31,7 @@ public class MusicPlayerService extends AppCompatActivity {
     private static int state=STOPPED;
     private static ArrayList<Song> musicList;
 
-    private int position;
+    private static int position=0;
 
     public MusicPlayerService(){
 
@@ -61,6 +61,22 @@ public class MusicPlayerService extends AppCompatActivity {
     public void stop() {
 
         state = STOPPED;
+    }
+    public void back(){
+        if(position==0){
+            position=musicList.size()-1;
+        }
+        else{
+            position--;
+        }
+    }
+    public void advance(){
+        if(position==musicList.size()-1){
+            position=0;
+        }
+        else{
+            position++;
+        }
     }
 
     public int getState() {

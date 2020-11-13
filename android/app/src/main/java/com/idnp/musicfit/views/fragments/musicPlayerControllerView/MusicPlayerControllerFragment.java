@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Song;
@@ -32,7 +33,8 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     //private TextView text_state;
     protected ImageButton randomButton,backButton,playButton,advanceButton,repeatButton;
     private ImageView imageSong;
-    MusicPlayerControllerPresenter musicPlayerControllerPresenter;
+    private TextView name_song,name_artist;
+    private MusicPlayerControllerPresenter musicPlayerControllerPresenter;
     public MusicPlayerMiniControllerFragment miniControllerFragment;
     private MediaPlayer mediaPlayer;
 
@@ -49,22 +51,6 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         this.view =  inflater.inflate(R.layout.fragment_music_player_controller, container, false);
-        //CARGANDO BOTON DE RANDOM
-        this.playButton = (ImageButton) view.findViewById(R.id.random_button_player);
-        this.playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.play();
-            }
-        });
-        //CARGANDO BOTON DE BACK
-        this.playButton = (ImageButton) view.findViewById(R.id.back_button_player);
-        this.playButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.play();
-            }
-        });
         //CARGANDO BOTON DE PLAY
         this.playButton = (ImageButton) view.findViewById(R.id.play_button_player);
         this.playButton.setOnClickListener(new View.OnClickListener() {
@@ -73,25 +59,46 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
                 MusicPlayerControllerPresenter.musicPlayerControllerPresenter.play();
             }
         });
-        //CARGANDO BOTON DE ADVANCE
-        this.repeatButton = (ImageButton) view.findViewById(R.id.advance_button_player);
-        this.repeatButton.setOnClickListener(new View.OnClickListener() {
+        //CARGANDO BOTON DE BACK
+        this.backButton = (ImageButton) view.findViewById(R.id.back_button_player);
+        this.backButton.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
-                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.pause();
+            public void onClick(View view) {
+                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.back();
             }
         });
+        //CARGANDO BOTON DE ADVANCE
+        this.advanceButton = (ImageButton) view.findViewById(R.id.advance_button_player);
+        this.advanceButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.advance();
+            }
+        });
+
+        //CARGANDO BOTON DE RANDOM
+        this.randomButton = (ImageButton) view.findViewById(R.id.random_button_player);
+        this.randomButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.random();
+            }
+        });
+
         //CARGANDO BOTON DE REPEAT
         this.repeatButton = (ImageButton) view.findViewById(R.id.repeat_button_player);
         this.repeatButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.pause();
+                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.repeat();
             }
         });
         //CARGANDO IMAGEN DE REPRODUCTOR
         this.imageSong = (ImageView) view.findViewById(R.id.image_music_player);
-
+        //NOMBRE DE LA CANCION
+        this.name_song = (TextView) view.findViewById(R.id.name_song_player);
+        //NOMBRE DEL ARTISTA DE LA CANCION
+        this.name_artist = (TextView) view.findViewById(R.id.name_artist_player);
         return  this.view;
     }
 
@@ -118,6 +125,8 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     public void loadSelectedMusic(){
         Song music=MusicPlayerControllerPresenter.musicPlayerControllerPresenter.getCurrentMusic();
+        this.name_song.setText(music.getName());
+        this.name_artist.setText(music.getArtist());
         mediaPlayer=MediaPlayer.create(getContext(),music.getMusic());
     }
     @Override
@@ -161,11 +170,28 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     @Override
     public void back() {
 
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.stop();;
+            loadSelectedMusic();
+            mediaPlayer.start();
+        }
+        else{
+            mediaPlayer.stop();;
+            loadSelectedMusic();
+        }
     }
 
     @Override
     public void advance() {
-
+        if(mediaPlayer.isPlaying()){
+            mediaPlayer.stop();;
+            loadSelectedMusic();
+            mediaPlayer.start();
+        }
+        else{
+            mediaPlayer.stop();;
+            loadSelectedMusic();
+        }
     }
 
     @Override

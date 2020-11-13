@@ -10,10 +10,9 @@ import android.widget.TextView;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationConstant;
-import com.idnp.musicfit.models.entities.User;
-import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
 import com.idnp.musicfit.presenter.registerPresenter.RegisterPresenter;
 import com.idnp.musicfit.presenter.registerPresenter.iRegisterPresenter;
+import com.idnp.musicfit.views.toastManager.ToastManager;
 
 public class RegisterActivity extends AppCompatActivity implements iRegisterView {
 
@@ -46,7 +45,7 @@ public class RegisterActivity extends AppCompatActivity implements iRegisterView
     }
 
     public void registerUserClickListener(View view){
-
+        this.errorTextView.setText("");
         this.registerPresenter.registerUser(
                 this.usernameEditText.getText().toString(),
                 this.firstNameEditText.getText().toString(),
@@ -70,10 +69,16 @@ public class RegisterActivity extends AppCompatActivity implements iRegisterView
 
     @Override
     public void successfullyRegister() {
+        ToastManager.toastManager.showToast(R.string.user_registered);
         Intent intent = new Intent();
-        intent.putExtra(AuthenticationConstant.USERNAME_TAG_KEY, "JuanPerez");
-        intent.putExtra(AuthenticationConstant.PASSWORD_TAG_KEY, "123456");
+        intent.putExtra(AuthenticationConstant.USERNAME_LABEL, "JuanPerez");
+        intent.putExtra(AuthenticationConstant.PASSWORD_LABEL, "123456");
         this.setResult(RESULT_OK, intent);
         this.finish();
+    }
+
+    @Override
+    public void showError(String error) {
+        this.errorTextView.setText(error);
     }
 }

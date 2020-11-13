@@ -7,6 +7,10 @@ public interface iMusicPlayerControllerPresenter {
     public void play();
     public void pause();
     public void stop();
+    public void back();
+    public void advance();
+    public void random();
+    public void repeat();
     public Song getCurrentMusic();
     public void setView(iMusicPlayerControllerView view);
 }
