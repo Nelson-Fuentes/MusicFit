@@ -1,8 +1,10 @@
 package com.idnp.musicfit.views.fragments.trainingControllerView;
 
+import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.os.Bundle;
 
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
@@ -41,6 +43,9 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     private TextView lbl_pause;
     private TextView lbl_stop;
     private TextView lbl_map;
+    private ImageView image_runner;
+
+    private TextView lbl_no_resultados,lbl_resultados, number_km, lbl_km, number_pasos,lbl_pasos,number_cals,lbl_cals;
 
     public TrainingControllerFragment() {
     }
@@ -68,6 +73,18 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         lbl_pause = (TextView)view.findViewById(R.id.lbl_pause);
         lbl_stop = (TextView)view.findViewById(R.id.lbl_stop);
         lbl_map = (TextView)view.findViewById(R.id.lbl_map);
+        image_runner = (ImageView)view.findViewById(R.id.imageRunner);
+
+        //results part
+        lbl_no_resultados = (TextView)view.findViewById(R.id.lbl_no_resultados);
+        lbl_resultados = (TextView)view.findViewById(R.id.lbl_resultados);
+        lbl_km = (TextView)view.findViewById(R.id.lbl_km);
+        lbl_pasos = (TextView)view.findViewById(R.id.lbl_pasos);
+        lbl_cals = (TextView)view.findViewById(R.id.lbl_cals);
+        number_km = (TextView)view.findViewById(R.id.number_km);
+        number_pasos = (TextView)view.findViewById(R.id.number_pasos);
+        number_cals = (TextView)view.findViewById(R.id.number_cals);
+
 
         chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
             @Override
@@ -86,6 +103,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         play_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_2));
                 if(!running){
                     chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffSet);
                     chronometer.start();
@@ -105,6 +123,16 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                         lbl_pause.setVisibility(View.VISIBLE);
                         lbl_stop.setVisibility(View.VISIBLE);
                         lbl_map.setVisibility(View.VISIBLE);
+
+                        lbl_no_resultados.setVisibility(View.INVISIBLE);
+                        lbl_resultados.setVisibility(View.VISIBLE);
+                        lbl_pasos.setVisibility(View.VISIBLE);
+                        lbl_km.setVisibility(View.VISIBLE);
+                        lbl_cals.setVisibility(View.VISIBLE);
+                        number_pasos.setVisibility(View.VISIBLE);
+                        number_km.setVisibility(View.VISIBLE);
+                        number_cals.setVisibility(View.VISIBLE);
+
                     }
                 },100);
 
@@ -113,6 +141,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         pause_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
                 if(running){
                     chronometer.stop();
                     pauseOffSet = SystemClock.elapsedRealtime() - chronometer.getBase();
@@ -139,6 +168,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         stop_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
                 chronometer.stop();
                 chronometer.setBase(SystemClock.elapsedRealtime());
                 pauseOffSet = 0;
@@ -160,6 +190,19 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                         lbl_pause.setVisibility(View.INVISIBLE);
                         lbl_stop.setVisibility(View.INVISIBLE);
                         lbl_map.setVisibility(View.INVISIBLE);
+
+                        lbl_no_resultados.setVisibility(View.VISIBLE);
+                        lbl_resultados.setVisibility(View.INVISIBLE);
+                        lbl_pasos.setVisibility(View.INVISIBLE);
+                        lbl_km.setVisibility(View.INVISIBLE);
+                        lbl_cals.setVisibility(View.INVISIBLE);
+                        number_pasos.setVisibility(View.INVISIBLE);
+                        number_km.setVisibility(View.INVISIBLE);
+                        number_cals.setVisibility(View.INVISIBLE);
+
+
+
+
                     }
                 },100);
             }
@@ -169,11 +212,12 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
             @Override
             public void onClick(View v) {
                 Toast.makeText(getActivity(),"I'm the map",Toast.LENGTH_SHORT).show();
+
                 //just for animation
                 new Handler().postDelayed(new Runnable() {
                     @Override
                     public void run() {
-
+                        TrainingControllerFragment.this.trainingControllerPresenter.stopTraining();
                     }
                 },100);
             }

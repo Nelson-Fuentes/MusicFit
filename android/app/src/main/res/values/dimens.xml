@@ -7,4 +7,6 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="size_background_player_large">350dp</dimen>
     <dimen name="size_background_player_smoll">250dp</dimen>
+
+
 </resources>
