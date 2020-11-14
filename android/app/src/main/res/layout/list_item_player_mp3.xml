@@ -22,7 +22,9 @@
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:scaleType="centerCrop"
-            android:layout_marginRight="10dp"/>
+            android:layout_marginEnd="25dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/icon_music_playlist"/>
 
         <LinearLayout
             android:layout_width="wrap_content"
@@ -34,11 +36,12 @@
                 android:id="@+id/name_music"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
                 android:text="Nombre de la Cancion"
                 android:textSize="15sp" />
 
             <TextView
-                android:id="@+id/value_rep_date_day"
+                android:id="@+id/artist_music"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Nombre del Autor"
@@ -47,20 +50,5 @@
 
         </LinearLayout>
 
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:orientation="vertical"
-            android:textAlignment="textEnd">
-
-            <TextView
-                android:id="@+id/label_rep_date_hour"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="hora"
-                android:textSize="10sp" />
-
-        </LinearLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>
