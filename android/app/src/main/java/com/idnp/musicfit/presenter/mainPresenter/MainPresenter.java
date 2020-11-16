@@ -4,6 +4,7 @@ package com.idnp.musicfit.presenter.mainPresenter;
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationService;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
+import com.idnp.musicfit.models.services.musicfitPreferences.MusicfitPreferencesService;
 import com.idnp.musicfit.models.services.trainingService.TrainingService;
 import com.idnp.musicfit.models.services.userService.UserService;
 import com.idnp.musicfit.views.activities.mainView.iMainView;
@@ -29,6 +30,7 @@ public class MainPresenter implements iMainPresenter {
         MusicPlayerService.musicPlayerService = new MusicPlayerService();
         ToastManager.toastManager = new ToastManager(this.mainView.getActivityFragment().getApplicationContext());
         MusicFitService.musicfitService = new MusicFitService();
+        MusicfitPreferencesService.musicfitPreferencesService = new MusicfitPreferencesService(this.mainView.getActivityFragment().getApplicationContext());
     }
 
     @Override
@@ -40,5 +42,10 @@ public class MainPresenter implements iMainPresenter {
         if (!AuthenticationService.authenticationService.isLogged()){
             this.mainView.showNoOpenSessionFoundAction();
         }
+    }
+
+    @Override
+    public void logout() {
+        AuthenticationService.authenticationService.logout();
     }
 }

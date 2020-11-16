@@ -4,4 +4,5 @@ public interface iMainPresenter {
 
     public void loadDefaultServices();
     public void verifySession();
+    public void logout();
 }
