@@ -42,4 +42,6 @@
     <string name="server_error">Ocurrio un error desconocido.</string>
     <string name="auth_process">Verificando credenciales.</string>
     <string name="auth_sucess">Credendenciales valdiades ¡Bienvenid@!.</string>
+    <string name="report_list_filter_label_from">Desde</string>
+    <string name="report_list_filter_label_to">Hasta</string>
 </resources>

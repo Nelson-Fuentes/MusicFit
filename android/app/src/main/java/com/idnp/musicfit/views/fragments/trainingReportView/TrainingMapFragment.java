@@ -10,6 +10,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.maps.android.PolyUtil;
 import com.idnp.musicfit.R;
@@ -38,7 +40,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.List;
-
+//para la animación: https://www.youtube.com/watch?v=JLIFqqnSNmg
 public class TrainingMapFragment extends Fragment {
     GoogleMap map;
     Boolean myPosition = true;
@@ -101,10 +103,25 @@ public class TrainingMapFragment extends Fragment {
                                 .bearing(30)
                                 .build();
                         map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-                        //googleMap.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
 
+                        LatLng [] p ={
+                                new LatLng(-16.4322583,-71.5642415),
+                                new LatLng(-16.4322687,-71.5642517),
+                                new LatLng(-16.4322791,-71.5642623),
+                                new LatLng(-16.4322895,-71.5642727),
+                                new LatLng(-16.4322999,-71.5642831),
+                                new LatLng(-16.4323003,-71.5642935),
+
+                        };
+                       for(int i=0;i<p.length-1;i++){
+                            map.addPolyline((new PolylineOptions()).add(p[i],p[i+1]).width(5).color(Color.CYAN));
+                        }
+
+                        map.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
+                        googleMap.addMarker(new MarkerOptions().position(p[p.length-1]).title("no es  posición"));
+/*
                         //para obtener el JSON de los datos de ruta
-                        String url="https://maps.googleapis.com/maps/api/directions/json?origin="+latOri+","+longOri+"&destination="+-16.4322583+","+-71.5642415;
+                        String url="https://maps.googleapis.com/maps/api/directions/json?origin="+latOri+","+longOri+"&destination="+-16.4322583+","+-71.5642415+"&key=AIzaSyC0eKqNv642gpIrZejEyOiMZcFm63k6-g0";
                         RequestQueue queue= Volley.newRequestQueue(getActivity());
                         StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
 
@@ -114,6 +131,7 @@ public class TrainingMapFragment extends Fragment {
                                     //aqui ya obtenemos la respuesta a la consulta de la "url" y lo ponemos en el jso
                                     jso=new JSONObject(response);
                                     trazarRuta(jso);
+                                    Log.i("jsonRuta:",""+response);
                                     googleMap.addMarker(new MarkerOptions().position(new LatLng(-16.4322583,-71.5642415)).title("Esta es mi posición"));
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -125,7 +143,7 @@ public class TrainingMapFragment extends Fragment {
 
                             }
                         });
-                        queue.add(stringRequest);
+                        queue.add(stringRequest);*/
 
                     }
                 }
@@ -161,9 +179,7 @@ public class TrainingMapFragment extends Fragment {
         switch (requestCode){
             case 1:{
                 if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
-
                 }else{
-
                 }
                 return;
             }

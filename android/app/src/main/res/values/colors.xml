@@ -3,6 +3,7 @@
     <color name="purple_200">#FFBB86FC</color>
     <color name="purple_500">#FF6200EE</color>
     <color name="purple_700">#FF3700B3</color>
+
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
@@ -11,6 +12,9 @@
     <color name="second_color">#1c1c24</color>
     <color name="first_background">#ffffff</color>
     <color name="second_background">#F6F5FD</color>
+    <color name="background_report_list">#E9E9F4</color>
+    <color name="background_item_list">#F6F6FB</color>
+    <color name="cyan_report_filter">#5ED7FF</color>
     <color name="stroke">#C3C5D0</color>
     <color name="error_text_color">#fa2b1b</color>
     <color name="background_player_large">#dee2ff</color>

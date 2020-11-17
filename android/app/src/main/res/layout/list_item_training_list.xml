@@ -5,30 +5,38 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    app:cardElevation="5dp"
-    app:cardCornerRadius="5dp"
-    android:layout_marginLeft="10dp"
-    android:layout_marginRight="10dp"
-    android:layout_marginTop="3dp"
-    android:layout_marginBottom="3dp"
+    app:cardElevation="1dp"
+    app:cardCornerRadius="8dp"
+    android:layout_marginTop="5dp"
+
+    android:background="@color/background_item_list"
     >
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="5dp">
+
         <ImageView
             android:id="@+id/value_rep_icon"
             android:layout_width="70dp"
             android:layout_height="70dp"
             android:scaleType="centerCrop"
-            android:layout_marginRight="10dp" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:orientation="vertical">
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginBottom="3dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/linearLayout"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/label_rep_date_day"
@@ -63,10 +71,18 @@
         </LinearLayout>
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:layout_margin="3dp"
-            android:orientation="vertical">
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="3dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginBottom="3dp"
+
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
 
             <TextView
                 android:id="@+id/label_rep_date_hour"
@@ -99,5 +115,5 @@
                 android:textStyle="bold" />
 
         </LinearLayout>
-    </LinearLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>
