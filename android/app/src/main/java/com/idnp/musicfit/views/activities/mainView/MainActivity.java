@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.View;
 
 import com.google.android.material.navigation.NavigationView;
 import com.idnp.musicfit.R;
@@ -84,6 +85,11 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
                 FragmentManager.fragmentManager.remove(fragment);
             }
         }
+    }
+
+    public void logout(View view){
+        this.mainPresenter.logout();
+        this.showNoOpenSessionFoundAction();
     }
 
 }

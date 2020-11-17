@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.entities.MusicPlayList;
 import com.idnp.musicfit.models.entities.Song;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
@@ -99,6 +102,13 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         this.name_song = (TextView) view.findViewById(R.id.name_song_player);
         //NOMBRE DEL ARTISTA DE LA CANCION
         this.name_artist = (TextView) view.findViewById(R.id.name_artist_player);
+
+        MusicPlayList musicList=new MusicPlayList(getContext());
+        RecyclerView recyclerView= view.findViewById(R.id.recyclerview_list_music_player);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(musicList);
+
         return  this.view;
     }
 
@@ -120,6 +130,8 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         } else {
             MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
         }
+
+
 
     }
 

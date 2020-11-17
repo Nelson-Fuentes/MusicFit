@@ -11,32 +11,34 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        tools:layout_editor_absoluteY="1dp">
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="35dp"
-            android:gravity="center"
             android:background="@drawable/circle_unit_large"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
+
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="80dp"
-            android:gravity="center"
+            android:layout_marginTop="75dp"
             android:background="@drawable/circle_unit_smoll"
+            android:gravity="center"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            app:layout_constraintTop_toTopOf="parent" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginStart="24dp"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="24dp"
             android:layout_marginEnd="24dp"
             android:orientation="vertical"
             app:layout_constraintEnd_toEndOf="parent"
@@ -56,11 +58,10 @@
                 android:id="@+id/image_music_player"
                 android:layout_width="200dp"
                 android:layout_height="200dp"
-                android:layout_marginStart="64dp"
+                android:layout_gravity="center"
                 android:layout_marginTop="36dp"
-                android:layout_marginEnd="24dp"
                 android:layout_marginBottom="48dp"
-                android:background="@drawable/icon_music_player"/>
+                android:background="@drawable/icon_music_player" />
 
             <TextView
                 android:id="@+id/name_song_player"
@@ -93,7 +94,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="24dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="24dp"
                 android:backgroundTint="#000000"
                 android:progressBackgroundTint="#000000"
@@ -103,43 +104,40 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="15dp"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                android:weightSum="2">
 
 
                 <TextView
                     android:id="@+id/current_time_player"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="00:00"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="18dp"
-                    android:layout_marginEnd="120dp"/>
+                    android:textColor="@color/black" />
 
                 <TextView
                     android:id="@+id/end_time_player"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="right"
                     android:text="05:40"
-                    android:textColor="@color/black"
-                    android:layout_marginStart="100dp"/>
+                    android:textColor="@color/black" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_marginStart="15dp"
-                android:layout_marginEnd="10dp"
-                android:orientation="horizontal">
+                android:layout_marginTop="5dp"
+                android:orientation="horizontal"
+                android:weightSum="5">
 
                 <ImageButton
                     android:id="@+id/random_button_player"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-
-                    android:layout_marginEnd="15dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
                     android:background="@color/white"
                     android:paddingTop="7dp"
                     app:srcCompat="@drawable/button_player_random_mp3">
@@ -150,8 +148,7 @@
                     android:id="@+id/back_button_player"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_weight="1"
                     android:background="@color/white"
                     app:srcCompat="@drawable/button_player_back_mp3" />
 
@@ -159,16 +156,16 @@
                     android:id="@+id/play_button_player"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="0"
                     android:background="@drawable/button_player_play_mp3" />
 
                 <ImageButton
                     android:id="@+id/advance_button_player"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:layout_marginEnd="15dp"
+                    android:layout_weight="1"
                     android:background="@color/white"
                     app:srcCompat="@drawable/button_player_advance_mp3" />
 
@@ -176,8 +173,7 @@
                     android:id="@+id/repeat_button_player"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-
+                    android:layout_weight="1"
                     android:background="@color/white"
                     app:srcCompat="@drawable/button_player_repeat_mp3" />
 
@@ -186,22 +182,31 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="17dp"
+                android:orientation="vertical">
 
                 <Button
                     android:id="@+id/button_addsong_player"
                     style="@style/TextAppearance.AppCompat.Widget.Button.Colored"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
                     android:background="@drawable/button_addsong_background"
                     android:scrollbarStyle="outsideInset"
-                    android:text="Añadir Cancion"
-                    android:layout_gravity="center"/>
+                    android:text="Añadir Cancion" />
 
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/recyclerview_list_music_player"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
         </LinearLayout>
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

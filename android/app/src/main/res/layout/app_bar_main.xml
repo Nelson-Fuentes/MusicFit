@@ -19,6 +19,24 @@
         app:popupTheme="@style/Theme.MusicFit.PopupOverlay"
         app:titleTextColor="@color/teal_200" />
 
+    <ImageButton
+        android:id="@+id/imageButton4"
+        android:layout_width="54dp"
+        android:layout_height="59dp"
+        android:background="@null"
+        android:onClick="logout"
+        android:padding="15dp"
+        android:paddingStart="15dp"
+        android:paddingLeft="15dp"
+        android:paddingTop="15dp"
+        android:paddingEnd="15dp"
+        android:paddingRight="15dp"
+        android:paddingBottom="10dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_logout" />
+
     <fragment
         android:id="@+id/fragment2"
         android:name="com.idnp.musicfit.views.fragments.musicPlayerControllerView.MusicPlayerMiniControllerFragment"
@@ -27,6 +45,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 
 

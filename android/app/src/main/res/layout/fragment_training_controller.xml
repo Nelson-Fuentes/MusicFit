@@ -9,14 +9,15 @@
 
     <Chronometer
         android:id="@+id/chronometer"
-        android:layout_width="233dp"
+        android:layout_width="wrap_content"
         android:layout_height="57dp"
-        android:textSize="50sp"
+        android:textSize="52sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonReport"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.494"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
-        app:layout_constraintVertical_bias="0.102" />
+        app:layout_constraintTop_toBottomOf="@+id/imageRunner"
+        app:layout_constraintVertical_bias="0.071" />
 
     <Button
         android:id="@+id/buttonReport"
@@ -26,22 +27,60 @@
         android:layout_marginEnd="32dp"
         android:layout_marginBottom="16dp"
         android:text="REPORTE"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent" />
 
     <ImageView
-        android:id="@+id/imageView5"
-        android:layout_width="144dp"
-        android:layout_height="144dp"
-        android:layout_marginTop="56dp"
-        android:background="@drawable/border_image"
+        android:id="@+id/imageRunner"
+        android:layout_width="180dp"
+        android:layout_height="180dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/training_image_state_1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_runner_man_foreground" />
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/lbl_minuto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="MINUTOS"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/stop_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chronometer"
+        app:layout_constraintVertical_bias="0.222" />
+
+    <TextView
+        android:id="@+id/lbl_segundo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SEGUNDOS"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/map_button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.250"
+        app:layout_constraintStart_toEndOf="@+id/lbl_minuto"
+        app:layout_constraintTop_toBottomOf="@+id/chronometer"
+        app:layout_constraintVertical_bias="0.222" />
+
+    <TextView
+        android:id="@+id/lbl_hora"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="HORAS"
+        android:textSize="12sp"
+        app:layout_constraintBottom_toTopOf="@+id/stop_button"
+        app:layout_constraintEnd_toStartOf="@+id/lbl_minuto"
+        app:layout_constraintHorizontal_bias="0.750"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/chronometer"
+        app:layout_constraintVertical_bias="0.222" />
 
     <ImageView
         android:id="@+id/play_button"
@@ -49,13 +88,16 @@
         android:layout_height="64dp"
         android:background="@drawable/training_button_background_v1"
         android:visibility="visible"
+
         app:layout_constraintBottom_toTopOf="@+id/buttonReport"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chronometer"
-        app:layout_constraintVertical_bias="0.165"
-        app:srcCompat="@drawable/ic_baseline_play_circle_outline_24" />
+        app:layout_constraintVertical_bias="0.262"
+        app:srcCompat="@drawable/ic_baseline_play_circle_outline_24"
+
+        />
 
     <ImageView
         android:id="@+id/pause_button"
@@ -63,12 +105,12 @@
         android:layout_height="64dp"
         android:background="@drawable/training_button_background_v1"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/buttonReport"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chronometer"
-        app:layout_constraintVertical_bias="0.164"
+        app:layout_constraintVertical_bias="0.195"
         app:srcCompat="@drawable/ic_baseline_pause_circle_outline_24" />
 
     <ImageView
@@ -78,10 +120,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/buttonReport"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.181"
+        app:layout_constraintHorizontal_bias="0.175"
         app:layout_constraintStart_toEndOf="@+id/play_button"
         app:layout_constraintTop_toBottomOf="@+id/chronometer"
-        app:layout_constraintVertical_bias="0.161"
+        app:layout_constraintVertical_bias="0.262"
         app:srcCompat="@drawable/ic_baseline_map_24" />
 
     <ImageView
@@ -92,50 +134,11 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/buttonReport"
         app:layout_constraintEnd_toStartOf="@+id/play_button"
-        app:layout_constraintHorizontal_bias="0.798"
+        app:layout_constraintHorizontal_bias="0.79"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/chronometer"
-        app:layout_constraintVertical_bias="0.161"
+        app:layout_constraintVertical_bias="0.262"
         app:srcCompat="@drawable/ic_baseline_stop_circle_24" />
-
-    <TextView
-        android:id="@+id/lbl_hora"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="HORAS"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/stop_button"
-        app:layout_constraintEnd_toStartOf="@+id/lbl_minuto"
-        app:layout_constraintHorizontal_bias="0.669"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chronometer"
-        app:layout_constraintVertical_bias="0.454" />
-
-    <TextView
-        android:id="@+id/lbl_minuto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="MINUTOS"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/stop_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.464"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/chronometer"
-        app:layout_constraintVertical_bias="0.454" />
-
-    <TextView
-        android:id="@+id/lbl_segundo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="SEGUNDOS"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/map_button"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.217"
-        app:layout_constraintStart_toEndOf="@+id/lbl_minuto"
-        app:layout_constraintTop_toBottomOf="@+id/chronometer"
-        app:layout_constraintVertical_bias="0.441" />
 
     <TextView
         android:id="@+id/lbl_play"
@@ -146,9 +149,10 @@
         android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/buttonReport"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/play_button"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <TextView
         android:id="@+id/lbl_pause"
@@ -158,11 +162,12 @@
         android:textAlignment="center"
         android:textSize="12sp"
         android:visibility="invisible"
-        app:layout_constraintBottom_toTopOf="@+id/buttonReport"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.487"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/play_button"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <TextView
         android:id="@+id/lbl_map"
@@ -174,10 +179,10 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/buttonReport"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.793"
+        app:layout_constraintHorizontal_bias="0.783"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/play_button"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.033" />
 
     <TextView
         android:id="@+id/lbl_stop"
@@ -189,10 +194,122 @@
         android:visibility="invisible"
         app:layout_constraintBottom_toTopOf="@+id/buttonReport"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.197"
+        app:layout_constraintHorizontal_bias="0.185"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/play_button"
-        app:layout_constraintVertical_bias="0.035" />
+        app:layout_constraintVertical_bias="0.033" />
+
+    <TextView
+        android:id="@+id/lbl_no_resultados"
+        android:layout_width="172dp"
+        android:layout_height="39dp"
+        android:layout_marginTop="32dp"
+        android:text="Aún no hay resultados inicia el entrenamiento"
+        android:textAlignment="center"
+        android:visibility="visible"
+        app:layout_constraintBottom_toTopOf="@+id/buttonReport"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_play" />
+
+    <TextView
+        android:id="@+id/lbl_resultados"
+        android:layout_width="wrap_content"
+        android:layout_height="21dp"
+        android:layout_marginBottom="21dp"
+        android:text="RESULTADOS"
+        android:textAlignment="center"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toTopOf="@+id/number_km"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.483"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/lbl_play"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <TextView
+        android:id="@+id/number_km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="00"
+        android:textSize="36sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lbl_no_resultados"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/number_cals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="00"
+        android:textSize="36sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.41"
+        app:layout_constraintStart_toEndOf="@+id/number_km"
+        app:layout_constraintTop_toTopOf="@+id/lbl_no_resultados"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/number_pasos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="00"
+        android:textSize="36sp"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/number_km"
+        app:layout_constraintHorizontal_bias="0.572"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/lbl_no_resultados"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/lbl_km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="KM"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_km"
+        app:layout_constraintVertical_bias="0.0" />
+
+    <TextView
+        android:id="@+id/lbl_cals"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="CALS"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.454"
+        app:layout_constraintStart_toEndOf="@+id/lbl_km"
+        app:layout_constraintTop_toBottomOf="@+id/number_cals"
+        app:layout_constraintVertical_bias="0.03" />
+
+    <TextView
+        android:id="@+id/lbl_pasos"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="PASOS"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/lbl_km"
+        app:layout_constraintHorizontal_bias="0.54"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/number_pasos"
+        app:layout_constraintVertical_bias="0.03" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 
