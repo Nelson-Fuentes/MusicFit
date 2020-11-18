@@ -88,7 +88,6 @@ public class MusicfitAuthenticationManagerService {
 
     public void logout(){
         SharedPreferences preferences = MusicfitPreferencesService.musicfitPreferencesService.openSharedPreferencesFile(PREFERENCES_FILE);
-        String token = MusicfitPreferencesService.musicfitPreferencesService.readPreference(preferences, PREFERENCES_TOKEN_KEY);
         MusicfitPreferencesService.musicfitPreferencesService.removePreference(preferences, PREFERENCES_TOKEN_KEY);
         this.accountManager.removeAccount(this.account, null, null);
     }
