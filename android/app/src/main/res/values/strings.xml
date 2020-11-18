@@ -44,4 +44,7 @@
     <string name="auth_sucess">Credendenciales valdiades ¡Bienvenid@!.</string>
     <string name="report_list_filter_label_from">Desde</string>
     <string name="report_list_filter_label_to">Hasta</string>
+    <string name="training_report_view_label_duration">Duración</string>
+    <string name="training_report_view_label_kilometros">Km</string>
+    <string name="training_report_view_label_kilocalorias">Kcal</string>
 </resources>

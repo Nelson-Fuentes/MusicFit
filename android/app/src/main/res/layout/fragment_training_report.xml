@@ -4,28 +4,177 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/first_background"
+
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <fragment
         android:id="@+id/fragment"
         android:name="com.idnp.musicfit.views.fragments.trainingReportView.TrainingMapFragment"
-        android:layout_width="0dp"
-        android:layout_height="400dp"
+        android:layout_marginTop="60dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/buttonExit"
-        android:layout_width="0dp"
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/cl0"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginEnd="24dp"
-        android:text="Volver"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/fragment" />
+        app:layout_constraintBottom_toTopOf="@id/cl_4"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:padding="15dp"
+        android:background="@drawable/background_report_detail_bottom"
+        >
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_1"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/second_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+
+                android:gravity="center"
+                android:text="@string/training_report_view_label_duration"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/report_view_duration_bar"
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/training_report_view_bar_duracion"
+
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="15"
+                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:paddingLeft="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_2"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/second_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_1"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/training_report_view_label_kilometros"
+
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/report_view_km_bar"
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/training_report_view_bar_kilometros"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="25"
+                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:paddingLeft="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_3"
+            android:layout_width="match_parent"
+            android:layout_height="35dp"
+            android:background="@color/second_background"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_2"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/training_report_view_label_kilocalorias"
+
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/report_view_kcal_bar"
+                android:layout_width="280dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/training_report_view_bar_kilocalorias"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:text="20"
+                android:textStyle="bold"
+                android:gravity="center_vertical"
+                android:paddingLeft="6dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:background="@drawable/background_report_detail_bottom"
+        android:id="@+id/cl_4"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        >
+
+        <TextView
+            android:id="@+id/buttonExit"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/cyan_report_filter"
+            android:text="back"
+
+            android:gravity="center"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

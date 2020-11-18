@@ -14,6 +14,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
+import android.widget.TextView;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -47,6 +50,9 @@ public class TrainingMapFragment extends Fragment {
     JSONObject jso;
     Double longOri, latOri;
     ToastManager mytoast;
+
+
+
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -62,6 +68,8 @@ public class TrainingMapFragment extends Fragment {
 
         @Override
         public void onMapReady(GoogleMap googleMap) {
+
+
             map = googleMap;
             //PARA LOS PERMISOS DE ACCESO
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -96,7 +104,7 @@ public class TrainingMapFragment extends Fragment {
                         //para graficar esta posición en el mapa
                         LatLng myPosition = new LatLng(latOri, longOri);
 
-                        googleMap.addMarker(new MarkerOptions().position(myPosition).title("Esta es mi posición"));
+                        googleMap.addMarker(new MarkerOptions().position(myPosition).title("Inicio"));
                         CameraPosition cameraPosition= new CameraPosition.Builder()
                                 .target(new LatLng(latOri,longOri))
                                 .zoom(15)
@@ -113,37 +121,13 @@ public class TrainingMapFragment extends Fragment {
                                 new LatLng(-16.4323003,-71.5642935),
 
                         };
-                       for(int i=0;i<p.length-1;i++){
+                       /*for(int i=0;i<p.length-1;i++){
                             map.addPolyline((new PolylineOptions()).add(p[i],p[i+1]).width(5).color(Color.CYAN));
-                        }
-
+                        }*/
+                        map.addPolyline((new PolylineOptions()).add(myPosition,p[p.length-1]).width(5).color(Color.CYAN));
                         map.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
-                        googleMap.addMarker(new MarkerOptions().position(p[p.length-1]).title("no es  posición"));
-/*
-                        //para obtener el JSON de los datos de ruta
-                        String url="https://maps.googleapis.com/maps/api/directions/json?origin="+latOri+","+longOri+"&destination="+-16.4322583+","+-71.5642415+"&key=AIzaSyC0eKqNv642gpIrZejEyOiMZcFm63k6-g0";
-                        RequestQueue queue= Volley.newRequestQueue(getActivity());
-                        StringRequest stringRequest=new StringRequest(Request.Method.GET, url, new Response.Listener<String>() {
+                        googleMap.addMarker(new MarkerOptions().position(p[p.length-1]).title("Final position"));
 
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    //aqui ya obtenemos la respuesta a la consulta de la "url" y lo ponemos en el jso
-                                    jso=new JSONObject(response);
-                                    trazarRuta(jso);
-                                    Log.i("jsonRuta:",""+response);
-                                    googleMap.addMarker(new MarkerOptions().position(new LatLng(-16.4322583,-71.5642415)).title("Esta es mi posición"));
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }
-                            }
-                        }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-
-                            }
-                        });
-                        queue.add(stringRequest);*/
 
                     }
                 }
@@ -152,27 +136,6 @@ public class TrainingMapFragment extends Fragment {
         }
     };
 
-    private void trazarRuta(JSONObject jso) {
-        JSONArray jRoutes;
-        JSONArray jLegs;
-        JSONArray jSteps;
-        try{
-            jRoutes=jso.getJSONArray("routes");
-            for(int i=0;i<jRoutes.length();i++){
-                jLegs=((JSONObject)(jRoutes.get(i))).getJSONArray("legs");
-                for(int j=0;j<jLegs.length();j++){
-                    jSteps=((JSONObject)jLegs.get(j)).getJSONArray("steps");
-                    for (int k=0;k<jSteps.length();k++){
-                        String polyline=""+((JSONObject)((JSONObject)jSteps.get(k)).get("polyline")).get("points");
-                        List<LatLng>list= PolyUtil.decode(polyline);
-                        map.addPolyline(new PolylineOptions().addAll(list).color(Color.GRAY).width(6));
-                    }
-                }
-            }
-        }catch (JSONException e){
-            mytoast.showToast(e.getMessage());
-        }
-    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode,String perissions[],int[] grantResults){

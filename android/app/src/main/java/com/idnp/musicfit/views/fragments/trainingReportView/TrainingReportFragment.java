@@ -1,5 +1,8 @@
 package com.idnp.musicfit.views.fragments.trainingReportView;
 
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -7,7 +10,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.TextView;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Training;
@@ -20,6 +26,11 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
 
     private View view;
     private iTrainingReportPresenter trainingReportPresenter;
+
+    //objetos para animar las barras de animación
+
+    TextView reportViewDurationBar,reportViewKilometrosBar,reportViewCaloriasBar;
+
 
     public TrainingReportFragment(Training training) {
         this.trainingReportPresenter = new TrainingReportPresenter(this, training);
@@ -37,7 +48,35 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
         if (this.view == null){
             this.view = inflater.inflate(R.layout.fragment_training_report, container, false);
         }
-        Button button = (Button) this.view.findViewById(R.id.buttonExit);
+        TextView button = (TextView) this.view.findViewById(R.id.buttonExit);
+
+
+        reportViewDurationBar=view.findViewById(R.id.report_view_duration_bar);
+        ObjectAnimator animation= ObjectAnimator.ofFloat(reportViewDurationBar,"translationX",500f,300f);
+        animation.setDuration(1000);
+        ValueAnimator fadeAnim = ObjectAnimator.ofFloat(reportViewDurationBar, "alpha", 0.5f, 1.0f);
+        fadeAnim.setDuration(1000);
+
+        reportViewKilometrosBar=view.findViewById(R.id.report_view_km_bar);
+        ObjectAnimator animation2= ObjectAnimator.ofFloat(reportViewKilometrosBar,"translationX",500f,200f);
+        animation2.setDuration(1000);
+        ValueAnimator fadeAnim2 = ObjectAnimator.ofFloat(reportViewKilometrosBar, "alpha", 0.5f, 1.0f);
+        fadeAnim2.setDuration(1000);
+
+        reportViewCaloriasBar=view.findViewById(R.id.report_view_kcal_bar);
+        ObjectAnimator animation3= ObjectAnimator.ofFloat(reportViewCaloriasBar,"translationX",500f,250f);
+        animation3.setDuration(1000);
+        ValueAnimator fadeAnim3 = ObjectAnimator.ofFloat(reportViewCaloriasBar, "alpha", 0.5f, 1.0f);
+        fadeAnim3.setDuration(1000);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(animation).with(fadeAnim).with(animation2).with(fadeAnim2).with(animation3).with(fadeAnim3);
+        animatorSet.start();
+
+
+        //reportViewAnimationBar.setAnimation(durationAnim);
+
+
         button.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
