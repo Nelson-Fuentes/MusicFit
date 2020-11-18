@@ -1,7 +1,7 @@
 package com.idnp.musicfit.presenter.loginPresenter;
 
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.services.authenticationService.AuthenticationService;
+import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
 import com.idnp.musicfit.views.activities.loginView.iLoginView;
 
@@ -31,7 +31,7 @@ public class LoginPresenter implements iLoginPresenter {
     public void auth(String username, String password) {
         if (this.validateAuthenticationCredentials(username, password)) {
             try {
-                AuthenticationService.authenticationService.auth(username, password);
+                MusicfitAuthenticationManagerService.authenticationService.auth(username, password);
                 this.loginView.authValid();
 
             } catch (ExecutionException e) {
@@ -59,7 +59,7 @@ public class LoginPresenter implements iLoginPresenter {
 
     @Override
     public void authIncognite() {
-        if (AuthenticationService.authenticationService.authenticationIncognite()){
+        if (MusicfitAuthenticationManagerService.authenticationService.authenticationIncognite()){
             this.loginView.authIncognite();
         } else {
             this.loginView.showError("Soy un error");
@@ -68,7 +68,7 @@ public class LoginPresenter implements iLoginPresenter {
 
     @Override
     public void authFacebook() {
-        if (AuthenticationService.authenticationService.authenticationFacebook()){
+        if (MusicfitAuthenticationManagerService.authenticationService.authenticationFacebook()){
             this.loginView.authFacebook();
         } else {
             this.loginView.showError("Soy un error");
@@ -77,7 +77,7 @@ public class LoginPresenter implements iLoginPresenter {
 
     @Override
     public void authGoogle() {
-        if (AuthenticationService.authenticationService.authenticationGoogle()){
+        if (MusicfitAuthenticationManagerService.authenticationService.authenticationGoogle()){
             this.loginView.authGoogle();
         } else {
             this.loginView.showError("Soy un error");

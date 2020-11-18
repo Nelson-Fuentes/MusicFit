@@ -89,7 +89,10 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
 
     public void logout(View view){
         this.mainPresenter.logout();
-        this.showNoOpenSessionFoundAction();
+    }
+
+    public void logout(){
+        this.recreate();
     }
 
 }

@@ -6,5 +6,6 @@ public interface iMainView {
 
     public void showNoOpenSessionFoundAction();
     public FragmentActivity getActivityFragment();
+    public void logout();
 
 }
