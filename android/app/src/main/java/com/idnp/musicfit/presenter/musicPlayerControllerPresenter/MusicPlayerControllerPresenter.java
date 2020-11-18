@@ -72,7 +72,9 @@ public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPre
 
     @Override
     public void repeat() {
-
+        boolean state=MusicPlayerService.musicPlayerService.repeatState();
+        this.musicPlayerControllerView.repeat(state);
+        MusicPlayerService.musicPlayerService.changeRepeat();
     }
 
     @Override

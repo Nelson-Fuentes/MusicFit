@@ -6,7 +6,7 @@ public interface iMusicPlayerControllerView {
     public void pause();
     public void stop();
     public void random();
-    public void repeat();
+    public void repeat(boolean state);
     public void back();
     public void advance();
 }

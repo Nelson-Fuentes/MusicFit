@@ -130,17 +130,17 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="5dp"
+                android:gravity="center"
                 android:orientation="horizontal"
                 android:weightSum="5">
 
                 <ImageButton
                     android:id="@+id/random_button_player"
-                    android:layout_width="wrap_content"
+                    android:layout_width="11dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/white"
-                    android:paddingTop="7dp"
-                    app:srcCompat="@drawable/button_player_random_mp3">
+                    android:background="@drawable/button_player_random_disabled_mp3"
+                    android:layout_marginEnd="11dp">
 
                 </ImageButton>
 
@@ -155,10 +155,12 @@
                 <ImageButton
                     android:id="@+id/play_button_player"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="10dp"
-                    android:layout_marginEnd="10dp"
+                    android:layout_height="45dp"
+                    android:paddingStart="40dp"
+                    android:paddingEnd="10dp"
                     android:layout_weight="0"
+                    android:layout_marginStart="15dp"
+                    android:layout_marginEnd="15dp"
                     android:background="@drawable/button_player_play_mp3" />
 
                 <ImageButton
@@ -171,11 +173,11 @@
 
                 <ImageButton
                     android:id="@+id/repeat_button_player"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="22dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:background="@color/white"
-                    app:srcCompat="@drawable/button_player_repeat_mp3" />
+                    android:layout_marginStart="12dp"
+                    android:background="@drawable/button_player_repeat_disabled_mp3"/>
 
             </LinearLayout>
 
@@ -200,7 +202,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerview_list_music_player"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="300dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
