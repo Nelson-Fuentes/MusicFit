@@ -3,6 +3,7 @@ package com.idnp.musicfit.views.fragments.trainingReportView;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.idnp.musicfit.R;
@@ -48,8 +50,8 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
         if (this.view == null){
             this.view = inflater.inflate(R.layout.fragment_training_report, container, false);
         }
-        TextView button = (TextView) this.view.findViewById(R.id.buttonExit);
-
+        ImageButton button = (ImageButton) this.view.findViewById(R.id.buttonExit);
+        ImageButton reportList = (ImageButton) this.view.findViewById(R.id.buttonlist);
 
         reportViewDurationBar=view.findViewById(R.id.report_view_duration_bar);
         ObjectAnimator animation= ObjectAnimator.ofFloat(reportViewDurationBar,"translationX",500f,300f);
@@ -83,6 +85,12 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
                         FragmentManager.fragmentManager.remove(TrainingReportFragment.this);
                     }
                 });
+        reportList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentManager.fragmentManager.remove(TrainingReportFragment.this);
+            }
+        });
         return this.view;
     }
 
