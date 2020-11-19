@@ -47,8 +47,12 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
         NavigationUI.setupWithNavController(navigationView, navController);
         this.mainPresenter = new MainPresenter(this);
         this.mainPresenter.loadDefaultServices();
-        this.mainPresenter.verifySession();
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        this.mainPresenter.verifySession();
     }
 
     @Override

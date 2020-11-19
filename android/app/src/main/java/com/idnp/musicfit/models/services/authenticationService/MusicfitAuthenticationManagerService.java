@@ -63,6 +63,12 @@ public class MusicfitAuthenticationManagerService {
     }
 
     public boolean isLogged(){
+        Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
+        if (accounts.length>0){
+            this.account = accounts[0];
+        } else {
+            this.account = null;
+        }
         return this.account !=null;
     }
 
