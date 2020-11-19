@@ -2,6 +2,7 @@ package com.idnp.musicfit.views.fragments.trainingControllerView;
 
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
+import android.os.AsyncTask;
 import android.os.Bundle;
 
 import androidx.core.content.ContextCompat;
@@ -9,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Handler;
 import android.os.SystemClock;
+import android.text.BoringLayout;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,12 +22,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.dbmodels.DBModelStretchRoute;
+import com.idnp.musicfit.models.entities.Report;
+import com.idnp.musicfit.models.entities.StretchRoute;
 import com.idnp.musicfit.models.entities.Training;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.trainingControllerPresenter.TrainingControllerPresenter;
 import com.idnp.musicfit.presenter.trainingControllerPresenter.iTrainingControllerPresenter;
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
+import com.idnp.musicfit.views.toastManager.ToastManager;
 
 
 public class TrainingControllerFragment extends Fragment implements iTrainingControllerView {
@@ -45,11 +52,40 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     private TextView lbl_map;
     private ImageView image_runner;
 
+    private DBModelStretchRoute modelDBRouteStretch;
+    private boolean controllAsync;
+
     private TextView lbl_no_resultados,lbl_resultados, number_km, lbl_km, number_pasos,lbl_pasos,number_cals,lbl_cals;
+
+
+    public void executeAsync(){
+        AsyncSaveStretchRoute assr=new AsyncSaveStretchRoute();
+        assr.execute();
+    }
+    public class AsyncSaveStretchRoute extends AsyncTask<Void,Integer, Boolean>//Clase para guardar stretchRoutes de manera async
+    {
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return true;
+        }
+        @Override
+        protected  void onPostExecute(Boolean aBoolean){
+            boolean ret=true;
+            if(controllAsync){
+                executeAsync();
+                ToastManager.toastManager.showToast("guardando tramos de rutas");
+            }
+        }
+    }
 
     public TrainingControllerFragment() {
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -62,6 +98,16 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         if (this.view == null){
             this.view = inflater.inflate(R.layout.fragment_training_controller, container, false);
         }
+        controllAsync=false;
+        /*modelDBRouteStretch= new DBModelStretchRoute();
+        StretchRoute stretchRoute= new StretchRoute();
+        stretchRoute.setStart(new LatLng(5,5));
+        stretchRoute.setEnd(new LatLng(5,5));
+        stretchRoute.setId(1);
+        int responseInsert=modelDBRouteStretch.insertStretchRoute(getActivity(),stretchRoute);*/
+
+
+
         this.trainingControllerPresenter = new TrainingControllerPresenter(this);
         Button button = (Button) view.findViewById(R.id.buttonReport);
         play_button = (ImageView)view.findViewById(R.id.play_button);
@@ -108,6 +154,8 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                     chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffSet);
                     chronometer.start();
                     running = true;
+                    controllAsync=true;
+                    executeAsync();
                 }
                 //Toast.makeText(getActivity(),"yeah play works",Toast.LENGTH_SHORT).show();
                 //just for animation
@@ -146,6 +194,8 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                     chronometer.stop();
                     pauseOffSet = SystemClock.elapsedRealtime() - chronometer.getBase();
                     running = false;
+                    controllAsync=false;
+
                 }
                 //Toast.makeText(getActivity(),"yeah pause workes",Toast.LENGTH_SHORT).show();
                 //just for animation
@@ -174,7 +224,9 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                 pauseOffSet = 0;
                 chronometer.setText("00:00:00");
                 running = false;
-              //  Toast.makeText(getActivity(),"yeah stop works",Toast.LENGTH_SHORT).show();
+                controllAsync=false;//saving data;
+
+                //  Toast.makeText(getActivity(),"yeah stop works",Toast.LENGTH_SHORT).show();
                 //just for animation
                 new Handler().postDelayed(new Runnable() {
                     @Override
@@ -251,7 +303,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     }
 
     @Override
-    public void viewTrainingReport(Training training) {
+    public void viewTrainingReport(Report training) {
         FragmentManager.fragmentManager.changeFragment(new TrainingReportFragment(training));
     }
 }

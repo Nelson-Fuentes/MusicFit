@@ -18,6 +18,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Training;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.trainingReportPresenter.TrainingReportPresenter;
@@ -34,7 +35,7 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
     TextView reportViewDurationBar,reportViewKilometrosBar,reportViewCaloriasBar;
 
 
-    public TrainingReportFragment(Training training) {
+    public TrainingReportFragment(Report training) {
         this.trainingReportPresenter = new TrainingReportPresenter(this, training);
     }
 

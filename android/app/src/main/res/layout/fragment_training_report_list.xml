@@ -65,31 +65,33 @@
             </LinearLayout>
 
 
-            <TextView
+            <ImageButton
                 android:id="@+id/bpicker_top_ini"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
 
-                android:layout_marginLeft="15dp"
+                android:layout_marginLeft="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/date_filter_left_background"
-                android:gravity="center"
-                android:padding="3dp"
-                android:text="B"
+                android:src="@drawable/icon_calendar_report_list_filter"
+
+                android:paddingTop="10dp"
+
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
-            <TextView
+            <ImageButton
                 android:id="@+id/bpicker_top_end"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
 
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/date_filter_left_background"
-                android:gravity="center"
-                android:padding="3dp"
-                android:text="B"
+                android:src="@drawable/icon_calendar_report_list_filter"
+
+                android:paddingTop="10dp"
+
                 app:layout_constraintEnd_toStartOf="@+id/tvdatepicker_top_end_label"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,7 +99,7 @@
                 android:id="@+id/tvdatepicker_top_end_label"
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
-                android:layout_marginRight="15dp"
+                android:layout_marginRight="20dp"
 
                 android:layout_marginBottom="5dp"
                 android:orientation="vertical"

@@ -3,15 +3,18 @@ package com.idnp.musicfit.views.fragments.trainingReportListView;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.idnp.musicfit.R;
@@ -37,9 +40,9 @@ public class TrainingReportListFragment extends Fragment implements iTrainingRep
     //datepicker
 
     TextView label_date_ini;
-    TextView button_date_ini;
+    ImageButton button_date_ini;
     TextView label_date_end;
-    TextView button_date_end;
+    ImageButton button_date_end;
 
     DatePickerDialog.OnDateSetListener setListener;
 
@@ -120,11 +123,8 @@ public class TrainingReportListFragment extends Fragment implements iTrainingRep
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FragmentManager.fragmentManager.changeFragment( new TrainingReportFragment(TrainingReportListFragment.this.trainingAdapter.getItem(position)));
             }
-        });*/
-
-
-        /*load top filter components*/
-
+        });
+*/
 
     }
 
