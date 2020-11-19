@@ -125,6 +125,8 @@ public class TrainingMapFragment extends Fragment {
                             map.addPolyline((new PolylineOptions()).add(p[i],p[i+1]).width(5).color(Color.CYAN));
                         }*/
                         map.addPolyline((new PolylineOptions()).add(myPosition,p[p.length-1]).width(5).color(Color.CYAN));
+
+
                         map.moveCamera(CameraUpdateFactory.newLatLng(myPosition));
                         googleMap.addMarker(new MarkerOptions().position(p[p.length-1]).title("Final position"));
 
