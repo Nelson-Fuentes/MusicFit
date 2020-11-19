@@ -40,11 +40,11 @@ public class FragmentManager {
 
 
     public void hide(Fragment fragment){
-        this.activity.getSupportFragmentManager().beginTransaction().hide(fragment).commit();
+        this.activity.getSupportFragmentManager().beginTransaction().hide(fragment).commitAllowingStateLoss();
     }
 
     public void show(Fragment fragment){
-        this.activity.getSupportFragmentManager().beginTransaction().show(fragment).commit();
+        this.activity.getSupportFragmentManager().beginTransaction().show(fragment).commitAllowingStateLoss();
     }
 
 }

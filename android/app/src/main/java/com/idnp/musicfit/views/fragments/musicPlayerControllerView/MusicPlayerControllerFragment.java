@@ -1,5 +1,6 @@
 package com.idnp.musicfit.views.fragments.musicPlayerControllerView;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.os.Bundle;
@@ -9,12 +10,14 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.idnp.musicfit.R;
@@ -23,6 +26,8 @@ import com.idnp.musicfit.models.entities.Song;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
+
+import java.util.concurrent.TimeUnit;
 
 public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView {
 
@@ -36,10 +41,14 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     //private TextView text_state;
     protected ImageButton randomButton,backButton,playButton,advanceButton,repeatButton;
     private ImageView imageSong;
-    private TextView name_song,name_artist;
+    private TextView name_song,name_artist,currentTime,completeTime;
     private MusicPlayerControllerPresenter musicPlayerControllerPresenter;
     public MusicPlayerMiniControllerFragment miniControllerFragment;
     private MediaPlayer mediaPlayer;
+    private SeekBar timeLine;
+    private Handler handler=new Handler();
+    private int startTime;
+    private int endTime;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -85,9 +94,9 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
             @Override
             public void onClick(View view) {
                 MusicPlayerControllerPresenter.musicPlayerControllerPresenter.random();
+
             }
         });
-
         //CARGANDO BOTON DE REPEAT
         this.repeatButton = (ImageButton) view.findViewById(R.id.repeat_button_player);
         this.repeatButton.setOnClickListener(new View.OnClickListener() {
@@ -102,9 +111,17 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         this.name_song = (TextView) view.findViewById(R.id.name_song_player);
         //NOMBRE DEL ARTISTA DE LA CANCION
         this.name_artist = (TextView) view.findViewById(R.id.name_artist_player);
-
+        //LINEA DE TIEMPO DE LA CANCION
+        this.timeLine=(SeekBar) view.findViewById(R.id.time_line_player);
+        //TIEMPO ACTUAL DE LA CANCION
+        this.currentTime=(TextView) view.findViewById(R.id.current_time_player);
+        //TIEMPO COMPLETO DE LA CANCION
+        this.completeTime=(TextView) view.findViewById(R.id.end_time_player);
+        //RECYCLER VIEW PARA LA LISTA DE MUSICA
         MusicPlayList musicList=new MusicPlayList(getContext());
         RecyclerView recyclerView= view.findViewById(R.id.recyclerview_list_music_player);
+        int sizeListMusic= new MusicPlayList().getItemCount();
+        recyclerView.setMinimumHeight(80*sizeListMusic);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(musicList);
@@ -135,12 +152,23 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     }
 
+
+    @SuppressLint("DefaultLocale")
     public void loadSelectedMusic(){
         Song music=MusicPlayerControllerPresenter.musicPlayerControllerPresenter.getCurrentMusic();
         this.name_song.setText(music.getName());
         this.name_artist.setText(music.getArtist());
         mediaPlayer=MediaPlayer.create(getContext(),music.getMusic());
+        this.timeLine.setMax((int) mediaPlayer.getDuration());
+        this.handler.postDelayed(updateSongTime,100);
+        this.endTime=mediaPlayer.getDuration();
+        this.completeTime.setText(String.format("%d:%d",
+                TimeUnit.MILLISECONDS.toMinutes((long)endTime),
+                TimeUnit.MILLISECONDS.toSeconds((long)endTime) -
+                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)endTime)))
+        );
     }
+
     @Override
     public void play() {
         if(mediaPlayer==null) {
@@ -166,7 +194,9 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     @Override
     public void stop() {
-        //this.text_state.setText("STOP");
+      if(mediaPlayer!=null){
+          this.mediaPlayer.stop();
+      }
     }
 
     @Override
@@ -175,15 +205,22 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     }
 
     @Override
-    public void repeat() {
-
+    public void repeat(boolean state) {
+        if(state){
+            mediaPlayer.setLooping(false);
+            this.repeatButton.setBackgroundResource(R.drawable.button_player_repeat_disabled_mp3);
+        }
+        else {
+            mediaPlayer.setLooping(true);
+            this.repeatButton.setBackgroundResource(R.drawable.button_player_repeat_enabled_mp3);
+        }
     }
 
     @Override
     public void back() {
 
         if(mediaPlayer.isPlaying()){
-            mediaPlayer.stop();;
+            this.stop();
             loadSelectedMusic();
             mediaPlayer.start();
         }
@@ -196,7 +233,7 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     @Override
     public void advance() {
         if(mediaPlayer.isPlaying()){
-            mediaPlayer.stop();;
+            this.stop();
             loadSelectedMusic();
             mediaPlayer.start();
         }
@@ -205,6 +242,20 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
             loadSelectedMusic();
         }
     }
+
+    private Runnable updateSongTime = new Runnable(){
+        @SuppressLint("DefaultLocale")
+        public void run(){
+            startTime=mediaPlayer.getCurrentPosition();
+            currentTime.setText(String.format("%d:%d",
+                    TimeUnit.MILLISECONDS.toMinutes((long)startTime),
+                    TimeUnit.MILLISECONDS.toSeconds((long)startTime) -
+                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)startTime)))
+            );
+            timeLine.setProgress((int)startTime);
+            handler.postDelayed(this,100);
+        }
+    };
 
     @Override
     public void onDestroyView() {

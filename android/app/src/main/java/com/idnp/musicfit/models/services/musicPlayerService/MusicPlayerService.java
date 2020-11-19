@@ -28,7 +28,10 @@ public class MusicPlayerService extends AppCompatActivity {
     public static final int STOPPED = -1;
     public static final int PAUSED = 0;
     public static final int PLAYED = 1;
+    public static final boolean REPEAT_ENABLED = true;
+    public static final boolean REPEAT_DISABLED = false;
     private static int state=STOPPED;
+    private static boolean repeat_state=REPEAT_DISABLED;
     private static ArrayList<Song> musicList;
 
     private static int position=0;
@@ -36,6 +39,7 @@ public class MusicPlayerService extends AppCompatActivity {
     public MusicPlayerService(){
 
         state = STOPPED;
+        repeat_state=REPEAT_DISABLED;
     }
 
     public void loadMusicPlayList(){
@@ -76,6 +80,17 @@ public class MusicPlayerService extends AppCompatActivity {
         }
         else{
             position++;
+        }
+    }
+    public boolean repeatState(){
+        return repeat_state;
+    }
+    public void changeRepeat(){
+        if(repeat_state==REPEAT_ENABLED){
+            repeat_state=REPEAT_DISABLED;
+        }
+        else{
+            repeat_state=REPEAT_ENABLED;
         }
     }
 
