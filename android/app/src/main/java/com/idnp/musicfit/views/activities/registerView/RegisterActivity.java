@@ -71,8 +71,8 @@ public class RegisterActivity extends AppCompatActivity implements iRegisterView
     public void successfullyRegister() {
         ToastManager.toastManager.showToast(R.string.user_registered);
         Intent intent = new Intent();
-        intent.putExtra(AuthenticationConstant.USERNAME_LABEL, "JuanPerez");
-        intent.putExtra(AuthenticationConstant.PASSWORD_LABEL, "123456");
+        intent.putExtra(AuthenticationConstant.USERNAME_LABEL, this.usernameEditText.getText().toString());
+        intent.putExtra(AuthenticationConstant.PASSWORD_LABEL, this.passwordEditText.getText().toString());
         this.setResult(RESULT_OK, intent);
         this.finish();
     }
