@@ -68,4 +68,16 @@ public class Report {
     public void setIcon(int icon) {
         this.icon = icon;
     }
+
+    public void start(){
+
+    }
+
+    public void pause(){
+
+    }
+
+    public void stop(){
+
+    }
 }

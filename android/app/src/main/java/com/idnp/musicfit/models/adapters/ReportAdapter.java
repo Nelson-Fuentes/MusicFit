@@ -7,10 +7,14 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
+import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
+import com.idnp.musicfit.views.fragments.trainingReportListView.TrainingReportListFragment;
+import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -54,6 +58,14 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportHold
         String min="03";
         holder.datehour.setText(hour+":"+min+" "+ampm);
         holder.iconrun.setImageResource(report.getIcon());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                FragmentManager.fragmentManager.changeFragment( new TrainingReportFragment(report));
+            }
+        });
+
     }
 
     @Override

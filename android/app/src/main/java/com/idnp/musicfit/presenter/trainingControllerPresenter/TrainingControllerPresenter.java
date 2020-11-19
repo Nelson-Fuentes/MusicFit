@@ -1,5 +1,6 @@
 package com.idnp.musicfit.presenter.trainingControllerPresenter;
 
+import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Training;
 import com.idnp.musicfit.models.services.trainingService.TrainingService;
 import com.idnp.musicfit.views.fragments.trainingControllerView.iTrainingControllerView;
@@ -7,7 +8,7 @@ import com.idnp.musicfit.views.fragments.trainingControllerView.iTrainingControl
 public class TrainingControllerPresenter  implements iTrainingControllerPresenter{
 
     private iTrainingControllerView trainingControllerView;
-    private Training training;
+    private Report training;
 
     public TrainingControllerPresenter(iTrainingControllerView trainingControllerView){
         this.trainingControllerView = trainingControllerView;
