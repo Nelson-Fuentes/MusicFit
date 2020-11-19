@@ -12,9 +12,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.util.Log;
+import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -49,6 +51,7 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     private Handler handler=new Handler();
     private int startTime;
     private int endTime;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -119,12 +122,15 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         this.completeTime=(TextView) view.findViewById(R.id.end_time_player);
         //RECYCLER VIEW PARA LA LISTA DE MUSICA
         MusicPlayList musicList=new MusicPlayList(getContext());
-        RecyclerView recyclerView= view.findViewById(R.id.recyclerview_list_music_player);
-        int sizeListMusic= new MusicPlayList().getItemCount();
-        recyclerView.setMinimumHeight(80*sizeListMusic);
-        recyclerView.setHasFixedSize(true);
+        recyclerView= view.findViewById(R.id.recyclerview_list_music_player);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(musicList);
+        WindowManager windowmanager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
+        Display display = windowmanager.getDefaultDisplay();
+        int width = windowmanager.getDefaultDisplay().getWidth();
+        int height = windowmanager.getDefaultDisplay().getHeight();
+        this.recyclerView.getLayoutParams().height=height*9/10;
+        this.recyclerView.getLayoutParams().width=height*9/10;
 
         return  this.view;
     }
@@ -162,11 +168,34 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         this.timeLine.setMax((int) mediaPlayer.getDuration());
         this.handler.postDelayed(updateSongTime,100);
         this.endTime=mediaPlayer.getDuration();
-        this.completeTime.setText(String.format("%d:%d",
-                TimeUnit.MILLISECONDS.toMinutes((long)endTime),
-                TimeUnit.MILLISECONDS.toSeconds((long)endTime) -
-                        TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)endTime)))
-        );
+        this.completeTime.setText(createTimerLabel(endTime));
+
+        this.timeLine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if(fromUser){
+                    mediaPlayer.seekTo(progress);
+                    timeLine.setProgress(progress);
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+        //ORDEN DESPUES QUE TERMINE UNA CANCION RANDOM, REPEAT, NORMAL
+        this.mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlay) {
+
+            }
+        });
     }
 
     @Override
@@ -185,6 +214,8 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         }
 
     }
+
+
 
     @Override
     public void pause() {
@@ -247,15 +278,23 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         @SuppressLint("DefaultLocale")
         public void run(){
             startTime=mediaPlayer.getCurrentPosition();
-            currentTime.setText(String.format("%d:%d",
-                    TimeUnit.MILLISECONDS.toMinutes((long)startTime),
-                    TimeUnit.MILLISECONDS.toSeconds((long)startTime) -
-                    TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes((long)startTime)))
-            );
+            currentTime.setText(createTimerLabel(startTime));
             timeLine.setProgress((int)startTime);
             handler.postDelayed(this,100);
         }
     };
+
+    public String createTimerLabel(int duration){
+        String timerLabel="";
+        int min=duration/1000/60;
+        int sec=duration/1000%60;
+
+        timerLabel+=min+":";
+        if(sec<10) timerLabel+="0";
+        timerLabel+=sec;
+
+        return timerLabel;
+    }
 
     @Override
     public void onDestroyView() {
