@@ -47,4 +47,7 @@
     <string name="training_report_view_label_duration">Duración</string>
     <string name="training_report_view_label_kilometros">KMs</string>
     <string name="training_report_view_label_kilocalorias">KCal</string>
+    <string name="login">Iniciar sesión</string>
+    <string name="register">Registrarse</string>
+
 </resources>
