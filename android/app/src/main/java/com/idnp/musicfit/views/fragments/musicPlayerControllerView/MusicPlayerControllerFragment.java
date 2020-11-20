@@ -124,13 +124,13 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         MusicPlayList musicList=new MusicPlayList(getContext());
         recyclerView= view.findViewById(R.id.recyclerview_list_music_player);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(musicList);
+        /*recyclerView.setAdapter(musicList);
         WindowManager windowmanager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
         Display display = windowmanager.getDefaultDisplay();
         int width = windowmanager.getDefaultDisplay().getWidth();
         int height = windowmanager.getDefaultDisplay().getHeight();
         this.recyclerView.getLayoutParams().height=height*9/10;
-        this.recyclerView.getLayoutParams().width=height*9/10;
+        this.recyclerView.getLayoutParams().width=height*9/10;*/
 
         return  this.view;
     }

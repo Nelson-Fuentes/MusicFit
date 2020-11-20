@@ -8,23 +8,6 @@ import androidx.annotation.RawRes;
 import java.io.File;
 
 public class Song {
-    //Este es un Comentario de Elmer Davila
-
-    private class Ubicacion{
-        private float latitud;
-        private float longitud;
-
-        public Ubicacion(float latitud,float longitud){
-            this.latitud=latitud;
-            this.longitud=longitud;
-        }
-        public float getLatitud(){
-            return this.latitud;
-        }
-        public float getLongitud(){
-            return this.longitud;
-        }
-    }
 
     private int music;
     private String name;
