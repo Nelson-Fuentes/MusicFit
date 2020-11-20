@@ -35,8 +35,6 @@ public class TrainingReportListFragment extends Fragment implements iTrainingRep
     private RecyclerView reportListView;
     private iTrainingReportListPresenter trainingReportListPresenter;
 
-
-
     //datepicker
 
     TextView label_date_ini;
