@@ -33,12 +33,15 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportHold
         this.reportes=reportes;
         this.notifyDataSetChanged();
     }
+
     @NonNull
     @Override
     public ReportHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_training_list,parent,false);
         return new ReportHolder(view);
     }
+
     @Override
     public void onBindViewHolder(@NonNull ReportHolder holder, int position) {
         Report report = reportes.get(position);

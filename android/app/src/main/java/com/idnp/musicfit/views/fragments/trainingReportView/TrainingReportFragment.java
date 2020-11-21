@@ -54,27 +54,27 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
         ImageButton button = (ImageButton) this.view.findViewById(R.id.buttonExit);
         ImageButton reportList = (ImageButton) this.view.findViewById(R.id.buttonlist);
 
-//        reportViewDurationBar=view.findViewById(R.id.report_view_duration_bar);
-//        ObjectAnimator animation= ObjectAnimator.ofFloat(reportViewDurationBar,"translationX",500f,300f);
-//        animation.setDuration(1000);
-//        ValueAnimator fadeAnim = ObjectAnimator.ofFloat(reportViewDurationBar, "alpha", 0.5f, 1.0f);
-//        fadeAnim.setDuration(1000);
-//
-//        reportViewKilometrosBar=view.findViewById(R.id.report_view_km_bar);
-//        ObjectAnimator animation2= ObjectAnimator.ofFloat(reportViewKilometrosBar,"translationX",500f,200f);
-//        animation2.setDuration(1000);
-//        ValueAnimator fadeAnim2 = ObjectAnimator.ofFloat(reportViewKilometrosBar, "alpha", 0.5f, 1.0f);
-//        fadeAnim2.setDuration(1000);
-//
-//        reportViewCaloriasBar=view.findViewById(R.id.report_view_kcal_bar);
-//        ObjectAnimator animation3= ObjectAnimator.ofFloat(reportViewCaloriasBar,"translationX",500f,250f);
-//        animation3.setDuration(1000);
-//        ValueAnimator fadeAnim3 = ObjectAnimator.ofFloat(reportViewCaloriasBar, "alpha", 0.5f, 1.0f);
-//        fadeAnim3.setDuration(1000);
-//
-//        AnimatorSet animatorSet = new AnimatorSet();
-//        animatorSet.play(animation).with(fadeAnim).with(animation2).with(fadeAnim2).with(animation3).with(fadeAnim3);
-//        animatorSet.start();
+        reportViewDurationBar=view.findViewById(R.id.report_view_duration_bar);
+        ObjectAnimator animation= ObjectAnimator.ofFloat(reportViewDurationBar,"translationX",500f,300f);
+        animation.setDuration(1000);
+        ValueAnimator fadeAnim = ObjectAnimator.ofFloat(reportViewDurationBar, "alpha", 0.5f, 1.0f);
+        fadeAnim.setDuration(1000);
+
+        reportViewKilometrosBar=view.findViewById(R.id.report_view_km_bar);
+        ObjectAnimator animation2= ObjectAnimator.ofFloat(reportViewKilometrosBar,"translationX",500f,200f);
+        animation2.setDuration(1000);
+        ValueAnimator fadeAnim2 = ObjectAnimator.ofFloat(reportViewKilometrosBar, "alpha", 0.5f, 1.0f);
+        fadeAnim2.setDuration(1000);
+
+        reportViewCaloriasBar=view.findViewById(R.id.report_view_kcal_bar);
+        ObjectAnimator animation3= ObjectAnimator.ofFloat(reportViewCaloriasBar,"translationX",500f,250f);
+        animation3.setDuration(1000);
+        ValueAnimator fadeAnim3 = ObjectAnimator.ofFloat(reportViewCaloriasBar, "alpha", 0.5f, 1.0f);
+        fadeAnim3.setDuration(1000);
+
+        AnimatorSet animatorSet = new AnimatorSet();
+        animatorSet.play(animation).with(fadeAnim).with(animation2).with(fadeAnim2).with(animation3).with(fadeAnim3);
+        animatorSet.start();
 
 
         //reportViewAnimationBar.setAnimation(durationAnim);
