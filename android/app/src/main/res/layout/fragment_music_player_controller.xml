@@ -5,7 +5,7 @@
     style="@android:style/Widget.Material.Light.ScrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@mipmap/background_player_mp3"
+    android:background="@drawable/background_player_mp3"
     tools:context=".views.fragments.musicPlayerControllerView.MusicPlayerControllerFragment">
 
 
