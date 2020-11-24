@@ -1,5 +1,7 @@
 package com.idnp.musicfit.views.fragments.trainingControllerView;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimationDrawable;
 import android.media.Image;
 import android.os.AsyncTask;
@@ -44,7 +46,6 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     private ImageView stop_button;
     private ImageView map_button;
     private Chronometer chronometer;
-    private boolean running;
     private long pauseOffSet;
     private TextView lbl_play;
     private TextView lbl_pause;
@@ -56,7 +57,11 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     private boolean controllAsync;
 
     private TextView lbl_no_resultados,lbl_resultados, number_km, lbl_km, number_pasos,lbl_pasos,number_cals,lbl_cals;
-
+    private final long delay_buttons = 0;
+    private SharedPreferences prefs;
+    private SharedPreferences.Editor editor;
+    private boolean running = false;
+    private long time_gone = 0;
 
     public void executeAsync(){
         AsyncSaveStretchRoute assr=new AsyncSaveStretchRoute();
@@ -106,10 +111,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         stretchRoute.setId(1);
         int responseInsert=modelDBRouteStretch.insertStretchRoute(getActivity(),stretchRoute);*/
 
-
-
         this.trainingControllerPresenter = new TrainingControllerPresenter(this);
-        Button button = (Button) view.findViewById(R.id.buttonReport);
         play_button = (ImageView)view.findViewById(R.id.play_button);
         pause_button = (ImageView)view.findViewById(R.id.pause_button);
         stop_button = (ImageView)view.findViewById(R.id.stop_button);
@@ -149,161 +151,204 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         play_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_2));
-                if(!running){
-                    chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffSet);
-                    chronometer.start();
-                    running = true;
-                    controllAsync=true;
-                    executeAsync();
-                }
-                //Toast.makeText(getActivity(),"yeah play works",Toast.LENGTH_SHORT).show();
-                //just for animation
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        play_button.setVisibility(View.INVISIBLE);
-                        pause_button.setVisibility(View.VISIBLE);
-                        stop_button.setVisibility(View.VISIBLE);
-                        map_button.setVisibility(View.VISIBLE);
-
-                        lbl_play.setVisibility(View.INVISIBLE);
-                        lbl_pause.setVisibility(View.VISIBLE);
-                        lbl_stop.setVisibility(View.VISIBLE);
-                        lbl_map.setVisibility(View.VISIBLE);
-
-                        lbl_no_resultados.setVisibility(View.INVISIBLE);
-                        lbl_resultados.setVisibility(View.VISIBLE);
-                        lbl_pasos.setVisibility(View.VISIBLE);
-                        lbl_km.setVisibility(View.VISIBLE);
-                        lbl_cals.setVisibility(View.VISIBLE);
-                        number_pasos.setVisibility(View.VISIBLE);
-                        number_km.setVisibility(View.VISIBLE);
-                        number_cals.setVisibility(View.VISIBLE);
-
-                    }
-                },100);
-
+                startTraining();
             }
         });
         pause_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
-                if(running){
-                    chronometer.stop();
-                    pauseOffSet = SystemClock.elapsedRealtime() - chronometer.getBase();
-                    running = false;
-                    controllAsync=false;
-
-                }
-                //Toast.makeText(getActivity(),"yeah pause workes",Toast.LENGTH_SHORT).show();
-                //just for animation
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        play_button.setVisibility(View.VISIBLE);
-                        pause_button.setVisibility(View.INVISIBLE);
-
-                        lbl_play.setText("Continuar");
-
-                        lbl_play.setVisibility(View.VISIBLE);
-                        lbl_pause.setVisibility(View.INVISIBLE);
-
-                    }
-                },100);
+                pauseTraining();
             }
         });
         stop_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
-                chronometer.stop();
-                chronometer.setBase(SystemClock.elapsedRealtime());
-                pauseOffSet = 0;
-                chronometer.setText("00:00:00");
-                running = false;
-                controllAsync=false;//saving data;
-
-                //  Toast.makeText(getActivity(),"yeah stop works",Toast.LENGTH_SHORT).show();
-                //just for animation
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        play_button.setVisibility(View.VISIBLE);
-                        pause_button.setVisibility(View.INVISIBLE);
-                        stop_button.setVisibility(View.INVISIBLE);
-                        map_button.setVisibility(View.INVISIBLE);
-
-                        lbl_play.setText("Iniciar Entrenamiento");
-
-                        lbl_play.setVisibility(View.VISIBLE);
-                        lbl_pause.setVisibility(View.INVISIBLE);
-                        lbl_stop.setVisibility(View.INVISIBLE);
-                        lbl_map.setVisibility(View.INVISIBLE);
-
-                        lbl_no_resultados.setVisibility(View.VISIBLE);
-                        lbl_resultados.setVisibility(View.INVISIBLE);
-                        lbl_pasos.setVisibility(View.INVISIBLE);
-                        lbl_km.setVisibility(View.INVISIBLE);
-                        lbl_cals.setVisibility(View.INVISIBLE);
-                        number_pasos.setVisibility(View.INVISIBLE);
-                        number_km.setVisibility(View.INVISIBLE);
-                        number_cals.setVisibility(View.INVISIBLE);
-
-
-
-
-                    }
-                },100);
+                stopTraining();
             }
         });
-
         map_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getActivity(),"I'm the map",Toast.LENGTH_SHORT).show();
-
-                //just for animation
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        TrainingControllerFragment.this.trainingControllerPresenter.stopTraining();
-                    }
-                },100);
+                mapTraining();
             }
         });
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TrainingControllerFragment.this.trainingControllerPresenter.stopTraining();
-            }
-        });
+
         return this.view;
     }
 
-    private void startReport(){
-    }
 
     @Override
     public void startTraining() {
 
+        running = true;
+        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_2));
+        chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffSet - time_gone);
+        chronometer.start();
+        controllAsync=true;
+        executeAsync();
+
+        //Toast.makeText(getActivity(),"yeah play works",Toast.LENGTH_SHORT).show();
+        //just for animation
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                play_button.setVisibility(View.INVISIBLE);
+                pause_button.setVisibility(View.VISIBLE);
+                stop_button.setVisibility(View.VISIBLE);
+                map_button.setVisibility(View.VISIBLE);
+
+                lbl_play.setVisibility(View.INVISIBLE);
+                lbl_pause.setVisibility(View.VISIBLE);
+                lbl_stop.setVisibility(View.VISIBLE);
+                lbl_map.setVisibility(View.VISIBLE);
+
+                lbl_no_resultados.setVisibility(View.INVISIBLE);
+                lbl_resultados.setVisibility(View.VISIBLE);
+                lbl_pasos.setVisibility(View.VISIBLE);
+                lbl_km.setVisibility(View.VISIBLE);
+                lbl_cals.setVisibility(View.VISIBLE);
+                number_pasos.setVisibility(View.VISIBLE);
+                number_km.setVisibility(View.VISIBLE);
+                number_cals.setVisibility(View.VISIBLE);
+            }
+        },delay_buttons);
     }
 
     @Override
     public void pauseTraining() {
+        running = false;
+        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
+        chronometer.stop();
+        pauseOffSet = SystemClock.elapsedRealtime() - chronometer.getBase();
+        controllAsync=false;
 
+        //Toast.makeText(getActivity(),"yeah pause works",Toast.LENGTH_SHORT).show();
+        //just for animation
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+
+                play_button.setVisibility(View.VISIBLE);
+                pause_button.setVisibility(View.INVISIBLE);
+
+                lbl_play.setText("Continuar");
+
+                lbl_play.setVisibility(View.VISIBLE);
+                lbl_pause.setVisibility(View.INVISIBLE);
+
+            }
+        },delay_buttons);
     }
 
     @Override
     public void stopTraining() {
+        running = false;
+        time_gone = 0;
+        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
+        chronometer.stop();
+        chronometer.setBase(SystemClock.elapsedRealtime());
+        pauseOffSet = 0;
+        chronometer.setText("00:00:00");
+        controllAsync=false;//saving data;
 
+        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
+        editor = prefs.edit();
+
+        editor.putLong("pauseOffSet", 0);
+
+        editor.apply();
+        //  Toast.makeText(getActivity(),"yeah stop works",Toast.LENGTH_SHORT).show();
+        //just for animation
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                play_button.setVisibility(View.VISIBLE);
+                pause_button.setVisibility(View.INVISIBLE);
+                stop_button.setVisibility(View.INVISIBLE);
+                map_button.setVisibility(View.INVISIBLE);
+
+                lbl_play.setText("Iniciar Entrenamiento");
+
+                lbl_play.setVisibility(View.VISIBLE);
+                lbl_pause.setVisibility(View.INVISIBLE);
+                lbl_stop.setVisibility(View.INVISIBLE);
+                lbl_map.setVisibility(View.INVISIBLE);
+
+                lbl_no_resultados.setVisibility(View.VISIBLE);
+                lbl_resultados.setVisibility(View.INVISIBLE);
+                lbl_pasos.setVisibility(View.INVISIBLE);
+                lbl_km.setVisibility(View.INVISIBLE);
+                lbl_cals.setVisibility(View.INVISIBLE);
+                number_pasos.setVisibility(View.INVISIBLE);
+                number_km.setVisibility(View.INVISIBLE);
+                number_cals.setVisibility(View.INVISIBLE);
+
+            }
+        },delay_buttons);
+    }
+
+    @Override
+    public void mapTraining() {
+        Toast.makeText(getActivity(),"I'm the map",Toast.LENGTH_SHORT).show();
+
+        //just for animation
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                TrainingControllerFragment.this.trainingControllerPresenter.stopTraining();
+            }
+        },delay_buttons);
     }
 
     @Override
     public void viewTrainingReport(Report training) {
         FragmentManager.fragmentManager.changeFragment(new TrainingReportFragment(training));
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+
+        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
+        editor = prefs.edit();
+        editor.putLong("time_gone", SystemClock.elapsedRealtime());
+        editor.putLong("getBase",chronometer.getBase());
+        editor.putLong("pauseOffSet",pauseOffSet);
+        editor.putBoolean("running",running);
+        editor.apply();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
+        chronometer.setBase(prefs.getLong("getBase",0));
+        time_gone = SystemClock.elapsedRealtime() - chronometer.getBase();
+        running = prefs.getBoolean("running", false);
+        pauseOffSet = prefs.getLong("pauseOffSet",0);
+  //      Log.d("mytest",time_gone+"<<--- here");
+  //      Log.d("mytest2",pauseOffSet+"<<--- here1");
+  //      Log.d("mytest3",chronometer.getBase()+"<<--- here2");
+
+        if(running){
+            pauseOffSet = 0;
+            startTraining();
+        }else{
+            time_gone = -100;
+            startTraining();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    pauseTraining();
+                }
+            },100);
+        }
+        time_gone = 0;
+        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
+        editor = prefs.edit();
+        editor.putLong("time_gone", 0);
+        editor.apply();
     }
 }
