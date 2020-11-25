@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.entities.User;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitResponse;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
@@ -28,6 +27,7 @@ public class MusicfitAuthenticationManagerService {
     private static final String FACEBOOK_AUTH_TOKEN = "facebook_auth_token";
     public static final String ACCOUNT_TYPE = "com.idnp.musicfit";
     public static final String AUTH_TOKEN_TYPE_KEY = "TOKEN_TYPE";
+    private static final String INCOGNITE_AUTH_USERNAME = "Usuario incognito";
 
 
     private Account account;
@@ -50,8 +50,7 @@ public class MusicfitAuthenticationManagerService {
         if (response.getRequestCode()==HttpURLConnection.HTTP_OK) {
             String token = (new JSONObject(response.getBody())).get("token").toString();
             this.writeToken(token);
-            this.account = new Account(username, ACCOUNT_TYPE);
-            accountManager.addAccountExplicitly(this.account, token, null);
+            this.addAccountToManager(username, token);
             return token;
         } else if (response.getRequestCode()==HttpURLConnection.HTTP_BAD_REQUEST) {
             throw new MusicFitException(R.string.auth_invalid);
@@ -72,15 +71,27 @@ public class MusicfitAuthenticationManagerService {
         return this.account !=null;
     }
 
+    private void addAccountToManager(String username, String token){
+        this.account = new Account(username, ACCOUNT_TYPE);
+        accountManager.addAccountExplicitly(this.account, token, null);
+    }
+
+
+    public boolean isIncognite(){
+        String accoun_token = this.accountManager.getPassword(this.account);
+        return INCOGNITE_AUTH_TOKEN.equals(accoun_token);
+    }
+
     private void writeToken(String token){
         SharedPreferences preferences = MusicfitPreferencesService.musicfitPreferencesService.openSharedPreferencesFile(PREFERENCES_FILE);
         MusicfitPreferencesService.musicfitPreferencesService.writePreference(preferences, PREFERENCES_TOKEN_KEY, token);
     }
 
 
-    public boolean authenticationIncognite(){
+    public String authenticationIncognite(){
         this.writeToken(INCOGNITE_AUTH_TOKEN);
-        return true;
+        this.addAccountToManager(INCOGNITE_AUTH_USERNAME, INCOGNITE_AUTH_TOKEN);
+        return INCOGNITE_AUTH_TOKEN;
     }
     public boolean authenticationFacebook(){
         this.writeToken(FACEBOOK_AUTH_TOKEN);
