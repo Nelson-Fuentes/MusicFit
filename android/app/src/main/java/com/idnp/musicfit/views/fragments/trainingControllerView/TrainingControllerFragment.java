@@ -56,15 +56,12 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     private boolean controllAsync;
 
     private TextView lbl_no_resultados,lbl_resultados, number_km, lbl_km, number_pasos,lbl_pasos,number_cals,lbl_cals;
-
-
     public void executeAsync(){
         AsyncSaveStretchRoute assr=new AsyncSaveStretchRoute();
         assr.execute();
     }
     public class AsyncSaveStretchRoute extends AsyncTask<Void,Integer, Boolean>//Clase para guardar stretchRoutes de manera async
     {
-
         @Override
         protected Boolean doInBackground(Void... voids) {
             try {
@@ -105,8 +102,6 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         stretchRoute.setEnd(new LatLng(5,5));
         stretchRoute.setId(1);
         int responseInsert=modelDBRouteStretch.insertStretchRoute(getActivity(),stretchRoute);*/
-
-
 
         this.trainingControllerPresenter = new TrainingControllerPresenter(this);
         Button button = (Button) view.findViewById(R.id.buttonReport);
@@ -251,9 +246,6 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                         number_pasos.setVisibility(View.INVISIBLE);
                         number_km.setVisibility(View.INVISIBLE);
                         number_cals.setVisibility(View.INVISIBLE);
-
-
-
 
                     }
                 },100);

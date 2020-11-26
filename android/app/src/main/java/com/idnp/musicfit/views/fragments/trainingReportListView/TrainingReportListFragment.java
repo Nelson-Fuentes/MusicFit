@@ -60,72 +60,74 @@ public class TrainingReportListFragment extends Fragment implements iTrainingRep
 
     }
 
-    private  void loadComponents(View view){
+    private Calendar cal= Calendar.getInstance();
 
+    final int day=cal.get(Calendar.DAY_OF_MONTH);
+    final int month=cal.get(Calendar.MONTH);
+    final int year=cal.get(Calendar.YEAR);
+    //evento de click al date picker inicial
+    View.OnClickListener onClickDateIni= new View.OnClickListener(){
+        @Override
+        public void onClick(View view) {
+            DatePickerDialog datePickerDialog=new DatePickerDialog(
+                    view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                    month=month+1;
+                    String dateformat=day+"/"+month+"/"+year;
+                    label_date_ini.setText(dateformat);
+                    String finaldate[]=label_date_end.getText().toString().split("/");
+                    trainingReportListPresenter.loadTrainingList(day,month,year,Integer.parseInt(finaldate[0]),Integer.parseInt(finaldate[1]),Integer.parseInt(finaldate[2]));
+                }
+            },year,month,day);
+            datePickerDialog.show();
+        }
+    };
+    //evento de click al date picker final
+    private View.OnClickListener onClickDateEnd= new View.OnClickListener(){
+        @Override
+        public void onClick(View view) {
+            DatePickerDialog datePickerDialog=new DatePickerDialog(
+                    view.getContext(), new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker datePicker, int year, int month, int day) {
+                    month=month+1;
+                    String dateformat=day+"/"+month+"/"+year;
+                    label_date_end.setText(dateformat);
+                    String startdate[]=label_date_ini.getText().toString().split("/");
+                    trainingReportListPresenter.loadTrainingList(Integer.parseInt(startdate[0]),Integer.parseInt(startdate[1]),Integer.parseInt(startdate[2]),day,month,year);
+
+                }
+            },year,month,day);
+            datePickerDialog.show();
+        }
+    };
+    //--------------------------------------------------CARGAR LOS COMPONENTES ---------------------------
+    private  void loadComponents(View view){
+        //inicializando botones y labels
         button_date_ini=view.findViewById(R.id.bpicker_top_ini);
         button_date_end=view.findViewById(R.id.bpicker_top_end);
         label_date_ini=view.findViewById(R.id.tvdatepicker_top_ini);
         label_date_end=view.findViewById(R.id.tvdatepicker_top_end);
+
+        label_date_end.setText(""+day+"/"+(month+1)+"/"+year);
+        label_date_ini.setText(""+day+"/"+(month)+"/"+year);
+
+        //dandole eventos a los botones
+        button_date_ini.setOnClickListener(onClickDateIni);//date picker inicial evento
+        button_date_end.setOnClickListener(onClickDateEnd);//date picker final evento
         //vinculando el recyclerview
         this.reportListView = view.findViewById(R.id.training_list);
 
-        Calendar cal= Calendar.getInstance();
-        final int day=cal.get(Calendar.DAY_OF_MONTH);
-        final int month=cal.get(Calendar.MONTH);
-        final int year=cal.get(Calendar.YEAR);
-
-        button_date_ini.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog datePickerDialog=new DatePickerDialog(
-                        view.getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        month=month+1;
-                        String dateformat=day+"/"+month+"/"+year;
-                        label_date_ini.setText(dateformat);
-                    }
-                },year,month,day);
-                datePickerDialog.show();
-            }
-        });
-
-        button_date_end.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                DatePickerDialog datePickerDialog=new DatePickerDialog(
-                        view.getContext(), new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                        month=month+1;
-                        String dateformat=day+"/"+month+"/"+year;
-                        label_date_end.setText(dateformat);
-                    }
-                },year,month,day);
-                datePickerDialog.show();
-            }
-        });
         LinearLayoutManager manager=new LinearLayoutManager(this.getContext());
         reportListView.setLayoutManager(manager);
         //crear el adaptador
-        this.reportAdapter = new ReportAdapter();
+        this.reportAdapter = new ReportAdapter(this.getContext());
         //agrega adaptador
         this.reportListView.setAdapter(this.reportAdapter);
-
-        this.trainingReportListPresenter = new TrainingReportListPresenter(this);
-        this.trainingReportListPresenter.loadTrainingList();
-
-       /*
-        this.trainingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                FragmentManager.fragmentManager.changeFragment( new TrainingReportFragment(TrainingReportListFragment.this.trainingAdapter.getItem(position)));
-            }
-        });
-*/
-
+        this.trainingReportListPresenter = new TrainingReportListPresenter(this);//crea el presentador de esta clase
+        this.trainingReportListPresenter.loadTrainingList(day,month,year,day,month+1,year);//carga la lista de reportes de entrenamiento
     }
-
     @Override
     public void showReportList(ArrayList<Report> reportes) {
         this.reportAdapter.setDataSet(reportes);

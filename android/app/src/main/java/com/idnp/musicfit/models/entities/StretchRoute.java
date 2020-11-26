@@ -4,16 +4,16 @@ import com.google.android.gms.maps.model.LatLng;
 
 public class StretchRoute {
 
-    private int id;
+    private int idReport;
     private LatLng start;
     private LatLng end;
 
     public int getId() {
-        return id;
+        return idReport;
     }
 
     public void setId(int id) {
-        this.id = id;
+        this.idReport = id;
     }
 
     public LatLng getStart() {

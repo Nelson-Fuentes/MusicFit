@@ -5,13 +5,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/first_background"
-
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <fragment
+    <FrameLayout
         android:id="@+id/fragment"
-        android:name="com.idnp.musicfit.views.fragments.trainingReportView.TrainingMapFragment"
-        android:layout_marginTop="60dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -46,6 +43,7 @@
                 android:gravity="center_horizontal"
                 android:text="start"
                 android:textSize="12sp"
+                android:paddingTop="0dp"
                 android:textColor="@color/background_report_list"
                 android:layout_marginBottom="5dp"
                 app:layout_constraintStart_toStartOf="parent"
@@ -55,15 +53,17 @@
 
             <ImageView
                 android:id="@+id/report_view_start"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingTop="15dp"
+                android:paddingLeft="6dp"
+
                 android:src="@drawable/icon_marker_start"
-                android:paddingTop="10dp"
+                app:layout_constraintBottom_toTopOf="@id/label_start"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/label_start"
-                />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -95,14 +95,14 @@
                 android:id="@+id/report_view_end"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:paddingTop="10dp"
-                android:src="@drawable/icon_marker_end"
+                android:paddingTop="15dp"
+                android:paddingLeft="6dp"
 
+                android:src="@drawable/icon_marker_end"
+                app:layout_constraintBottom_toTopOf="@id/label_end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/label_end"
-                />
+                app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -122,9 +122,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/training_report_view_label_duration"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textColor="@color/background_report_list"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -164,9 +164,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/training_report_view_label_kilometros"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textColor="@color/background_report_list"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -194,7 +194,6 @@
             android:layout_height="60dp"
             android:layout_marginTop="10dp"
 
-
             android:background="@drawable/background_report_view_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -207,9 +206,9 @@
                 android:layout_height="wrap_content"
                 android:gravity="center_horizontal"
                 android:text="@string/training_report_view_label_kilocalorias"
-                android:textSize="12sp"
+                android:textSize="11sp"
                 android:textColor="@color/background_report_list"
-                android:layout_marginBottom="5dp"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"

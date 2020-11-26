@@ -7,6 +7,7 @@ import android.media.Image;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,14 +30,15 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
 
     private View view;
     private iTrainingReportPresenter trainingReportPresenter;
-
+    private ImageButton button;
+    private ImageButton reportList;
     //objetos para animar las barras de animación
-
-    TextView reportViewDurationBar,reportViewKilometrosBar,reportViewCaloriasBar;
+    //TextView reportViewDurationBar,reportViewKilometrosBar,reportViewCaloriasBar;
 
 
     public TrainingReportFragment(Report training) {
         this.trainingReportPresenter = new TrainingReportPresenter(this, training);
+
     }
 
     public void onCreate(Bundle savedInstanceState) {
@@ -51,8 +53,9 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
         if (this.view == null){
             this.view = inflater.inflate(R.layout.fragment_training_report, container, false);
         }
-        ImageButton button = (ImageButton) this.view.findViewById(R.id.buttonExit);
-        ImageButton reportList = (ImageButton) this.view.findViewById(R.id.buttonlist);
+
+        button = (ImageButton) this.view.findViewById(R.id.buttonExit);
+        reportList = (ImageButton) this.view.findViewById(R.id.buttonlist);
 
 //        reportViewDurationBar=view.findViewById(R.id.report_view_duration_bar);
 //        ObjectAnimator animation= ObjectAnimator.ofFloat(reportViewDurationBar,"translationX",500f,300f);
@@ -94,6 +97,12 @@ public class TrainingReportFragment extends Fragment implements iTrainingReportV
         });
         return this.view;
     }
+    @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        //iniciando el fragment de map
 
+        FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+        transaction.add(R.id.fragment, new TrainingMapFragment()).commit();
+    }
 
 }

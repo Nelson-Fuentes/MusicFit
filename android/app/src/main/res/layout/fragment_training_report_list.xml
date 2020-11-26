@@ -17,10 +17,11 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/constrait_list_top"
             android:layout_width="match_parent"
-            android:layout_height="250dp"
+            android:layout_height="match_parent"
             android:background="@color/main_color"
             android:paddingTop="55dp"
 
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
@@ -31,7 +32,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginBottom="5dp"
-
+                android:background="@drawable/date_filter_right_background"
                 android:orientation="vertical"
                 app:layout_constraintStart_toEndOf="@id/bpicker_top_ini"
                 app:layout_constraintTop_toTopOf="parent">
@@ -40,7 +41,7 @@
                     android:id="@+id/tvdatepicker_top_ini_label"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/date_filter_right_background"
+
                     android:gravity="center"
                     android:padding="3dp"
                     android:text="@string/report_list_filter_label_from"
@@ -54,7 +55,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
 
-                    android:background="@drawable/date_filter_right_background"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="3dp"
@@ -73,9 +73,9 @@
                 android:layout_marginLeft="20dp"
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/date_filter_left_background"
-                android:src="@drawable/icon_calendar_report_list_filter"
-
                 android:paddingTop="10dp"
+
+                android:src="@drawable/icon_calendar_report_list_filter"
 
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -88,9 +88,9 @@
 
                 android:layout_marginBottom="5dp"
                 android:background="@drawable/date_filter_left_background"
-                android:src="@drawable/icon_calendar_report_list_filter"
-
                 android:paddingTop="10dp"
+
+                android:src="@drawable/icon_calendar_report_list_filter"
 
                 app:layout_constraintEnd_toStartOf="@+id/tvdatepicker_top_end_label"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="50dp"
                 android:layout_marginRight="20dp"
-
+                android:background="@drawable/date_filter_right_background"
                 android:layout_marginBottom="5dp"
                 android:orientation="vertical"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +109,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="@drawable/date_filter_right_background"
+
                     android:gravity="center"
                     android:padding="3dp"
                     android:text="@string/report_list_filter_label_to"
@@ -122,8 +122,6 @@
                     android:id="@+id/tvdatepicker_top_end"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
-                    android:background="@drawable/date_filter_right_background"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:padding="3dp"
@@ -134,26 +132,25 @@
 
             </LinearLayout>
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/training_list"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="15dp"
+                android:layout_marginRight="15dp"
+                android:layout_marginTop="70dp"
+                android:background="@drawable/list_report_background"
+                android:paddingLeft="8dp"
+                android:paddingTop="3dp"
+                android:paddingRight="8dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.298" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/training_list"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/list_report_background"
-            android:layout_marginLeft="15dp"
-            android:layout_marginRight="15dp"
-            android:layout_marginTop="120dp"
-            android:paddingTop="3dp"
-            android:paddingLeft="8dp"
-            android:paddingRight="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-
-        
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

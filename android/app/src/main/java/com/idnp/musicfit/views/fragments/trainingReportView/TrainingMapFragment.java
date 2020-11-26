@@ -69,7 +69,6 @@ public class TrainingMapFragment extends Fragment {
     Marker userLocationMarker;
     Circle userLocationAccuracyCircle;
 
-
     //    Boolean myPosition = true;
 //    JSONObject jso;
 //    Double longOri, latOri;
@@ -94,7 +93,6 @@ public class TrainingMapFragment extends Fragment {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-
 
         }
     };
@@ -179,7 +177,6 @@ public class TrainingMapFragment extends Fragment {
         @Override
         public void onMapReady(GoogleMap googleMap) {
 
-
             map = googleMap;
             map.setOnMapLongClickListener(addMarkerOnMapListener);//agregar listener al mapa para que escuche clicks
             map.setOnMarkerDragListener(moveMarkerOnMapListener);
@@ -196,7 +193,6 @@ public class TrainingMapFragment extends Fragment {
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_LOCATION_REQUEST_CODE);
                 }
             }
-
 
 //            map.setOnMyLocationChangeListener(new GoogleMap.OnMyLocationChangeListener() {
 //                @Override
@@ -314,7 +310,6 @@ public class TrainingMapFragment extends Fragment {
         }else{//si no hay permisos es necesario pedir permisos
 
         }
-
 
     }
     @Override
