@@ -32,9 +32,9 @@ public class MusicPlayerService extends AppCompatActivity {
     public static final boolean REPEAT_DISABLED = false;
     private static int state=STOPPED;
     private static boolean repeat_state=REPEAT_DISABLED;
-    private static ArrayList<Song> musicList;
+    private static ArrayList<Song> musicList=new ArrayList<Song>();
 
-    private static int position=0;
+    public static int position=0;
 
     public MusicPlayerService(){
 
@@ -50,6 +50,12 @@ public class MusicPlayerService extends AppCompatActivity {
 
     public Song getCurrentMusic(){
         loadMusicPlayList();
+        return musicList.get(position);
+    }
+
+    public Song getSelectMusic(int position){
+        MusicPlayList list=new MusicPlayList();
+        musicList=list.getMusicPlayList();
         return musicList.get(position);
     }
 

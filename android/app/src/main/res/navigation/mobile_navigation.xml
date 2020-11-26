@@ -18,14 +18,20 @@
         tools:layout="@layout/fragment_training_report_list" />
 
     <fragment
-        android:id="@+id/nav_music_player"
-        android:name="com.idnp.musicfit.views.fragments.musicPlayerControllerView.MusicPlayerControllerFragment"
-        android:label="@string/menu_slideshow"
-        tools:layout="@layout/fragment_slideshow" />
+        android:id="@+id/nav_music_list_player"
+        android:name="com.idnp.musicfit.views.fragments.musicPlayerListView.MusicPlayerListFragment"
+        android:label="fragment_music_list"
+        tools:layout="@layout/fragment_music_list" />
 
     <fragment
         android:id="@+id/nav_report_training"
         android:name="com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment"
         android:label=""
         tools:layout="@layout/fragment_training_report" />
+
+    <fragment
+        android:id="@+id/nav_music_player"
+        android:name="com.idnp.musicfit.views.fragments.musicPlayerControllerView.MusicPlayerControllerFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_slideshow" />
 </navigation>

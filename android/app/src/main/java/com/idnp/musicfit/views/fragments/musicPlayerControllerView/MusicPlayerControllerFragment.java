@@ -24,8 +24,10 @@ import android.widget.TextView;
 
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.MusicPlayList;
+import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Song;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
+import com.idnp.musicfit.presenter.trainingReportPresenter.TrainingReportPresenter;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
 
@@ -51,7 +53,16 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     private Handler handler=new Handler();
     private int startTime;
     private int endTime;
-    private RecyclerView recyclerView;
+    private Song music;
+    private int selectMusic;
+
+    public MusicPlayerControllerFragment(){
+
+    }
+    public MusicPlayerControllerFragment(int selectMusic){
+        this.selectMusic=selectMusic;
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -65,7 +76,15 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        this.view =  inflater.inflate(R.layout.fragment_music_player_controller, container, false);
+        try {
+            this.view =  inflater.inflate(R.layout.fragment_music_player_controller, container, false);
+            // ... rest of body of onCreateView() ...
+        } catch (Exception e) {
+            Log.d("onCreateView", e.getMessage());
+            throw e;
+        }
+
+
         //CARGANDO BOTON DE PLAY
         this.playButton = (ImageButton) view.findViewById(R.id.play_button_player);
         this.playButton.setOnClickListener(new View.OnClickListener() {
@@ -120,17 +139,6 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         this.currentTime=(TextView) view.findViewById(R.id.current_time_player);
         //TIEMPO COMPLETO DE LA CANCION
         this.completeTime=(TextView) view.findViewById(R.id.end_time_player);
-        //RECYCLER VIEW PARA LA LISTA DE MUSICA
-        MusicPlayList musicList=new MusicPlayList(getContext());
-        recyclerView= view.findViewById(R.id.recyclerview_list_music_player);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        /*recyclerView.setAdapter(musicList);
-        WindowManager windowmanager = (WindowManager) getContext().getSystemService(Context.WINDOW_SERVICE);
-        Display display = windowmanager.getDefaultDisplay();
-        int width = windowmanager.getDefaultDisplay().getWidth();
-        int height = windowmanager.getDefaultDisplay().getHeight();
-        this.recyclerView.getLayoutParams().height=height*9/10;
-        this.recyclerView.getLayoutParams().width=height*9/10;*/
 
         return  this.view;
     }
@@ -145,15 +153,17 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
                 this.miniControllerFragment = (MusicPlayerMiniControllerFragment) fragment;
             }
         }
-        if (MusicPlayerControllerPresenter.musicPlayerControllerPresenter==null)
-            MusicPlayerControllerPresenter.musicPlayerControllerPresenter  = new MusicPlayerControllerPresenter(this);
+        if (MusicPlayerControllerPresenter.musicPlayerControllerPresenter==null) {
+            MusicPlayerControllerPresenter.musicPlayerControllerPresenter = new MusicPlayerControllerPresenter(this);
+
+        }
         if (this instanceof  MusicPlayerMiniControllerFragment){
             if (!isBigMusicPlayerController)
                 MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
         } else {
             MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
+            play();
         }
-
 
 
     }
@@ -161,7 +171,8 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     @SuppressLint("DefaultLocale")
     public void loadSelectedMusic(){
-        Song music=MusicPlayerControllerPresenter.musicPlayerControllerPresenter.getCurrentMusic();
+        music=MusicPlayerControllerPresenter.musicPlayerControllerPresenter.getCurrentMusic();
+        Log.d("MUSicaseleccionada","MUSICA SELECCIONADA "+music.getName());
         this.name_song.setText(music.getName());
         this.name_artist.setText(music.getArtist());
         mediaPlayer=MediaPlayer.create(getContext(),music.getMusic());

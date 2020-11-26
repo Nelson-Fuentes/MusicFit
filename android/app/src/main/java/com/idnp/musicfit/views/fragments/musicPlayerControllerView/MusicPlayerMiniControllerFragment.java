@@ -7,9 +7,11 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.entities.Song;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 
 public class MusicPlayerMiniControllerFragment extends MusicPlayerControllerFragment {
+
 
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
