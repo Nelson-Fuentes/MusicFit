@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "248151441447",
+    "firebase_url": "https://musicfit.firebaseio.com",
+    "project_id": "musicfit",
+    "storage_bucket": "musicfit.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248151441447:android:7056c5d72623a4912c4e02",
+        "android_client_info": {
+          "package_name": "com.idnp.musicfit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "248151441447-2pqhvmijerokufkm1absvqpo5vck5hj0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.idnp.musicfit",
+            "certificate_hash": "2cd9b96d2db4a1f66431cbfcce97a051a704c3f0"
+          }
+        },
+        {
+          "client_id": "248151441447-hum50376cvt5cqdmt7h9e15f8g302u1s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCYfSpVv0qYLN7eyXq6WL4dzcC0hUmftKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "248151441447-hum50376cvt5cqdmt7h9e15f8g302u1s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

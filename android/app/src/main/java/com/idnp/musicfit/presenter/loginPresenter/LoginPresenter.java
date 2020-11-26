@@ -51,8 +51,6 @@ public class LoginPresenter implements iLoginPresenter {
             this.loginView.authIncognite();
         } catch (Exception e){
             this.handleException(e);
-        } finally {
-            MusicfitAuthenticationManagerService.authenticationService.isIncognite();
         }
 
     }
