@@ -33,21 +33,8 @@ public class LoginPresenter implements iLoginPresenter {
             try {
                 MusicfitAuthenticationManagerService.authenticationService.auth(username, password);
                 this.loginView.authValid();
-
-            } catch (ExecutionException e) {
-                this.loginView.showError(R.string.execution_exception);
-            } catch (InterruptedException e) {
-                this.loginView.showError(R.string.interruption_exception);
-            } catch (JSONException e) {
-                this.loginView.showError(R.string.json_exception);
-            } catch (MusicFitException e) {
-                if (e.getMessage() != null) {
-                    this.loginView.showError(e.getMessage());
-                } else {
-                    this.loginView.showError(e.getStringCode());
-                }
             } catch (Exception e) {
-                this.loginView.showError(e.getMessage());
+                this.handleException(e);
             }
         }
     }
@@ -59,12 +46,35 @@ public class LoginPresenter implements iLoginPresenter {
 
     @Override
     public void authIncognite() {
-        if (MusicfitAuthenticationManagerService.authenticationService.authenticationIncognite()){
+        try {
+            MusicfitAuthenticationManagerService.authenticationService.authenticationIncognite();
             this.loginView.authIncognite();
-        } else {
-            this.loginView.showError("Soy un error");
+        } catch (Exception e){
+            this.handleException(e);
+        } finally {
+            MusicfitAuthenticationManagerService.authenticationService.isIncognite();
         }
 
+    }
+
+    private void handleException(Exception e){
+        try{
+            throw e;
+        } catch (ExecutionException exception) {
+            this.loginView.showError(R.string.execution_exception);
+        } catch (InterruptedException exception) {
+            this.loginView.showError(R.string.interruption_exception);
+        } catch (JSONException exception) {
+            this.loginView.showError(R.string.json_exception);
+        } catch (MusicFitException exception) {
+            if (e.getMessage() != null) {
+                this.loginView.showError(exception.getMessage());
+            } else {
+                this.loginView.showError(exception.getStringCode());
+            }
+        } catch (Exception exception) {
+            this.loginView.showError(e.getMessage());
+        }
     }
 
     @Override
