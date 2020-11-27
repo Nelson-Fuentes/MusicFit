@@ -29,7 +29,7 @@ public class TrainingControllerPresenter  implements iTrainingControllerPresente
 
     @Override
     public void stopTraining() {
-        this.trainingControllerView.stopTraining();
+       // this.trainingControllerView.stopTraining();
         TrainingService.trainingService.stopTraining(this.training);
         this.trainingControllerView.viewTrainingReport(this.training);
     }
