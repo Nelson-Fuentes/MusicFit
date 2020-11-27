@@ -39,6 +39,8 @@ public class MusicPlayList {
         this.musicList.add(new Song(R.raw.song5,"Hoy","Gian Marco"));
         this.musicList.add(new Song(R.raw.song6,"Dance Monkey","Tones and I"));
         this.musicList.add(new Song(R.raw.song7,"Empire","Shakira"));
+        this.musicList.add(new Song(R.raw.song8,"Nothing On You","Ed sheeran"));
+        this.musicList.add(new Song(R.raw.song9,"Black and Yellow","Wiz Khalifa"));
 
     }
 
@@ -51,8 +53,8 @@ public class MusicPlayList {
         this.musicList.add(new Song(R.raw.song5,"Hoy","Gian Marco"));
         this.musicList.add(new Song(R.raw.song6,"Dance Monkey","Tones and I"));
         this.musicList.add(new Song(R.raw.song7,"Empire","Shakira"));
-        /*this.musicList.add(new Song(R.raw.song8,"Nothing On You","Ed sheeran"));
-        this.musicList.add(new Song(R.raw.song9,"Black and Yellow","Wiz Khalifa"));*/
+        this.musicList.add(new Song(R.raw.song8,"Nothing On You","Ed sheeran"));
+        this.musicList.add(new Song(R.raw.song9,"Black and Yellow","Wiz Khalifa"));
         return this.musicList;
     }
 
