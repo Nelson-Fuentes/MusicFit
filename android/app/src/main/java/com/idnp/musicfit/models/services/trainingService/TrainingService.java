@@ -1,17 +1,39 @@
 package com.idnp.musicfit.models.services.trainingService;
 
+import android.app.Service;
+import android.content.Intent;
+import android.os.Binder;
+import android.os.IBinder;
+
+import androidx.annotation.Nullable;
+
 import com.google.android.gms.maps.model.LatLng;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Training;
+import com.idnp.musicfit.views.fragments.trainingReportView.iTrainingReportView;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-public class TrainingService {
+public class TrainingService extends Service {
+    private IBinder myTrainingBinder=new TrainingIBinder();
+    public static final String CHANNEL_ID_1="CHANNEL_1";
+    public static final String CHANNEL_ID_2="CHANNEL_2";
+    public static final String ACTION_PLAY="PLAY";
+    public static final String ACTION_STOP="STOP";
 
+    iTrainingReportView actionTraining;
     public static TrainingService trainingService;
+
+    public class TrainingIBinder extends Binder {
+        public TrainingService getService(){
+            return TrainingService.this;
+        }
+    }
+
+
 
     public Report makeTraining(){ // para guardar el reporte
         return new Report(23,11,2020,11,17,52,new LatLng(-16.4322583,-71.5642415));
@@ -62,5 +84,37 @@ public class TrainingService {
         trainings.add(nuevo7);
 
         return  trainings;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return myTrainingBinder;
+    }
+    @Override
+    public int onStartCommand(Intent intent,int flags, int startId){
+        String actionName=intent.getStringExtra("myActionName");
+        if(actionName!=null){
+            switch (actionName){
+                case ACTION_PLAY:
+                    if(actionTraining!=null){
+                        actionTraining.startTraining();
+                    }
+                    break;
+                case ACTION_STOP:
+                    if(actionTraining!=null){
+                        actionTraining.stopTraining();
+                    }
+                    break;
+            }
+        }
+
+
+        return START_STICKY;
+        //return super.onStartCommand(intent,flags,startId);
+    }
+
+    public void setCallback(iTrainingReportView actionTraining){
+        this.actionTraining=actionTraining;
     }
 }

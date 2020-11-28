@@ -62,68 +62,14 @@ import java.util.List;
 public class TrainingMapFragment extends Fragment {
     private GoogleMap map;//guardará la referencia al Map
     private LatLng myPos;// esta variable guardará siempre mi pocisión
-    private Geocoder geocoder;//para optener la posición mediante un contexto
+
     private int ACCESS_LOCATION_REQUEST_CODE = 10001;// para guardar si se tiene permiso para acceder a la posición de usuario
     FusedLocationProviderClient fusedLocationProviderClient;//para poder obtener la localización de un usuario
     LocationRequest locationRequest;
     Marker userLocationMarker;
     Circle userLocationAccuracyCircle;
 
-    //    Boolean myPosition = true;
-//    JSONObject jso;
-//    Double longOri, latOri;
-    ToastManager mytoast;
-
-    private GoogleMap.OnMapLongClickListener addMarkerOnMapListener = new GoogleMap.OnMapLongClickListener() {
-
-        @Override
-        public void onMapLongClick(LatLng latLng) {
-            try {
-                List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                if (addresses.size() > 0) {
-                    Address address = addresses.get(0);
-                    String placename = address.getAddressLine(0);
-                    map.addMarker(new MarkerOptions()
-                            .position(latLng)
-                            .title("start place")
-                            .snippet(placename)
-                            .draggable(true)
-                    );
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-    };
-    private GoogleMap.OnMarkerDragListener moveMarkerOnMapListener = new GoogleMap.OnMarkerDragListener() {
-        @Override
-        public void onMarkerDragStart(Marker marker) {
-
-        }
-
-        @Override
-        public void onMarkerDrag(Marker marker) {
-
-        }
-
-        @Override
-        public void onMarkerDragEnd(Marker marker) {
-            LatLng latLng = marker.getPosition();
-            try {
-                List<Address> addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
-                if (addresses.size() > 0) {
-                    Address address = addresses.get(0);
-                    String placename = address.getAddressLine(0);
-                    marker.setTitle(placename);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-    //para habilitar la localización de usuario
+    //------------------------para habilitar la localización de usuario
     private void enableUserLocation() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -138,6 +84,7 @@ public class TrainingMapFragment extends Fragment {
         map.setMyLocationEnabled(true);
     }
 
+    //-------------- obtiene la localización de usuario y hace zoom de la cámara
     private void zoomToUserLocation() {
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -160,7 +107,6 @@ public class TrainingMapFragment extends Fragment {
 
     }
 
-
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
         /**
@@ -173,13 +119,11 @@ public class TrainingMapFragment extends Fragment {
          * user has installed Google Play services and returned to the app.
          */
 
-
+        //------------ cuando el mapa esté listo
         @Override
         public void onMapReady(GoogleMap googleMap) {
 
-            map = googleMap;
-            map.setOnMapLongClickListener(addMarkerOnMapListener);//agregar listener al mapa para que escuche clicks
-            map.setOnMarkerDragListener(moveMarkerOnMapListener);
+            map = googleMap;//guarda el objeto mapa en una variable propia nuestra
 
             //PARA LOS PERMISOS DE ACCESO
             if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -220,15 +164,7 @@ public class TrainingMapFragment extends Fragment {
 //                                .build();
 //                        map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 //
-//                        LatLng [] p ={
-//                                new LatLng(-16.4322583,-71.5642415),
-//                                new LatLng(-16.4322687,-71.5642517),
-//                                new LatLng(-16.4322791,-71.5642623),
-//                                new LatLng(-16.4322895,-71.5642727),
-//                                new LatLng(-16.4322999,-71.5642831),
-//                                new LatLng(-16.4323003,-71.5642935),
-//
-//                        };
+
 //
 //                        //map.addPolyline((new PolylineOptions()).add(myPosition,p[p.length-1]).width(5).color(Color.CYAN));
 //
@@ -249,11 +185,12 @@ public class TrainingMapFragment extends Fragment {
         public void onLocationResult(LocationResult locationResult) {
             super.onLocationResult(locationResult);
             if(map!=null){//hay que comprobar que el mapa se haya creado
-                setUserLocationMarker(locationResult.getLastLocation());//le pasamos la última localización
+                setUserLocationMarker(locationResult.getLastLocation());//le pasamos la última localización para mover el marker
             }
         }
     };
 
+    //------------------ método para mover el marker junto con el cambio de posición de usuario
     private void setUserLocationMarker(Location location){
         LatLng latLng=new LatLng(location.getLatitude(),location.getLongitude());
         if(userLocationMarker==null){// si es nulo creamo un nuevo marcador
@@ -272,20 +209,8 @@ public class TrainingMapFragment extends Fragment {
             ToastManager.toastManager.showToast(latLng.latitude+","+latLng.longitude);
         }
 
-        if(userLocationAccuracyCircle==null){
-            CircleOptions circleOptions= new CircleOptions();
-            circleOptions.center(latLng);
-            circleOptions.strokeWidth(4);
-            circleOptions.strokeColor(Color.argb(255,255,0,0));
-            circleOptions.fillColor(Color.argb(32,255,0,0));
-            circleOptions.radius(location.getAccuracy());
-            userLocationAccuracyCircle=map.addCircle(circleOptions);
-        }else{
-            userLocationAccuracyCircle.setCenter(latLng);
-            userLocationAccuracyCircle.setRadius(location.getAccuracy());
-        }
     }
-
+    //para obtener las actualizaciones de posiciones de usuario
     private void startLocationUpdates() {//habilitamos la actualización de usuario position
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             // TODO: Consider calling
@@ -297,6 +222,7 @@ public class TrainingMapFragment extends Fragment {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
+
         fusedLocationProviderClient.requestLocationUpdates(locationRequest, locationCallback, Looper.getMainLooper());
     }
     private void stopLocationUpdates(){//inhabilitamos la actualización de usuario position
@@ -310,7 +236,6 @@ public class TrainingMapFragment extends Fragment {
         }else{//si no hay permisos es necesario pedir permisos
 
         }
-
     }
     @Override
     public void onStop(){
@@ -352,13 +277,12 @@ public class TrainingMapFragment extends Fragment {
             mapFragment.getMapAsync(callback);
         }
 
-        geocoder=new Geocoder(getContext());//se puede creaer fuera de onMapReady, no depende de mapa.
         //para habilitar la actualización del la localización de usuario
         fusedLocationProviderClient= LocationServices.getFusedLocationProviderClient(getActivity());//se puede crear fuera del mapa
         //animar el movimiento en el mápa
-        locationRequest=LocationRequest.create();
-        locationRequest.setInterval(500);
+        locationRequest=LocationRequest.create();//iniciamos el objeto que se usará para la consulta de usuario
+        locationRequest.setInterval(500);//le damos un intervalo de tiempo para que verifique el cambio
         locationRequest.setFastestInterval(500);
-        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);//-------le damos la prioridad a la consulta de localización
     }
 }

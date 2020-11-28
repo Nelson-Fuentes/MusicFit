@@ -53,8 +53,8 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     private TextView lbl_map;
     private ImageView image_runner;
 
-    private DBModelStretchRoute modelDBRouteStretch;
-    private boolean controllAsync;
+    /*private DBModelStretchRoute modelDBRouteStretch;
+    private boolean controllAsync;*/
 
     private TextView lbl_no_resultados,lbl_resultados, number_km, lbl_km, number_pasos,lbl_pasos,number_cals,lbl_cals;
     private final long delay_buttons = 0;
@@ -63,31 +63,31 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     private boolean running = false;
     private long time_gone = 0;
 
-    public void executeAsync(){
-        AsyncSaveStretchRoute assr=new AsyncSaveStretchRoute();
-        assr.execute();
-    }
-    public class AsyncSaveStretchRoute extends AsyncTask<Void,Integer, Boolean>//Clase para guardar stretchRoutes de manera async
-    {
-
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            try {
-                Thread.sleep(5000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            return true;
-        }
-        @Override
-        protected  void onPostExecute(Boolean aBoolean){
-            boolean ret=true;
-            if(controllAsync){
-                executeAsync();
-                ToastManager.toastManager.showToast("guardando tramos de rutas");
-            }
-        }
-    }
+//    public void executeAsync(){
+//        AsyncSaveStretchRoute assr=new AsyncSaveStretchRoute();
+//        assr.execute();
+//    }
+//    public class AsyncSaveStretchRoute extends AsyncTask<Void,Integer, Boolean>//Clase para guardar stretchRoutes de manera async
+//    {
+//
+//        @Override
+//        protected Boolean doInBackground(Void... voids) {
+//            try {
+//                Thread.sleep(5000);
+//            } catch (InterruptedException e) {
+//                e.printStackTrace();
+//            }
+//            return true;
+//        }
+//        @Override
+//        protected  void onPostExecute(Boolean aBoolean){
+//            boolean ret=true;
+//            if(controllAsync){
+//                executeAsync();
+//                ToastManager.toastManager.showToast("guardando tramos de rutas");
+//            }
+//        }
+//    }
 
     public TrainingControllerFragment() {
     }
@@ -103,77 +103,77 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         if (this.view == null){
             this.view = inflater.inflate(R.layout.fragment_training_controller, container, false);
         }
-        controllAsync=false;
-        /*modelDBRouteStretch= new DBModelStretchRoute();
-        StretchRoute stretchRoute= new StretchRoute();
-        stretchRoute.setStart(new LatLng(5,5));
-        stretchRoute.setEnd(new LatLng(5,5));
-        stretchRoute.setId(1);
-        int responseInsert=modelDBRouteStretch.insertStretchRoute(getActivity(),stretchRoute);*/
-
-        this.trainingControllerPresenter = new TrainingControllerPresenter(this);
-        play_button = (ImageView)view.findViewById(R.id.play_button);
-        pause_button = (ImageView)view.findViewById(R.id.pause_button);
-        stop_button = (ImageView)view.findViewById(R.id.stop_button);
-        map_button = (ImageView)view.findViewById(R.id.map_button);
-        chronometer = (Chronometer)view.findViewById(R.id.chronometer);
-        lbl_play = (TextView)view.findViewById(R.id.lbl_play);
-        lbl_pause = (TextView)view.findViewById(R.id.lbl_pause);
-        lbl_stop = (TextView)view.findViewById(R.id.lbl_stop);
-        lbl_map = (TextView)view.findViewById(R.id.lbl_map);
-        image_runner = (ImageView)view.findViewById(R.id.imageRunner);
-
-        //results part
-        lbl_no_resultados = (TextView)view.findViewById(R.id.lbl_no_resultados);
-        lbl_resultados = (TextView)view.findViewById(R.id.lbl_resultados);
-        lbl_km = (TextView)view.findViewById(R.id.lbl_km);
-        lbl_pasos = (TextView)view.findViewById(R.id.lbl_pasos);
-        lbl_cals = (TextView)view.findViewById(R.id.lbl_cals);
-        number_km = (TextView)view.findViewById(R.id.number_km);
-        number_pasos = (TextView)view.findViewById(R.id.number_pasos);
-        number_cals = (TextView)view.findViewById(R.id.number_cals);
-
-
-        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
-            @Override
-            public void onChronometerTick(Chronometer chronometer) {
-                long time= SystemClock.elapsedRealtime() - chronometer.getBase();
-                int h = (int)(time/3600000);
-                int m = (int)(time - h*3600000)/60000;
-                int s = (int)(time - h*3600000- m*60000)/1000;
-                String t = (h < 10 ? "0"+h: h)+":"+(m < 10 ? "0"+m: m)+":"+ (s < 10 ? "0"+s: s);
-                chronometer.setText(t);
-            }
-        });
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        chronometer.setText("00:00:00");
-
-        play_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startTraining();
-            }
-        });
-        pause_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                pauseTraining();
-            }
-        });
-        stop_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                stopTraining();
-            }
-        });
-        map_button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mapTraining();
-            }
-        });
-
-
+//        //controllAsync=false;
+//        /*modelDBRouteStretch= new DBModelStretchRoute();
+//        StretchRoute stretchRoute= new StretchRoute();
+//        stretchRoute.setStart(new LatLng(5,5));
+//        stretchRoute.setEnd(new LatLng(5,5));
+//        stretchRoute.setId(1);
+//        int responseInsert=modelDBRouteStretch.insertStretchRoute(getActivity(),stretchRoute);*/
+//
+//        this.trainingControllerPresenter = new TrainingControllerPresenter(this);
+//        play_button = (ImageView)view.findViewById(R.id.play_button);
+//        pause_button = (ImageView)view.findViewById(R.id.pause_button);
+//        stop_button = (ImageView)view.findViewById(R.id.stop_button);
+//        map_button = (ImageView)view.findViewById(R.id.map_button);
+//        chronometer = (Chronometer)view.findViewById(R.id.chronometer);
+//        lbl_play = (TextView)view.findViewById(R.id.lbl_play);
+//        lbl_pause = (TextView)view.findViewById(R.id.lbl_pause);
+//        lbl_stop = (TextView)view.findViewById(R.id.lbl_stop);
+//        lbl_map = (TextView)view.findViewById(R.id.lbl_map);
+//        image_runner = (ImageView)view.findViewById(R.id.imageRunner);
+//
+//        //results part
+//        lbl_no_resultados = (TextView)view.findViewById(R.id.lbl_no_resultados);
+//        lbl_resultados = (TextView)view.findViewById(R.id.lbl_resultados);
+//        lbl_km = (TextView)view.findViewById(R.id.lbl_km);
+//        lbl_pasos = (TextView)view.findViewById(R.id.lbl_pasos);
+//        lbl_cals = (TextView)view.findViewById(R.id.lbl_cals);
+//        number_km = (TextView)view.findViewById(R.id.number_km);
+//        number_pasos = (TextView)view.findViewById(R.id.number_pasos);
+//        number_cals = (TextView)view.findViewById(R.id.number_cals);
+//
+//
+//        chronometer.setOnChronometerTickListener(new Chronometer.OnChronometerTickListener() {
+//            @Override
+//            public void onChronometerTick(Chronometer chronometer) {
+//                long time= SystemClock.elapsedRealtime() - chronometer.getBase();
+//                int h = (int)(time/3600000);
+//                int m = (int)(time - h*3600000)/60000;
+//                int s = (int)(time - h*3600000- m*60000)/1000;
+//                String t = (h < 10 ? "0"+h: h)+":"+(m < 10 ? "0"+m: m)+":"+ (s < 10 ? "0"+s: s);
+//                chronometer.setText(t);
+//            }
+//        });
+//        chronometer.setBase(SystemClock.elapsedRealtime());
+//        chronometer.setText("00:00:00");
+//
+//        play_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                startTraining();
+//            }
+//        });
+//        pause_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                pauseTraining();
+//            }
+//        });
+//        stop_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                stopTraining();
+//            }
+//        });
+//        map_button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                mapTraining();
+//            }
+//        });
+//
+//
         return this.view;
     }
 
@@ -181,124 +181,119 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     @Override
     public void startTraining() {
 
-        running = true;
-        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_2));
-        chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffSet - time_gone);
-        chronometer.start();
-        controllAsync=true;
-        executeAsync();
-
-        //Toast.makeText(getActivity(),"yeah play works",Toast.LENGTH_SHORT).show();
-        //just for animation
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                play_button.setVisibility(View.INVISIBLE);
-                pause_button.setVisibility(View.VISIBLE);
-                stop_button.setVisibility(View.VISIBLE);
-                map_button.setVisibility(View.VISIBLE);
-
-                lbl_play.setVisibility(View.INVISIBLE);
-                lbl_pause.setVisibility(View.VISIBLE);
-                lbl_stop.setVisibility(View.VISIBLE);
-                lbl_map.setVisibility(View.VISIBLE);
-
-                lbl_no_resultados.setVisibility(View.INVISIBLE);
-                lbl_resultados.setVisibility(View.VISIBLE);
-                lbl_pasos.setVisibility(View.VISIBLE);
-                lbl_km.setVisibility(View.VISIBLE);
-                lbl_cals.setVisibility(View.VISIBLE);
-                number_pasos.setVisibility(View.VISIBLE);
-                number_km.setVisibility(View.VISIBLE);
-                number_cals.setVisibility(View.VISIBLE);
-            }
-        },delay_buttons);
+//        running = true;
+//        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_2));
+//        chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffSet - time_gone);
+//        chronometer.start();
+//        //controllAsync=true;
+//       // executeAsync();
+//
+//
+//        //just for animation
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                play_button.setVisibility(View.INVISIBLE);
+//                pause_button.setVisibility(View.VISIBLE);
+//                stop_button.setVisibility(View.VISIBLE);
+//                map_button.setVisibility(View.VISIBLE);
+//
+//                lbl_play.setVisibility(View.INVISIBLE);
+//                lbl_pause.setVisibility(View.VISIBLE);
+//                lbl_stop.setVisibility(View.VISIBLE);
+//                lbl_map.setVisibility(View.VISIBLE);
+//
+//                lbl_no_resultados.setVisibility(View.INVISIBLE);
+//                lbl_resultados.setVisibility(View.VISIBLE);
+//                lbl_pasos.setVisibility(View.VISIBLE);
+//                lbl_km.setVisibility(View.VISIBLE);
+//                lbl_cals.setVisibility(View.VISIBLE);
+//                number_pasos.setVisibility(View.VISIBLE);
+//                number_km.setVisibility(View.VISIBLE);
+//                number_cals.setVisibility(View.VISIBLE);
+//            }
+//        },delay_buttons);
     }
 
     @Override
     public void pauseTraining() {
-        running = false;
-        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
-        chronometer.stop();
-        pauseOffSet = SystemClock.elapsedRealtime() - chronometer.getBase();
-        controllAsync=false;
-
-        //Toast.makeText(getActivity(),"yeah pause works",Toast.LENGTH_SHORT).show();
-        //just for animation
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-
-                play_button.setVisibility(View.VISIBLE);
-                pause_button.setVisibility(View.INVISIBLE);
-
-                lbl_play.setText("Continuar");
-
-                lbl_play.setVisibility(View.VISIBLE);
-                lbl_pause.setVisibility(View.INVISIBLE);
-
-            }
-        },delay_buttons);
+//        running = false;
+//        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
+//        chronometer.stop();
+//        pauseOffSet = SystemClock.elapsedRealtime() - chronometer.getBase();
+//        //controllAsync=false;
+//
+//        //Toast.makeText(getActivity(),"yeah pause works",Toast.LENGTH_SHORT).show();
+//        //just for animation
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//
+//                play_button.setVisibility(View.VISIBLE);
+//                pause_button.setVisibility(View.INVISIBLE);
+//
+//                lbl_play.setText("Continuar");
+//
+//                lbl_play.setVisibility(View.VISIBLE);
+//                lbl_pause.setVisibility(View.INVISIBLE);
+//
+//            }
+//        },delay_buttons);
     }
 
     @Override
     public void stopTraining() {
-        running = false;
-        time_gone = 0;
-        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
-        chronometer.stop();
-        chronometer.setBase(SystemClock.elapsedRealtime());
-        pauseOffSet = 0;
-        chronometer.setText("00:00:00");
-        controllAsync=false;//saving data;
-
-        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
-        editor = prefs.edit();
-
-        editor.putLong("pauseOffSet", 0);
-
-        editor.apply();
-        //  Toast.makeText(getActivity(),"yeah stop works",Toast.LENGTH_SHORT).show();
-        //just for animation
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                play_button.setVisibility(View.VISIBLE);
-                pause_button.setVisibility(View.INVISIBLE);
-                stop_button.setVisibility(View.INVISIBLE);
-                map_button.setVisibility(View.INVISIBLE);
-
-                lbl_play.setText("Iniciar Entrenamiento");
-
-                lbl_play.setVisibility(View.VISIBLE);
-                lbl_pause.setVisibility(View.INVISIBLE);
-                lbl_stop.setVisibility(View.INVISIBLE);
-                lbl_map.setVisibility(View.INVISIBLE);
-
-                lbl_no_resultados.setVisibility(View.VISIBLE);
-                lbl_resultados.setVisibility(View.INVISIBLE);
-                lbl_pasos.setVisibility(View.INVISIBLE);
-                lbl_km.setVisibility(View.INVISIBLE);
-                lbl_cals.setVisibility(View.INVISIBLE);
-                number_pasos.setVisibility(View.INVISIBLE);
-                number_km.setVisibility(View.INVISIBLE);
-                number_cals.setVisibility(View.INVISIBLE);
-
-            }
-        },delay_buttons);
+//        running = false;
+//        time_gone = 0;
+//        image_runner.setBackground(ContextCompat.getDrawable(getActivity(),R.drawable.training_image_state_1));
+//        chronometer.stop();
+//        chronometer.setBase(SystemClock.elapsedRealtime());
+//        pauseOffSet = 0;
+//        chronometer.setText("00:00:00");
+//
+//        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
+//        editor = prefs.edit();
+//        editor.putLong("pauseOffSet", 0);
+//        editor.apply();
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                play_button.setVisibility(View.VISIBLE);
+//                pause_button.setVisibility(View.INVISIBLE);
+//                stop_button.setVisibility(View.INVISIBLE);
+//                map_button.setVisibility(View.INVISIBLE);
+//
+//                lbl_play.setText("Iniciar Entrenamiento");
+//
+//                lbl_play.setVisibility(View.VISIBLE);
+//                lbl_pause.setVisibility(View.INVISIBLE);
+//                lbl_stop.setVisibility(View.INVISIBLE);
+//                lbl_map.setVisibility(View.INVISIBLE);
+//
+//                lbl_no_resultados.setVisibility(View.VISIBLE);
+//                lbl_resultados.setVisibility(View.INVISIBLE);
+//                lbl_pasos.setVisibility(View.INVISIBLE);
+//                lbl_km.setVisibility(View.INVISIBLE);
+//                lbl_cals.setVisibility(View.INVISIBLE);
+//                number_pasos.setVisibility(View.INVISIBLE);
+//                number_km.setVisibility(View.INVISIBLE);
+//                number_cals.setVisibility(View.INVISIBLE);
+//
+//            }
+//        },delay_buttons);
     }
 
     @Override
     public void mapTraining() {
-        Toast.makeText(getActivity(),"I'm the map",Toast.LENGTH_SHORT).show();
-
-        //just for animation
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                TrainingControllerFragment.this.trainingControllerPresenter.stopTraining();
-            }
-        },delay_buttons);
+//        Toast.makeText(getActivity(),"I'm the map",Toast.LENGTH_SHORT).show();
+//
+//        new Handler().postDelayed(new Runnable() {
+//            @Override
+//            public void run() {
+//                TrainingControllerFragment.this.trainingControllerPresenter.stopTraining();
+//            }
+//        },delay_buttons);
     }
 
     @Override
@@ -307,48 +302,45 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
     }
 
     @Override
-    public void onStop() {
+    public void onStop() {//-------- cuando se cambia de fragment
         super.onStop();
 
-        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
-        editor = prefs.edit();
-        editor.putLong("time_gone", SystemClock.elapsedRealtime());
-        editor.putLong("getBase",chronometer.getBase());
-        editor.putLong("pauseOffSet",pauseOffSet);
-        editor.putBoolean("running",running);
-        editor.apply();
+//        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
+//        editor = prefs.edit();
+//        editor.putLong("time_gone", SystemClock.elapsedRealtime());
+//        editor.putLong("getBase",chronometer.getBase());
+//        editor.putLong("pauseOffSet",pauseOffSet);
+//        editor.putBoolean("running",running);
+//        editor.apply();
 
     }
 
     @Override
-    public void onStart() {
+    public void onStart() {//cuando el fragment carga, se cargan todas los shared preferences sobre el tiempo
         super.onStart();
-        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
-        chronometer.setBase(prefs.getLong("getBase",0));
-        time_gone = SystemClock.elapsedRealtime() - chronometer.getBase();
-        running = prefs.getBoolean("running", false);
-        pauseOffSet = prefs.getLong("pauseOffSet",0);
-  //      Log.d("mytest",time_gone+"<<--- here");
-  //      Log.d("mytest2",pauseOffSet+"<<--- here1");
-  //      Log.d("mytest3",chronometer.getBase()+"<<--- here2");
-
-        if(running){
-            pauseOffSet = 0;
-            startTraining();
-        }else{
-            time_gone = -100;
-            startTraining();
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    pauseTraining();
-                }
-            },100);
-        }
-        time_gone = 0;
-        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
-        editor = prefs.edit();
-        editor.putLong("time_gone", 0);
-        editor.apply();
+//        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
+//        chronometer.setBase(prefs.getLong("getBase",0));
+//        time_gone = SystemClock.elapsedRealtime() - chronometer.getBase();
+//        running = prefs.getBoolean("running", false);
+//        pauseOffSet = prefs.getLong("pauseOffSet",0);
+//
+//        if(running){
+//            pauseOffSet = 0;
+//            startTraining();
+//        }else{
+//            time_gone = -100;
+//            startTraining();
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    pauseTraining();
+//                }
+//            },100);
+//        }
+//        time_gone = 0;
+//        prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
+//        editor = prefs.edit();
+//        editor.putLong("time_gone", 0);
+//        editor.apply();
     }
 }

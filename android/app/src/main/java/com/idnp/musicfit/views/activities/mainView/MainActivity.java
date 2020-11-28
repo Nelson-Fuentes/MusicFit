@@ -68,7 +68,6 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
                 || super.onSupportNavigateUp();
     }
 
-
     @Override
     public void showNoOpenSessionFoundAction() {
         Intent intent = new Intent(this, LoginActivity.class);
