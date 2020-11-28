@@ -3,8 +3,14 @@ package com.idnp.musicfit.models.services.authenticationService;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitResponse;
@@ -28,10 +34,12 @@ public class MusicfitAuthenticationManagerService {
     public static final String ACCOUNT_TYPE = "com.idnp.musicfit";
     public static final String AUTH_TOKEN_TYPE_KEY = "TOKEN_TYPE";
     private static final String INCOGNITE_AUTH_USERNAME = "Usuario incognito";
+    public static final int GOOGLE_AUTH_RESULT = 777;
 
 
     private Account account;
     private AccountManager accountManager;
+    private GoogleApiClient googleApiClient;
 
     public MusicfitAuthenticationManagerService(Context context){
         this.accountManager = AccountManager.get(context);
@@ -98,9 +106,19 @@ public class MusicfitAuthenticationManagerService {
         return true;
     }
 
-    public boolean authenticationGoogle(){
-        this.writeToken(GOOGLE_AUTH_TOKEN);
-        return true;
+    public Intent authenticationGoogle(Context context, FragmentActivity fragmentActivity, GoogleApiClient.OnConnectionFailedListener onConnectionFailedListener ){
+        if (this.googleApiClient == null){
+            GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestEmail()
+                    .build();
+            this.googleApiClient = new GoogleApiClient.Builder(context)
+                    .enableAutoManage(fragmentActivity, onConnectionFailedListener)
+                    .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+                    .build();
+        }
+        Intent intent = Auth.GoogleSignInApi.getSignInIntent(googleApiClient);
+        return intent;
+//        this.writeToken(GOOGLE_AUTH_TOKEN);
     }
 
     public void logout(){

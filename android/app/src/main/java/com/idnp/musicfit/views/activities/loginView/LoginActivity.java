@@ -1,5 +1,6 @@
 package com.idnp.musicfit.views.activities.loginView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,21 +13,28 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationConstant;
+import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
 import com.idnp.musicfit.presenter.loginPresenter.LoginPresenter;
 import com.idnp.musicfit.presenter.loginPresenter.iLoginPresenter;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
 import com.idnp.musicfit.views.activities.registerView.RegisterActivity;
 import com.idnp.musicfit.views.toastManager.ToastManager;
 
-public class LoginActivity extends AppCompatActivity implements iLoginView{
+public class LoginActivity extends AppCompatActivity implements iLoginView, GoogleApiClient.OnConnectionFailedListener{
 
     private iLoginPresenter loginPresenter;
     private TextView registerTextView;
     private TextView errorTextView;
     private EditText usernameEditView;
     private EditText passwordEditView;
+    private GoogleApiClient googleApiClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,13 +56,18 @@ public class LoginActivity extends AppCompatActivity implements iLoginView{
         super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK){
-            if (requestCode == AuthenticationConstant.REGISTER_REQUEST_CODE){
+            if (requestCode == AuthenticationConstant.REGISTER_REQUEST_CODE) {
                 String username = (String) data.getExtras().get(AuthenticationConstant.USERNAME_LABEL);
                 String password = (String) data.getExtras().get(AuthenticationConstant.PASSWORD_LABEL);
                 this.usernameEditView.setText(username);
                 this.passwordEditView.setText(password);
                 this.loginPresenter.auth(username, password);
             }
+        }
+
+        if (requestCode == MusicfitAuthenticationManagerService.GOOGLE_AUTH_RESULT) {
+            GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
+            this.loginPresenter.handleSignInResultGoogle(result);
         }
 
     }
@@ -131,6 +144,11 @@ public class LoginActivity extends AppCompatActivity implements iLoginView{
         ToastManager.toastManager.showToast(R.string.login_google);
     }
 
+    @Override
+    public void startActivityResult(Intent intent, int code) {
+        this.startActivityForResult(intent, code);
+    }
+
     public void authIncognite(View view){
         this.loginPresenter.authIncognite();
     }
@@ -140,6 +158,13 @@ public class LoginActivity extends AppCompatActivity implements iLoginView{
     }
 
     public void authGoogle(View view){
-        this.loginPresenter.authGoogle();
+
+        this.loginPresenter.authGoogle(this.getApplicationContext(), this, this);
     }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+        ToastManager.toastManager.showToast(R.string.google_conection_failed);
+    }
+
 }

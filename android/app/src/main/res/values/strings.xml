@@ -49,5 +49,6 @@
     <string name="training_report_view_label_kilocalorias">KCal</string>
     <string name="login">Iniciar sesión</string>
     <string name="register">Registrarse</string>
-
+    <string name="google_conection_failed">Conexión con Google fallo</string>
+    <string name="google_singin_failed">Inicio de Sesión con Google Fallo</string>
 </resources>
