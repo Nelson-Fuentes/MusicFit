@@ -19,34 +19,46 @@ import org.jetbrains.annotations.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MusicPlayList extends RecyclerView.Adapter<MusicPlayList.ViewHolder> {
-    private ArrayList<Song> musicList;
-    private LayoutInflater mininflater;
-    private Context context;
+public class MusicPlayList {
 
-    public MusicPlayList(Context context){
-        this.context=context;
-        this.mininflater=LayoutInflater.from(context);
-        this.musicList = new ArrayList<Song>();
-        loadMusicPlayList();
-    }
+    public static MusicPlayList musicPlayList;
+    private ArrayList<Song> musicList;
+    /*private LayoutInflater mininflater;
+    private Context context;*/
+
     public MusicPlayList(){
-        this.musicList = new ArrayList<Song>();
+        this.musicList=new ArrayList<Song>();
         loadMusicPlayList();
     }
     public void loadMusicPlayList(){
+        this.musicList=new ArrayList<Song>();
         this.musicList.add(new Song(R.raw.song1,"How you like that","Blackpink"));
         this.musicList.add(new Song(R.raw.song2,"Blue Bird","Ikimonogakari"));
         this.musicList.add(new Song(R.raw.song3,"I can't stop me","Twice"));
         this.musicList.add(new Song(R.raw.song4,"Pegasus Fantasy","Meuren Mendo"));
-
+        this.musicList.add(new Song(R.raw.song5,"Hoy","Gian Marco"));
+        this.musicList.add(new Song(R.raw.song6,"Dance Monkey","Tones and I"));
+        this.musicList.add(new Song(R.raw.song7,"Empire","Shakira"));
+        this.musicList.add(new Song(R.raw.song8,"Nothing On You","Ed sheeran"));
+        this.musicList.add(new Song(R.raw.song9,"Black and Yellow","Wiz Khalifa"));
+        /*Este es un comentario de prueba*/
     }
 
     public ArrayList<Song> getMusicPlayList(){
+        this.musicList=new ArrayList<Song>();
+        this.musicList.add(new Song(R.raw.song1,"How you like that","Blackpink"));
+        this.musicList.add(new Song(R.raw.song2,"Blue Bird","Ikimonogakari"));
+        this.musicList.add(new Song(R.raw.song3,"I can't stop me","Twice"));
+        this.musicList.add(new Song(R.raw.song4,"Pegasus Fantasy","Meuren Mendo"));
+        this.musicList.add(new Song(R.raw.song5,"Hoy","Gian Marco"));
+        this.musicList.add(new Song(R.raw.song6,"Dance Monkey","Tones and I"));
+        this.musicList.add(new Song(R.raw.song7,"Empire","Shakira"));
+        this.musicList.add(new Song(R.raw.song8,"Nothing On You","Ed sheeran"));
+        this.musicList.add(new Song(R.raw.song9,"Black and Yellow","Wiz Khalifa"));
         return this.musicList;
     }
 
-    public int getItemCount(){
+    /*public int getItemCount(){
         return this.musicList.size();
     }
 
@@ -78,5 +90,5 @@ public class MusicPlayList extends RecyclerView.Adapter<MusicPlayList.ViewHolder
             artist.setText(music.getArtist());
         }
 
-    }
+    }*/
 }

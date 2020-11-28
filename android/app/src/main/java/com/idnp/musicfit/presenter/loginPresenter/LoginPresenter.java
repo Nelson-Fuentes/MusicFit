@@ -1,5 +1,12 @@
 package com.idnp.musicfit.presenter.loginPresenter;
 
+import android.content.Context;
+import android.content.Intent;
+
+import androidx.fragment.app.FragmentActivity;
+
+import com.google.android.gms.auth.api.signin.GoogleSignInResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
@@ -51,8 +58,6 @@ public class LoginPresenter implements iLoginPresenter {
             this.loginView.authIncognite();
         } catch (Exception e){
             this.handleException(e);
-        } finally {
-            MusicfitAuthenticationManagerService.authenticationService.isIncognite();
         }
 
     }
@@ -87,11 +92,20 @@ public class LoginPresenter implements iLoginPresenter {
     }
 
     @Override
-    public void authGoogle() {
-        if (MusicfitAuthenticationManagerService.authenticationService.authenticationGoogle()){
-            this.loginView.authGoogle();
+    public void authGoogle(Context context, FragmentActivity fragmentActivity, GoogleApiClient.OnConnectionFailedListener onConnectionFailedListener ) {
+        Intent intent = MusicfitAuthenticationManagerService.authenticationService.authenticationGoogle(context, fragmentActivity, onConnectionFailedListener);
+        this.loginView.startActivityResult(intent, MusicfitAuthenticationManagerService.GOOGLE_AUTH_RESULT);
+//        this.loginView.authGoogle();
+//        this.loginView.showError("Soy un error");
+    }
+
+    @Override
+    public void handleSignInResultGoogle(GoogleSignInResult result) {
+        if (result.isSuccess()){
+            System.out.println("---------------------------" + result.getSignInAccount().getEmail());
         } else {
-            this.loginView.showError("Soy un error");
+            this.loginView.showError(R.string.google_singin_failed);
+            System.out.println("---------------------------" + result.getStatus());
         }
     }
 
