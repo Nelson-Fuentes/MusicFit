@@ -5,6 +5,7 @@ import android.content.Intent;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.facebook.CallbackManager;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.idnp.musicfit.R;
@@ -19,9 +20,15 @@ import java.util.concurrent.ExecutionException;
 public class LoginPresenter implements iLoginPresenter {
 
     private iLoginView loginView;
+    private CallbackManager callbackManager;
 
     public LoginPresenter(iLoginView loginView){
         this.loginView = loginView;
+        this.callbackManager = CallbackManager.Factory.create();
+    }
+
+    public CallbackManager getFacebookCallBackManager(){
+        return  this.callbackManager;
     }
 
     private boolean validateAuthenticationCredentials(String username, String password){
@@ -83,12 +90,9 @@ public class LoginPresenter implements iLoginPresenter {
     }
 
     @Override
-    public void authFacebook() {
-        if (MusicfitAuthenticationManagerService.authenticationService.authenticationFacebook()){
-            this.loginView.authFacebook();
-        } else {
-            this.loginView.showError("Soy un error");
-        }
+    public void authFacebook(String username, String token) {
+        MusicfitAuthenticationManagerService.authenticationService.authenticationFacebook(username, token);
+        this.loginView.authFacebook();
     }
 
     @Override
@@ -108,5 +112,6 @@ public class LoginPresenter implements iLoginPresenter {
             System.out.println("---------------------------" + result.getStatus());
         }
     }
+
 
 }

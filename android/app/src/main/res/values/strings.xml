@@ -51,4 +51,8 @@
     <string name="register">Registrarse</string>
     <string name="google_conection_failed">Conexión con Google fallo</string>
     <string name="google_singin_failed">Inicio de Sesión con Google Fallo</string>
+    <string name="facebook_app_id">414691896568072</string>
+    <string name="facebook_login_cancelled">Inicio de sesión con Facebook cancelado</string>
+    <string name="facebook_login_error">No se pudo iniciar sesión con Facebook</string>
+
 </resources>

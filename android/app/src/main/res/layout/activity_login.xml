@@ -240,17 +240,36 @@
                 android:orientation="horizontal"
                 android:textAlignment="center">
 
-                <ImageButton
-                    android:id="@+id/imageButton"
+                <FrameLayout
+                    android:id="@+id/FrameLayout1"
                     android:layout_width="60dp"
                     android:layout_height="60dp"
-                    android:layout_marginLeft="2dp"
-                    android:layout_marginRight="2dp"
-                    android:layout_weight="1"
-                    android:background="@null"
-                    android:onClick="authFacebook"
-                    android:scaleType="fitCenter"
-                    app:srcCompat="@drawable/logo_facebook" />
+                    android:layout_marginStart="0dp"
+                    android:layout_marginTop="0dp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/logbu">
+
+
+                    <ImageView
+                        android:id="@+id/fb"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@drawable/logo_facebook"
+                        android:onClick="onClickFacebookButton"
+                        android:textAllCaps="false"
+                        android:textColor="#ffffff"
+                        android:textSize="22sp" />
+
+                    <com.facebook.login.widget.LoginButton
+                        android:alpha="0"
+                        android:id="@+id/facebookButton"
+                        android:layout_width="match_parent"
+                       android:layout_height="match_parent"
+                        android:paddingTop="45sp"
+                        android:visibility="visible"
+                        app:com_facebook_login_text="Log in with Facebook" />
+
+                </FrameLayout>
 
                 <ImageButton
                     android:id="@+id/imageButton2"
