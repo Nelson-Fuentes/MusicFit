@@ -11,6 +11,7 @@ public interface iMusicPlayerControllerPresenter {
     public void advance();
     public void random();
     public void repeat();
+    public void start();
     public Song getCurrentMusic();
     public void setView(iMusicPlayerControllerView view);
 }

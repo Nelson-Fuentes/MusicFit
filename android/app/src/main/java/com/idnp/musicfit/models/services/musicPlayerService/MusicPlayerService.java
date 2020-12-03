@@ -1,5 +1,6 @@
 package com.idnp.musicfit.models.services.musicPlayerService;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -8,6 +9,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.os.Binder;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -22,9 +24,10 @@ import com.idnp.musicfit.views.fragments.musicPlayerControllerView.MusicPlayerCo
 
 import java.util.ArrayList;
 
-public class MusicPlayerService extends AppCompatActivity {
+public class MusicPlayerService extends Service {
 
-    public static MusicPlayerService musicPlayerService;
+
+    public static MusicPlayerService musicPlayerService=new MusicPlayerService();
     public static final int STOPPED = -1;
     public static final int PAUSED = 0;
     public static final int PLAYED = 1;
@@ -33,13 +36,48 @@ public class MusicPlayerService extends AppCompatActivity {
     private static int state=STOPPED;
     private static boolean repeat_state=REPEAT_DISABLED;
     private static ArrayList<Song> musicList=new ArrayList<Song>();
-
+    public static Context context;
     public static int position=0;
 
+    public static MediaPlayer mediaPlayer=new MediaPlayer();
+
+    /*PARA LAS NOTIFICACIONES*/
+    private IBinder musicPlayerBinder = new MusicPlayerBinder();
+    /*FIN DE NOTIFICACIONES*/
+
+    
     public MusicPlayerService(){
 
+    }
+    public MusicPlayerService(Context context){
+        MusicPlayerService.context =context;
         state = STOPPED;
         repeat_state=REPEAT_DISABLED;
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+    public class MusicPlayerBinder extends Binder{
+        MusicPlayerService getService(){
+            return MusicPlayerService.this;
+        }
+    }
+
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Song music = getCurrentMusic();
+        mediaPlayer=MediaPlayer.create(context,music.getMusic());
+        mediaPlayer.start();
+        return START_STICKY;
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mediaPlayer.stop();
     }
 
     public void loadMusicPlayList(){
@@ -60,12 +98,12 @@ public class MusicPlayerService extends AppCompatActivity {
     }
 
     public Song play(){
-        loadMusicPlayList();
+        mediaPlayer.start();
         state = PLAYED;
         return musicList.get(position);
     }
     public void pause() {
-
+        mediaPlayer.pause();
         state = PAUSED;
     }
     public void stop() {
@@ -79,6 +117,10 @@ public class MusicPlayerService extends AppCompatActivity {
         else{
             position--;
         }
+        Song music = getCurrentMusic();
+        mediaPlayer.stop();
+        mediaPlayer=MediaPlayer.create(context,music.getMusic());
+        mediaPlayer.start();
     }
     public void advance(){
         if(position==musicList.size()-1){
@@ -87,6 +129,10 @@ public class MusicPlayerService extends AppCompatActivity {
         else{
             position++;
         }
+        mediaPlayer.stop();
+        Song music = getCurrentMusic();
+        mediaPlayer=MediaPlayer.create(context,music.getMusic());
+        mediaPlayer.start();
     }
     public boolean repeatState(){
         return repeat_state;

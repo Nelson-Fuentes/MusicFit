@@ -1,7 +1,9 @@
 package com.idnp.musicfit.views.fragments.musicPlayerControllerView;
 
 import android.annotation.SuppressLint;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.ServiceConnection;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.Display;
 import android.view.LayoutInflater;
@@ -23,17 +26,15 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.entities.MusicPlayList;
-import com.idnp.musicfit.models.entities.Report;
+
 import com.idnp.musicfit.models.entities.Song;
+
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
-import com.idnp.musicfit.presenter.trainingReportPresenter.TrainingReportPresenter;
-import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
 
-import java.util.concurrent.TimeUnit;
 
-public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView {
+
+public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView, ServiceConnection {
 
     public static boolean isBigMusicPlayerController = false;
 
@@ -42,12 +43,11 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     public static final int PLAYED = 1;
 
     public View view;
-    //private TextView text_state;
+
     protected ImageButton randomButton,backButton,playButton,advanceButton,repeatButton;
     private ImageView imageSong;
     private TextView name_song,name_artist,currentTime,completeTime;
     private MusicPlayerControllerPresenter musicPlayerControllerPresenter;
-    public MusicPlayerMiniControllerFragment miniControllerFragment;
     private MediaPlayer mediaPlayer;
     private SeekBar timeLine;
     private Handler handler=new Handler();
@@ -67,10 +67,7 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        new MusicPlayerControllerPresenter(this);
-        if (!(this instanceof MusicPlayerMiniControllerFragment)){
-            isBigMusicPlayerController = true;
-        }
+
     }
 
     @Override
@@ -147,30 +144,19 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     @Override
     public void onResume() {
         super.onResume();
-
-        for (Fragment fragment: FragmentManager.fragmentManager.getFragments()){
-            if (fragment instanceof  MusicPlayerMiniControllerFragment && fragment!=this){
-                this.miniControllerFragment = (MusicPlayerMiniControllerFragment) fragment;
-            }
-        }
-        if (MusicPlayerControllerPresenter.musicPlayerControllerPresenter==null) {
-            MusicPlayerControllerPresenter.musicPlayerControllerPresenter = new MusicPlayerControllerPresenter(this);
-
-        }
-        if (this instanceof  MusicPlayerMiniControllerFragment){
-            if (!isBigMusicPlayerController)
-                MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
-        } else {
-            MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
-            play();
+        MusicPlayerControllerPresenter.musicPlayerControllerPresenter=new MusicPlayerControllerPresenter(this,getContext());
+        if(!MusicPlayerService.mediaPlayer.isPlaying()){
+            MusicPlayerControllerPresenter.musicPlayerControllerPresenter.start();
         }
 
+        MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
 
     }
 
-
     @SuppressLint("DefaultLocale")
     public void loadSelectedMusic(){
+
+        mediaPlayer=MusicPlayerService.mediaPlayer;
         music=MusicPlayerControllerPresenter.musicPlayerControllerPresenter.getCurrentMusic();
         Log.d("MUSicaseleccionada","MUSICA SELECCIONADA "+music.getName());
         this.name_song.setText(music.getName());
@@ -185,7 +171,7 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
                 if(fromUser){
-                    mediaPlayer.seekTo(progress);
+                    MusicPlayerService.mediaPlayer.seekTo(progress);
                     timeLine.setProgress(progress);
                 }
             }
@@ -211,27 +197,13 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     @Override
     public void play() {
-        if(mediaPlayer==null) {
-            loadSelectedMusic();
-        }
         this.playButton.setBackgroundResource(R.drawable.button_player_pause_mp3);
-        if(mediaPlayer.isPlaying()) {
-            mediaPlayer.pause();
-            pause();
-        }
-        else{
-            mediaPlayer.start();
-            MusicPlayerControllerPresenter.musicPlayerControllerPresenter.getCurrentMusic();
-        }
 
     }
-
-
 
     @Override
     public void pause() {
         this.playButton.setBackgroundResource(R.drawable.button_player_play_mp3);
-
     }
 
     @Override
@@ -260,35 +232,18 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     @Override
     public void back() {
-
-        if(mediaPlayer.isPlaying()){
-            this.stop();
-            loadSelectedMusic();
-            mediaPlayer.start();
-        }
-        else{
-            mediaPlayer.stop();;
-            loadSelectedMusic();
-        }
+        loadSelectedMusic();
     }
 
     @Override
     public void advance() {
-        if(mediaPlayer.isPlaying()){
-            this.stop();
-            loadSelectedMusic();
-            mediaPlayer.start();
-        }
-        else{
-            mediaPlayer.stop();;
-            loadSelectedMusic();
-        }
+        loadSelectedMusic();
     }
 
     private Runnable updateSongTime = new Runnable(){
         @SuppressLint("DefaultLocale")
         public void run(){
-            startTime=mediaPlayer.getCurrentPosition();
+            startTime=MusicPlayerService.mediaPlayer.getCurrentPosition();
             currentTime.setText(createTimerLabel(startTime));
             timeLine.setProgress((int)startTime);
             handler.postDelayed(this,100);
@@ -307,28 +262,20 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         return timerLabel;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        if (!(this instanceof  MusicPlayerMiniControllerFragment)){
-            isBigMusicPlayerController =false;
-            MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this.miniControllerFragment);
-        }
-/*        boolean flag = true;
-        for (Fragment fragment: FragmentManager.fragmentManager.getFragments()){
-            if (fragment instanceof  MusicPlayerControllerFragment && !(fragment instanceof MusicPlayerMiniControllerFragment)){
-                flag = false;
-            }
-        }
-        if (flag && !(this instanceof MusicPlayerMiniControllerFragment))
-            MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this.miniControllerFragment);
-*/
-    }
-
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+
+    }
+
+    @Override
+    public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
+        
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName componentName) {
 
     }
 }
