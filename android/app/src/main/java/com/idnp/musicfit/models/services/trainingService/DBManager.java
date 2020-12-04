@@ -87,10 +87,10 @@ public class DBManager {
 //    }
 
     // getUbicaciones para reporte en especifico --
-    public ArrayList getUbications(){
+    public ArrayList getUbications(String idReport){
         database = dbHelper.getReadableDatabase();
         ArrayList<Ubication> ubications = new ArrayList<Ubication>();
-        Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelper.TABLE1_NAME, null);
+        Cursor cursor = database.rawQuery("SELECT * FROM " + DataBaseHelper.TABLE1_NAME+" WHERE "+ DataBaseHelper.TABLE1_COL_IDREPORT + " = " + idReport,null);
         cursor.moveToFirst();
         while(!cursor.isAfterLast()){
             auxUbication = new Ubication(
@@ -190,7 +190,7 @@ public class DBManager {
         }
         return cursor;
     }
-
+// not needed
 //    public int update (long id, String name, int age){
 //        ContentValues contentValues = new ContentValues();
 //        contentValues.put(DataBaseHelper.TABLE1_COL_NAME,name);
@@ -201,8 +201,8 @@ public class DBManager {
 //    }
 
     //borrar todas las ubicaciones con el idReporte
-    public void deleteUbicacion (String id){
-        database.delete(DataBaseHelper.TABLE1_NAME, DataBaseHelper.TABLE1_COL_ID + " = " + id, null);
+    public void deleteUbications(String idReport){
+        database.delete(DataBaseHelper.TABLE1_NAME, DataBaseHelper.TABLE1_COL_IDREPORT + " = " + idReport, null);
     }
     public void deleteReport (String id){
         database.delete(DataBaseHelper.TABLE2_NAME, DataBaseHelper.TABLE2_COL_ID + " = " + id, null);

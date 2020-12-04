@@ -187,7 +187,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                 Log.d("exampleUbi", "adding ubicacion");
                 DBManager db = new DBManager(getActivity());
                 db.open();
-                Ubication auxUbication = new Ubication("111111",3,new LatLng(5,3));
+                Ubication auxUbication = new Ubication("112111",3,new LatLng(5,3));
                 db.insertUbication(auxUbication);
                 db.close();
                 Log.d("exampleUbi", "ending adding ubicacion");
@@ -199,7 +199,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                 Log.d("exampleUbi2", "showing ubicaciones");
                 DBManager db = new DBManager(getActivity());
                 db.open();
-                ArrayList<Ubication>ubicaciones= db.getUbications();
+                ArrayList<Ubication>ubicaciones= db.getUbications("112111");
                 for(int i=0; i<ubicaciones.size();i++){
                     Log.d("exampleUbi2", ubicaciones.get(i).toString());
                 }
@@ -211,7 +211,11 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
             @Override
             public void onClick(View v) {
                 Log.d("exampleUbi3", "deleting ubicacion");
-                
+                DBManager db = new DBManager(getActivity());
+                db.open();
+                db.deleteUbications("111111");
+                db.close();
+
             }
         });
 
