@@ -61,7 +61,7 @@ public class MusicPlayerService extends Service {
         return null;
     }
     public class MusicPlayerBinder extends Binder{
-        MusicPlayerService getService(){
+        public MusicPlayerService getService(){
             return MusicPlayerService.this;
         }
     }

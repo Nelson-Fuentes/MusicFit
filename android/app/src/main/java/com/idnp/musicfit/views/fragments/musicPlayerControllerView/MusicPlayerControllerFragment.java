@@ -1,13 +1,20 @@
 package com.idnp.musicfit.views.fragments.musicPlayerControllerView;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.content.ServiceConnection;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -30,13 +37,17 @@ import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Song;
 
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
+import com.idnp.musicfit.models.services.trainingService.TrainingNotificationReceiver;
+import com.idnp.musicfit.models.services.trainingService.TrainingService;
 import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
+import com.idnp.musicfit.views.activities.mainView.MainActivity;
+
+import static com.idnp.musicfit.presenter.trainingReportPresenter.NotificationTraining.ACTION_PLAY;
+import static com.idnp.musicfit.presenter.trainingReportPresenter.NotificationTraining.ACTION_STOP;
+import static com.idnp.musicfit.presenter.trainingReportPresenter.NotificationTraining.CHANNEL_ID_2;
 
 
-
-public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView, ServiceConnection {
-
-    public static boolean isBigMusicPlayerController = false;
+public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView {
 
     public static final int STOPPED = -1;
     public static final int PAUSED = 0;
@@ -55,6 +66,7 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     private int endTime;
     private Song music;
     private int selectMusic;
+    private MusicPlayerService musicPlayerService;
 
     public MusicPlayerControllerFragment(){
 
@@ -150,6 +162,9 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         }
 
         MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
+
+        Intent intent= new Intent(this.getActivity(), TrainingService.class);
+        //this.getActivity().bindService(intent,this, Context.BIND_AUTO_CREATE);
 
     }
 
@@ -269,13 +284,45 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     }
 
-    @Override
+    /*@Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-        
-    }
+        MusicPlayerService.MusicPlayerBinder binder = (MusicPlayerService.MusicPlayerBinder)iBinder;
+        musicPlayerService = binder.getService();
+    }*/
 
-    @Override
+    /*@Override
     public void onServiceDisconnected(ComponentName componentName) {
+        musicPlayerService=null;
+    }*/
+
+    public void showNotification(int playPauseButton){
+
+        /*Intent intent= new Intent(this.getContext(), MainActivity.class);
+        PendingIntent contentIntent= PendingIntent.getActivity(this.getContext(),0,intent,0);
+
+        this.trainingReportPresenter.updateDataNotificationTraining(this.isTraining);//actualizamos los datos a mostrar en la notificacion
+
+        Intent playIntent= new Intent(this.getContext(), TrainingNotificationReceiver.class).setAction(ACTION_PLAY);
+        Intent stopIntent= new Intent(this.getContext(),TrainingNotificationReceiver.class).setAction(ACTION_STOP);
+        PendingIntent playPendingIntent= PendingIntent.getBroadcast(this.getContext(),0,playIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent stopPendingIntent= PendingIntent.getBroadcast(this.getContext(),0,stopIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Bitmap picture= BitmapFactory.decodeResource(getResources(),stateTraining.getBackgroundStatus());
+        Notification trainingNotification= new NotificationCompat.Builder(this.getContext(),CHANNEL_ID_2)
+                .setSmallIcon(this.stateTraining.getBackgroundStatus())
+                .setLargeIcon(picture)
+                .setContentTitle(this.stateTraining.getStatusTitle())
+                .addAction(playPauseButton,"play_pause",playPendingIntent)
+                .addAction(R.drawable.ic_baseline_stop_circle_24,"stop",stopPendingIntent)
+                .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
+                        .setMediaSession(mediaSession.getSessionToken()))
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setContentIntent(contentIntent)
+                .setOnlyAlertOnce(true)
+                .build();
+        NotificationManager notificationManager= (NotificationManager)
+                this.getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(0,trainingNotification);*/
 
     }
 }
