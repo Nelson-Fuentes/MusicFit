@@ -9,25 +9,25 @@
          location permissions for the "MyLocation" functionality.
     -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <application
+        android:name=".models.services.trainingService.NotificationTraining"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.MusicFit"
-        android:networkSecurityConfig="@xml/network_security_config"
-        android:usesCleartextTraffic="true"
-        android:name=".presenter.trainingReportPresenter.NotificationTraining">
-
+        android:usesCleartextTraffic="true">
 
         <service
-            android:name="com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationService"
+            android:name=".models.services.authenticationService.MusicfitAuthenticationService"
             android:enabled="true"
             android:exported="true">
             <intent-filter>
@@ -39,17 +39,16 @@
                 android:resource="@xml/authenticator" /> <!-- We haven't defined this -->
         </service>
         <service
-            android:name=".models.services.trainingService.TrainingService"
-            android:enabled="true">
-        </service>
+            android:name=".models.services.trainingService.TrainingLocationIntentService"
+            android:exported="false"></service>
 
-        <!--training receiver-->
-        <receiver android:name=".models.services.trainingService.TrainingNotificationReceiver"
+        <receiver
+            android:name=".models.services.trainingService.TrainingNotificationReceiver"
             android:enabled="true">
-                <intent-filter>
-                    <action android:name="PLAY"/>
-                    <action android:name="STOP"/>
-                </intent-filter>
+            <intent-filter>
+                <action android:name="PLAY" />
+                <action android:name="STOP" />
+            </intent-filter>
         </receiver>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -61,8 +60,7 @@
         -->
         <meta-data
             android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version"/>
-
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />

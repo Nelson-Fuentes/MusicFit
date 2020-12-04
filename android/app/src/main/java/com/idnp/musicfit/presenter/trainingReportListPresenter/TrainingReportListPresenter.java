@@ -2,7 +2,8 @@ package com.idnp.musicfit.presenter.trainingReportListPresenter;
 
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Training;
-import com.idnp.musicfit.models.services.trainingService.TrainingService;
+import com.idnp.musicfit.models.services.trainingService.TrainingHelper;
+
 import com.idnp.musicfit.views.fragments.trainingReportListView.iTrainingReportListView;
 
 import java.util.ArrayList;
@@ -17,7 +18,7 @@ public class TrainingReportListPresenter implements iTrainingReportListPresenter
 
     @Override
     public void loadTrainingList(int dayStart,int monthStart, int yearStart,int dayEnd,int monthEnd, int yearEnd) {
-        ArrayList<Report> reports=TrainingService.trainingService.getTrainingList();
+        ArrayList<Report> reports= TrainingHelper.getTrainingList();
         ArrayList<Report> returnReports= new ArrayList<Report>();
 
         System.out.println("("+dayStart+","+monthStart+","+yearStart+"),("+dayEnd+","+monthEnd+","+yearEnd+")");

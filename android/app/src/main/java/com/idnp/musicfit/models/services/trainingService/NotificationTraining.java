@@ -1,4 +1,4 @@
-package com.idnp.musicfit.presenter.trainingReportPresenter;
+package com.idnp.musicfit.models.services.trainingService;
 //--------------------OK CLASS----------------
 import android.app.Application;
 import android.app.NotificationChannel;
@@ -24,6 +24,8 @@ public class NotificationTraining extends Application {
                 notificationChannel.setDescription("channel 1 description");
                 NotificationChannel notificationChannel2 = new NotificationChannel(CHANNEL_ID_2, "Channel(2)", NotificationManager.IMPORTANCE_HIGH);
                 notificationChannel2.setDescription("channel 2 description");
+
+
                 NotificationManager notificationManager= getSystemService(NotificationManager.class);
                 notificationManager.createNotificationChannel(notificationChannel);
                 notificationManager.createNotificationChannel(notificationChannel2);

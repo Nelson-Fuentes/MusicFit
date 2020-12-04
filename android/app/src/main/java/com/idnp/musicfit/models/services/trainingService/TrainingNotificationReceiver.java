@@ -13,7 +13,7 @@ public class TrainingNotificationReceiver extends BroadcastReceiver {
     public static final String ACTION_STOP="STOP";
     @Override
     public void onReceive(Context context, Intent intent) {
-        Intent newIntentService= new Intent(context,TrainingService.class);
+        /*Intent newIntentService= new Intent(context,TrainingService.class);
         if(intent.getAction()!=null)
         {
             switch (intent.getAction())
@@ -29,6 +29,6 @@ public class TrainingNotificationReceiver extends BroadcastReceiver {
                     context.startService(newIntentService);
                     break;
             }
-        }
+        }*/
     }
 }

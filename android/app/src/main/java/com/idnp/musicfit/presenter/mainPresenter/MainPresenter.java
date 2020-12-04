@@ -5,7 +5,6 @@ import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthentic
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
 import com.idnp.musicfit.models.services.musicfitPreferences.MusicfitPreferencesService;
-import com.idnp.musicfit.models.services.trainingService.TrainingService;
 import com.idnp.musicfit.models.services.userService.UserService;
 import com.idnp.musicfit.views.activities.mainView.iMainView;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
@@ -26,7 +25,7 @@ public class MainPresenter implements iMainPresenter {
         FragmentManager.fragmentManager = new FragmentManager(this.mainView.getActivityFragment());
         MusicfitAuthenticationManagerService.authenticationService = new MusicfitAuthenticationManagerService(this.mainView.getActivityFragment().getApplicationContext());
         UserService.userService = new UserService();
-        TrainingService.trainingService = new TrainingService();
+
         MusicPlayerService.musicPlayerService = new MusicPlayerService();
         ToastManager.toastManager = new ToastManager(this.mainView.getActivityFragment().getApplicationContext());
         MusicFitService.musicfitService = new MusicFitService();
