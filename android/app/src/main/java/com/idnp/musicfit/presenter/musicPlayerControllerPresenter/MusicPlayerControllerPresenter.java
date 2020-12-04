@@ -1,6 +1,7 @@
 package com.idnp.musicfit.presenter.musicPlayerControllerPresenter;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 
 import com.idnp.musicfit.models.entities.Song;
@@ -17,10 +18,10 @@ public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPre
     public static iMusicPlayerControllerPresenter musicPlayerControllerPresenter;
 
     private iMusicPlayerControllerView musicPlayerControllerView;
+    private Context context;
 
-
-    public MusicPlayerControllerPresenter(iMusicPlayerControllerView musicPlayerControllerView) {
-
+    public MusicPlayerControllerPresenter(iMusicPlayerControllerView musicPlayerControllerView,Context context) {
+        this.context=context;
         this.musicPlayerControllerView = musicPlayerControllerView;
 
     }
@@ -30,10 +31,22 @@ public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPre
     }
 
     @Override
+    public void start(){
+        if(context!=null) {
+            MusicPlayerService.context = context;
+            context.stopService(new Intent(context, MusicPlayerService.class));
+            context.startService(new Intent(context, MusicPlayerService.class));
+            this.musicPlayerControllerView.loadSelectedMusic();
+            this.musicPlayerControllerView.play();
+        }
+    }
+
+    @Override
     public void play() {
 
-        if(MusicPlayerService.musicPlayerService.getState() != PLAYED){
+        if(!MusicPlayerService.mediaPlayer.isPlaying()){
             this.musicPlayerControllerView.play();
+            MusicPlayerService.musicPlayerService.play();
         }
         else{
             pause();
@@ -49,7 +62,8 @@ public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPre
 
     @Override
     public void stop() {
-        MusicPlayerService.musicPlayerService.stop();
+
+        context.stopService(new Intent(context,MusicPlayerService.class));
         this.musicPlayerControllerView.stop();
     }
 

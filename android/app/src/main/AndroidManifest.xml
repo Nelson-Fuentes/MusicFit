@@ -26,6 +26,7 @@
         android:name=".presenter.trainingReportPresenter.NotificationTraining">
 
 
+
         <service
             android:name="com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationService"
             android:enabled="true"
@@ -40,6 +41,9 @@
         </service>
         <service
             android:name=".models.services.trainingService.TrainingService"
+            android:enabled="true">
+        </service>
+        <service android:name=".models.services.musicPlayerService.MusicPlayerService"
             android:enabled="true">
         </service>
 
