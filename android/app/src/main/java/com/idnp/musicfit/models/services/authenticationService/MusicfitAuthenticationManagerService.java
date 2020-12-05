@@ -114,6 +114,11 @@ public class MusicfitAuthenticationManagerService {
         accountManager.addAccountExplicitly(this.account, token, null);
     }
 
+    public String getCurrentUserId(){
+        if (!this.isLogged() || this.isIncognite())
+            return null;
+        return this.auth.getCurrentUser().getUid();
+    }
 
     public boolean isIncognite(){
         String accoun_token = this.accountManager.getPassword(this.account);
