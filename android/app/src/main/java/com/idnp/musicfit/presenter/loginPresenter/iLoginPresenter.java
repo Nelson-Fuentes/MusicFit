@@ -13,9 +13,11 @@ public interface iLoginPresenter {
     public void auth(String username, String password);
     public void loadRegisterView();
     public void authIncognite();
-    public void authFacebook(String username, String token);
+    public void authFacebook(String token);
     public void authGoogle(Context context, FragmentActivity fragmentActivity, GoogleApiClient.OnConnectionFailedListener onConnectionFailedListener );
     public void handleSignInResultGoogle(GoogleSignInResult result);
     public CallbackManager getFacebookCallBackManager();
     public void handleSignInSucess();
+    public void handleSignInFacebookSucess();
+    public void handleSignInGoogleSucess();
 }

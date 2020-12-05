@@ -45,7 +45,7 @@ public class UserService {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
-                            fireBase.child(task.getResult().getUser().getUid()).setValue(new_user);
+                            saveDataUser(task.getResult().getUser().getUid(), new_user);
                             auth.signOut();
                         } else {
                             ToastManager.toastManager.showToast(task.getException().getMessage());
@@ -53,5 +53,9 @@ public class UserService {
                     }
                 });
         return new_user;
+    }
+
+    public void saveDataUser(String uid, User user){
+        fireBase.child(uid).setValue(user);
     }
 }
