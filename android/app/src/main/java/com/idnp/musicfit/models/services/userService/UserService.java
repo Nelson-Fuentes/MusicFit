@@ -1,9 +1,18 @@
 package com.idnp.musicfit.models.services.userService;
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.idnp.musicfit.models.entities.User;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitResponse;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
+import com.idnp.musicfit.models.services.musicfitFirebase.MusicfitFireBase;
+import com.idnp.musicfit.views.toastManager.ToastManager;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -19,25 +28,30 @@ public class UserService {
     private static final String FIRST_NAME_LABEL = "first_name";
     private static final String LAST_NAME_LABEL = "last_name";
     private static final String EMAIL_LABEL = "email";
+    private static final String USER_PATH_FIREBASE_REALTIME = "users";
+    private DatabaseReference fireBase;
+    private FirebaseAuth auth;
 
-    public User registerUser(String username,  String firstname, String lastname, String email, String password) throws Exception {
+    public UserService(){
+        MusicfitFireBase fireBase = new MusicfitFireBase();
+        this.fireBase = fireBase.getChild(USER_PATH_FIREBASE_REALTIME);
+        this.auth = fireBase.getAuth();
+    }
 
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(USERNAME_LABEL, username);
-        jsonObject.put(PASSWORD_LABEL, password);
-        jsonObject.put(LAST_NAME_LABEL, lastname);
-        jsonObject.put(FIRST_NAME_LABEL, firstname);
-        jsonObject.put(EMAIL_LABEL, email);
-        MusicFitResponse response = MusicFitService.musicfitService.post(MusicFitService.USER_REGISTRATION_PATH, jsonObject);
-        response.throwException();
-        if (response.getRequestCode()!= HttpURLConnection.HTTP_NO_CONTENT){
-            String error_body = "";
-            JSONObject jsonError = new JSONObject(response.getBody());
-            for (Iterator<String> it = jsonError.keys(); it.hasNext(); ) {
-                String key = it.next();
-                throw  new MusicFitException(key.toUpperCase() + ": " + (new JSONArray(jsonError.getString(key)).get(0)));
-            }
-        }
-        return new User(username, firstname, lastname, email);
+    public User registerUser(String firstname, String lastname, String email, String password) throws Exception {
+        User new_user = new User(firstname, lastname);
+        this.auth.createUserWithEmailAndPassword(email, password)
+                .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                    @Override
+                    public void onComplete(@NonNull Task<AuthResult> task) {
+                        if (task.isSuccessful()){
+                            fireBase.child(task.getResult().getUser().getUid()).setValue(new_user);
+                            auth.signOut();
+                        } else {
+                            ToastManager.toastManager.showToast(task.getException().getMessage());
+                        }
+                    }
+                });
+        return new_user;
     }
 }

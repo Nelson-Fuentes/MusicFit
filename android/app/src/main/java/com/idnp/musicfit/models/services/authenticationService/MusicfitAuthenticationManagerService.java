@@ -6,17 +6,25 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitResponse;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
+import com.idnp.musicfit.models.services.musicfitFirebase.MusicfitFireBase;
 import com.idnp.musicfit.models.services.musicfitPreferences.MusicfitPreferencesService;
+import com.idnp.musicfit.presenter.loginPresenter.iLoginPresenter;
+import com.idnp.musicfit.views.toastManager.ToastManager;
 
 import org.json.JSONObject;
 import java.net.HttpURLConnection;
@@ -28,7 +36,7 @@ public class MusicfitAuthenticationManagerService {
     private static final String USERNAME_LABEL = "username";
     private static final String PASSWORD_LABEL = "password";
     public static final String PREFERENCES_FILE = "authentication";
-    public static final String PREFERENCES_TOKEN_KEY = "auth_token";
+    public static final String PREFERENCES_TOKEN_KEY = "auth_token_firebase";
     private static final String INCOGNITE_AUTH_TOKEN = "incognite_auth__token";
     private static final String GOOGLE_AUTH_TOKEN = "google_auth_token";
     private static final String FACEBOOK_AUTH_TOKEN = "facebook_auth_token";
@@ -41,8 +49,10 @@ public class MusicfitAuthenticationManagerService {
     private Account account;
     private AccountManager accountManager;
     private GoogleApiClient googleApiClient;
+    private FirebaseAuth auth;
 
     public MusicfitAuthenticationManagerService(Context context){
+        this.auth = new MusicfitFireBase().getAuth();
         this.accountManager = AccountManager.get(context);
         Account[] accounts = accountManager.getAccountsByType(ACCOUNT_TYPE);
         if (accounts.length>0){
@@ -50,24 +60,21 @@ public class MusicfitAuthenticationManagerService {
         }
     }
 
-    public  String auth(String username, String password) throws Exception {
-        JSONObject jsonObject = new JSONObject();
-        jsonObject.put(USERNAME_LABEL, username);
-        jsonObject.put(PASSWORD_LABEL, password);
-        MusicFitResponse response = MusicFitService.musicfitService.post(MusicFitService.AUTHENTICATION_PATH, jsonObject);
-        response.throwException();
-        if (response.getRequestCode()==HttpURLConnection.HTTP_OK) {
-            String token = (new JSONObject(response.getBody())).get("token").toString();
-            this.writeToken(token);
-            this.addAccountToManager(username, token);
-            return token;
-        } else if (response.getRequestCode()==HttpURLConnection.HTTP_BAD_REQUEST) {
-            throw new MusicFitException(R.string.auth_invalid);
-        } else if (response.getRequestCode() == HttpURLConnection.HTTP_SERVER_ERROR) {
-            throw new MusicFitException(R.string.server_error);
-        } else {
-            throw new MusicFitException(response.getErrorBody());
-        }
+    public  void auth(String email, String password, iLoginPresenter loginPresenter) throws Exception {
+        Task<AuthResult> task = this.auth.signInWithEmailAndPassword(email, password);
+        task.addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (task.isSuccessful()){
+                    String token =task.getResult().getUser().getUid();
+                    writeToken(token);
+                    addAccountToManager(task.getResult().getUser().getEmail(), token);
+                    loginPresenter.handleSignInSucess();
+                } else {
+                    ToastManager.toastManager.showToast(task.getException().getMessage());
+                }
+            }
+        });
     }
 
     public boolean isLogged(){
@@ -126,6 +133,9 @@ public class MusicfitAuthenticationManagerService {
     public void logout(){
         if (LoginManager.getInstance() != null){
             LoginManager.getInstance().logOut();
+        }
+        if (auth.getCurrentUser() !=null){
+            auth.signOut();
         }
         SharedPreferences preferences = MusicfitPreferencesService.musicfitPreferencesService.openSharedPreferencesFile(PREFERENCES_FILE);
         MusicfitPreferencesService.musicfitPreferencesService.removePreference(preferences, PREFERENCES_TOKEN_KEY);

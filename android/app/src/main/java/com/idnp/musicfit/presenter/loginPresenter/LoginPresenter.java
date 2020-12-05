@@ -31,6 +31,11 @@ public class LoginPresenter implements iLoginPresenter {
         return  this.callbackManager;
     }
 
+    @Override
+    public void handleSignInSucess() {
+        this.loginView.authValid();
+    }
+
     private boolean validateAuthenticationCredentials(String username, String password){
         if (username.trim().length() == 0){
             this.loginView.showError("Ingrese un nombre de usuario.");
@@ -45,8 +50,7 @@ public class LoginPresenter implements iLoginPresenter {
     public void auth(String username, String password) {
         if (this.validateAuthenticationCredentials(username, password)) {
             try {
-                MusicfitAuthenticationManagerService.authenticationService.auth(username, password);
-                this.loginView.authValid();
+                MusicfitAuthenticationManagerService.authenticationService.auth(username, password, this);
             } catch (Exception e) {
                 this.handleException(e);
             }

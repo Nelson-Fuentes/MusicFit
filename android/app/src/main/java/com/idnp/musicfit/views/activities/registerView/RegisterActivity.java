@@ -17,7 +17,6 @@ import com.idnp.musicfit.views.toastManager.ToastManager;
 public class RegisterActivity extends AppCompatActivity implements iRegisterView {
 
     private iRegisterPresenter registerPresenter;
-    private EditText usernameEditText;
     private EditText firstNameEditText;
     private EditText lastNameEditText;
     private EditText emailEditText;
@@ -35,7 +34,6 @@ public class RegisterActivity extends AppCompatActivity implements iRegisterView
     }
 
     private void loadComponentes(){
-        this.usernameEditText = (EditText) this.findViewById(R.id.username_edit_text);
         this.firstNameEditText = (EditText) this.findViewById(R.id.firstname_edit_text);
         this.lastNameEditText = (EditText) this.findViewById(R.id.lastname_edit_text);
         this.emailEditText = (EditText) this.findViewById(R.id.email_edit_text);
@@ -47,7 +45,6 @@ public class RegisterActivity extends AppCompatActivity implements iRegisterView
     public void registerUserClickListener(View view){
         this.errorTextView.setText("");
         this.registerPresenter.registerUser(
-                this.usernameEditText.getText().toString(),
                 this.firstNameEditText.getText().toString(),
                 this.lastNameEditText.getText().toString(),
                 this.emailEditText.getText().toString(),
@@ -71,7 +68,7 @@ public class RegisterActivity extends AppCompatActivity implements iRegisterView
     public void successfullyRegister() {
         ToastManager.toastManager.showToast(R.string.user_registered);
         Intent intent = new Intent();
-        intent.putExtra(AuthenticationConstant.USERNAME_LABEL, this.usernameEditText.getText().toString());
+        intent.putExtra(AuthenticationConstant.USERNAME_LABEL, this.emailEditText.getText().toString());
         intent.putExtra(AuthenticationConstant.PASSWORD_LABEL, this.passwordEditText.getText().toString());
         this.setResult(RESULT_OK, intent);
         this.finish();

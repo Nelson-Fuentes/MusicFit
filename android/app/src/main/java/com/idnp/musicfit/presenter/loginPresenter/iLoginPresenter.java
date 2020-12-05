@@ -17,4 +17,5 @@ public interface iLoginPresenter {
     public void authGoogle(Context context, FragmentActivity fragmentActivity, GoogleApiClient.OnConnectionFailedListener onConnectionFailedListener );
     public void handleSignInResultGoogle(GoogleSignInResult result);
     public CallbackManager getFacebookCallBackManager();
+    public void handleSignInSucess();
 }
