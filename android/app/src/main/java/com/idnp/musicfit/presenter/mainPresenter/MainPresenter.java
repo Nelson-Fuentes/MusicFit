@@ -43,6 +43,10 @@ public class MainPresenter implements iMainPresenter {
          */
         if (!MusicfitAuthenticationManagerService.authenticationService.isLogged()){
             this.mainView.showNoOpenSessionFoundAction();
+        } else {
+            this.mainView.displayUserData(
+                    MusicfitAuthenticationManagerService.authenticationService.getCurrentUserDisplayName(),
+                    MusicfitAuthenticationManagerService.authenticationService.getCurrentUserEmail());
         }
     }
 

@@ -120,6 +120,20 @@ public class MusicfitAuthenticationManagerService {
         return this.auth.getCurrentUser().getUid();
     }
 
+    public String getCurrentUserEmail(){
+        if (!this.isLogged() || this.isIncognite())
+            return null;
+        return this.auth.getCurrentUser().getEmail();
+    }
+
+    public String getCurrentUserDisplayName(){
+        if (!this.isLogged() || this.isIncognite())
+            return null;
+        return this.auth.getCurrentUser().getDisplayName();
+    }
+
+
+
     public boolean isIncognite(){
         String accoun_token = this.accountManager.getPassword(this.account);
         return INCOGNITE_AUTH_TOKEN.equals(accoun_token);

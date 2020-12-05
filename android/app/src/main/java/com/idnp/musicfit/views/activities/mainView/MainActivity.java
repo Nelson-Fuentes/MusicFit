@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
@@ -30,6 +31,8 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
 
     private AppBarConfiguration mAppBarConfiguration;
     private iMainPresenter mainPresenter;
+    private TextView email_textView;
+    private TextView displayname_textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,6 +104,20 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
 
     public void logout(){
         this.recreate();
+    }
+
+    @Override
+    public void displayUserData(String displayname, String email) {
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        View headerView = navigationView.getHeaderView(0);
+        this.email_textView = (TextView) headerView.findViewById(R.id.current_user_email);
+        this.displayname_textView = (TextView) headerView.findViewById(R.id.current_user_displayname);
+        if (email == null)
+            email = "";
+        if (displayname == null)
+            displayname = "";
+        this.email_textView.setText(email);
+        this.displayname_textView.setText(displayname);
     }
 
 }

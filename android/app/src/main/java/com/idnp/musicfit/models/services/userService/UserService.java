@@ -6,6 +6,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.UserProfileChangeRequest;
 import com.google.firebase.database.DatabaseReference;
 import com.idnp.musicfit.models.entities.User;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
@@ -46,6 +47,9 @@ public class UserService {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()){
                             saveDataUser(task.getResult().getUser().getUid(), new_user);
+                            UserProfileChangeRequest profileUpdates = new UserProfileChangeRequest.Builder()
+                                    .setDisplayName(firstname + " " + lastname).build();
+                            task.getResult().getUser().updateProfile(profileUpdates);
                             auth.signOut();
                         } else {
                             ToastManager.toastManager.showToast(task.getException().getMessage());
@@ -57,5 +61,9 @@ public class UserService {
 
     public void saveDataUser(String uid, User user){
         fireBase.child(uid).setValue(user);
+    }
+
+    public void getDataUser(String uid){
+
     }
 }
