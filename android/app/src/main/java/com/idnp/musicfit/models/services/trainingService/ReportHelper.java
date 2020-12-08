@@ -39,20 +39,23 @@ public class ReportHelper {
     //-------------------------             KM          -------------------------------------------
     //---------------------------------------------------------------------------------------------
     public static void setKmTrainingShared(Context context,Location location){
-        String [] lastLocation=TrainingHelper.getSavedLastLocationUpdateShared(context).split("/");
-        float lastKm= ReportHelper.getKmTrainingShared(context);
-        PreferenceManager.getDefaultSharedPreferences(context)
-                .edit()
-                .putFloat(
-                        KEY_KM_TRAINING_SHARED,
-                        lastKm+ReportHelper.getDistanceKM(
-                                Double.parseDouble(lastLocation[0]),
-                                Double.parseDouble(lastLocation[1]),
-                                location.getLatitude(),
-                                location.getLongitude()
-                        )
-                )
-                .apply();
+        String lastPosition=TrainingHelper.getSavedLastLocationUpdateShared(context);
+        if(!lastPosition.equals(TrainingHelper.NONE_LAST_LOCATION)){
+            String[] lastLocation=lastPosition.split("/");
+            float lastKm= ReportHelper.getKmTrainingShared(context);
+            PreferenceManager.getDefaultSharedPreferences(context)
+                    .edit()
+                    .putFloat(
+                            KEY_KM_TRAINING_SHARED,
+                            lastKm+ReportHelper.getDistanceKM(
+                                    Double.parseDouble(lastLocation[0]),
+                                    Double.parseDouble(lastLocation[1]),
+                                    location.getLatitude(),
+                                    location.getLongitude()
+                            )
+                    )
+                    .apply();
+        }
     }
 
     public static float getKmTrainingShared(Context context){
@@ -239,12 +242,14 @@ public class ReportHelper {
     }
 
     public static void pauseTrainingVarsShared(Context context){
-
-        String []location=TrainingHelper.getSavedLastLocationUpdateShared(context).split("/");
-        double lat=Double.parseDouble(location[0]);
-        double lng=Double.parseDouble(location[1]);
-        TrainingHelper.saveLastLocationDB(Ubication.BREAK_POINT,context,new LatLng(lat,lng));
-        TrainingHelper.setLocationRequestStatus(context,TrainingHelper.NO_TRAINING);
+        String position=TrainingHelper.getSavedLastLocationUpdateShared(context);
+        if(!position.equals(TrainingHelper.NONE_LAST_LOCATION)){
+            String []location=position.split("/");
+            double lat=Double.parseDouble(location[0]);
+            double lng=Double.parseDouble(location[1]);
+            TrainingHelper.saveLastLocationDB(Ubication.BREAK_POINT,context,new LatLng(lat,lng));
+            TrainingHelper.setLocationRequestStatus(context,TrainingHelper.NO_TRAINING);
+        }
     }
     public static  void stopTrainingVarsShared(Context context,String location){
         ReportHelper.resetStartIdTrainingShared(context);
