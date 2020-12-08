@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.material.navigation.NavigationView;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
@@ -31,6 +33,9 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
+        AppEventsLogger.activateApp(this.getApplication());
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 

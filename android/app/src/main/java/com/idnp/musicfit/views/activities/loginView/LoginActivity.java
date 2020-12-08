@@ -11,8 +11,12 @@ import android.text.SpannableStringBuilder;
 import android.text.style.ForegroundColorSpan;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.login.LoginManager;
+import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.auth.api.signin.GoogleSignInResult;
@@ -22,6 +26,7 @@ import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.services.authenticationService.AuthenticationConstant;
 import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
 import com.idnp.musicfit.presenter.loginPresenter.LoginPresenter;
+import com.idnp.musicfit.presenter.loginPresenter.MusicfitFacebookAuthCallBack;
 import com.idnp.musicfit.presenter.loginPresenter.iLoginPresenter;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
 import com.idnp.musicfit.views.activities.registerView.RegisterActivity;
@@ -35,6 +40,7 @@ public class LoginActivity extends AppCompatActivity implements iLoginView, Goog
     private EditText usernameEditView;
     private EditText passwordEditView;
     private GoogleApiClient googleApiClient;
+    private LoginButton facebookButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +70,7 @@ public class LoginActivity extends AppCompatActivity implements iLoginView, Goog
                 this.loginPresenter.auth(username, password);
             }
         }
+        this.loginPresenter.getFacebookCallBackManager().onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == MusicfitAuthenticationManagerService.GOOGLE_AUTH_RESULT) {
             GoogleSignInResult result = Auth.GoogleSignInApi.getSignInResultFromIntent(data);
@@ -99,6 +106,9 @@ public class LoginActivity extends AppCompatActivity implements iLoginView, Goog
         this.usernameEditView = (EditText) this.findViewById(R.id.username_edit_text);
         this.passwordEditView = (EditText) this.findViewById(R.id.password_edit_text);
         this.errorTextView = (TextView) this.findViewById(R.id.error_text_view);
+        this.facebookButton = (LoginButton) this.findViewById(R.id.facebookButton);
+        this.facebookButton.registerCallback(this.loginPresenter.getFacebookCallBackManager(), new MusicfitFacebookAuthCallBack(this.loginPresenter));
+
     }
 
     private void transformRegisterTexViewToBicolor(TextView textView){
@@ -154,7 +164,7 @@ public class LoginActivity extends AppCompatActivity implements iLoginView, Goog
     }
 
     public void authFacebook(View view){
-        this.loginPresenter.authFacebook();
+//        this.loginPresenter.authFacebook();
     }
 
     public void authGoogle(View view){

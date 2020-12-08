@@ -1,6 +1,8 @@
 package com.idnp.musicfit.presenter.mainPresenter;
 
 
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
@@ -48,4 +50,5 @@ public class MainPresenter implements iMainPresenter {
         MusicfitAuthenticationManagerService.authenticationService.logout();
         this.mainView.logout();
     }
+
 }

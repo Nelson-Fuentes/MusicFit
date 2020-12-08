@@ -16,6 +16,7 @@ import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Song;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
+import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.views.fragments.musicPlayerControllerView.MusicPlayerControllerFragment;
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
@@ -50,7 +51,11 @@ public class MusicAdapter extends RecyclerView.Adapter<MusicAdapter.MusicHolder>
             @Override
             public void onClick(View view) {
                 MusicPlayerService.musicPlayerService.position=position;
-                FragmentManager.fragmentManager.changeFragment( new MusicPlayerControllerFragment(position));
+                MusicPlayerControllerFragment musicPlayerControllerFragment=new MusicPlayerControllerFragment(position);
+                if(MusicPlayerService.mediaPlayer.isPlaying()){
+                    MusicPlayerService.mediaPlayer.stop();
+                }
+                FragmentManager.fragmentManager.changeFragment( musicPlayerControllerFragment);
 
             }
         });

@@ -117,47 +117,7 @@
                 app:layout_constraintTop_toTopOf="parent" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
-        <androidx.constraintlayout.widget.ConstraintLayout
-            android:id="@+id/cl_1"
-            android:layout_width="60dp"
-            android:layout_height="60dp"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/background_report_view_bar"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_end"
-            >
 
-            <TextView
-                android:id="@+id/label_duration"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="center_horizontal"
-                android:text="@string/training_report_view_label_duration"
-                android:textSize="11sp"
-                android:textColor="@color/background_report_list"
-                android:layout_marginBottom="8dp"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                />
-
-            <TextView
-                android:id="@+id/report_view_duration"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-
-                android:text="20"
-                android:textSize="24dp"
-                android:gravity="center"
-                android:textColor="@color/background_report_list"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:layout_constraintBottom_toTopOf="@id/label_duration"
-                />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/cl_2"
             android:layout_width="60dp"
@@ -167,7 +127,7 @@
             android:background="@drawable/background_report_view_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/cl_1"
+            app:layout_constraintTop_toBottomOf="@id/cl_end"
             >
 
             <TextView
@@ -190,7 +150,7 @@
                 android:layout_height="wrap_content"
 
                 android:text="25"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:gravity="center"
                 android:textColor="@color/background_report_list"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -227,12 +187,12 @@
                 />
 
             <TextView
-                android:id="@+id/report_view_kcal_bar"
+                android:id="@+id/report_view_kcal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
                 android:text="10"
-                android:textSize="24dp"
+                android:textSize="24sp"
                 android:gravity="center"
                 android:textColor="@color/background_report_list"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -242,6 +202,132 @@
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_11"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_report_view_bar_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_3"
+            >
+
+            <TextView
+                android:id="@+id/label_hour"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/training_report_view_label_duration_hour"
+                android:textSize="11sp"
+                android:textColor="@color/background_report_list"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/report_view_hour"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="2"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:textColor="@color/background_report_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/label_hour"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_12"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_report_view_bar_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_11"
+            >
+
+            <TextView
+                android:id="@+id/label_min"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/training_report_view_label_duration_min"
+                android:textSize="11sp"
+                android:textColor="@color/background_report_list"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/report_view_min"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="12"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:textColor="@color/background_report_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/label_min"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/cl_13"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/background_report_view_bar_time"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/cl_12"
+            >
+
+            <TextView
+                android:id="@+id/label_sec"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center_horizontal"
+                android:text="@string/training_report_view_label_duration_sec"
+                android:textSize="11sp"
+                android:textColor="@color/background_report_list"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                />
+
+            <TextView
+                android:id="@+id/report_view_sec"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+
+                android:text="51"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:textColor="@color/background_report_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toTopOf="@id/label_sec"
+                />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

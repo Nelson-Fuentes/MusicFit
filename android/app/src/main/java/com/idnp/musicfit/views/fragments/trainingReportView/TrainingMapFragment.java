@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
@@ -50,6 +51,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.maps.android.PolyUtil;
 import com.idnp.musicfit.R;
 
+import com.idnp.musicfit.models.entities.Report;
+import com.idnp.musicfit.models.entities.Training;
+import com.idnp.musicfit.models.entities.Ubication;
+import com.idnp.musicfit.models.services.trainingService.DBManager;
+import com.idnp.musicfit.models.services.trainingService.ReportHelper;
 import com.idnp.musicfit.models.services.trainingService.TrainingHelper;
 import com.idnp.musicfit.views.toastManager.ToastManager;
 
@@ -58,6 +64,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 //para la animación: https://www.youtube.com/watch?v=JLIFqqnSNmg
@@ -68,6 +75,13 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
     private int ACCESS_LOCATION_REQUEST_CODE = 10001;
     private boolean training=false;
     Marker userLocationMarker;
+
+    private Report myReport;
+
+    public TrainingMapFragment(Report report){
+        myReport=report;
+    }
+
 
     //------------------------para habilitar la localización de usuario
     private void enableUserLocation() {
@@ -105,6 +119,9 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_LOCATION_REQUEST_CODE);
                 }
             }
+
+            loadMapTrainingProcess(getContext());
+
         }
     };
     //------------------ método para mover el marker junto con el cambio de posición de usuario
@@ -121,7 +138,15 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
             userLocationMarker.setPosition(latLng);//para actualizar la posición
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));//para posicionar la cámara en el usuario
         }
+    }
 
+    private void addCustomMarker(LatLng latLng, int marker,String title){
+        MarkerOptions markerOptions= new MarkerOptions();
+        markerOptions.position(latLng);//para actualizar la posición
+        markerOptions.title(title);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(marker));//para agregar el icono al marker
+        markerOptions.anchor((float)0.5,(float)0.5);
+        map.addMarker(markerOptions);
     }
     @Override
     public void onStart(){
@@ -168,24 +193,69 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-        if(key.equals(TrainingHelper.IS_TRAINING_SHARED_KEY)){
-            training=true;
-        }
-        else if(key.equals(TrainingHelper.KEY_LOCATION_SHARED_RESULT)){
-            String position= TrainingHelper.getSavedLastLocationUpdate(getContext());
-            if(!position.equals(TrainingHelper.NONE_POSITION)){
-                String [] pos=position.split("/");
-                double lat= Double.parseDouble(pos[0]);
-                double lng= Double.parseDouble(pos[1]);
-                if(myPos!=null && training){
-                    drawPolyline(lat,lng);
-                }
-                this.myPos=new LatLng(lat,lng);
-                zoomToUserLocation();
-                setUserLocationMarker(this.myPos);
-            }
-        }
 
+                if(key.equals(TrainingHelper.KEY_IS_TRAINING_SHARED)){
+                    training=TrainingHelper.getLocationRequestStatus(getContext());
+                }
+                else if(key.equals(TrainingHelper.KEY_LAST_LOCATION_SHARED)){
+                    String position= TrainingHelper.getSavedLastLocationUpdateShared(getContext());
+                    if((!position.equals(TrainingHelper.NONE_LAST_LOCATION))){
+
+                        String [] pos=position.split("/");
+                        double lat= Double.parseDouble(pos[0]);
+                        double lng= Double.parseDouble(pos[1]);
+                        if(myPos!=null && training){
+                            drawPolyline(lat,lng);
+                        }
+                        myPos=new LatLng(lat,lng);
+                        zoomToUserLocation();
+                        setUserLocationMarker(myPos);
+
+                    }
+                }else if(key.equals(ReportHelper.KEY_START_POSITION_TRAINING_SHARED)){
+                    String position=ReportHelper.getStartPositionTrainingShared(getContext());
+                    if(!position.equals(ReportHelper.NONE_START_POSITION_TRAINING)){
+                        String [] pos=position.split("/");
+                        double lat= Double.parseDouble(pos[0]);
+                        double lng= Double.parseDouble(pos[1]);
+                        addCustomMarker(new LatLng(lat,lng),R.drawable.icon_start_training,"start Training");
+                    }
+                }
+                else if(key.equals(ReportHelper.KEY_FINAL_POSITION_TRAINING_SHARED)){
+                    String position=ReportHelper.getFinalPositionTrainingShared(getContext());
+                    if(!position.equals(ReportHelper.NONE_FINAL_POSITION_TRAINING)){
+                        String [] pos=position.split("/");
+                        double lat= Double.parseDouble(pos[0]);
+                        double lng= Double.parseDouble(pos[1]);
+                        addCustomMarker(new LatLng(lat,lng),R.drawable.icon_end_training,"End Training");
+                    }
+                }
 
     }
+    private void loadMapTrainingProcess(Context context){
+                    String key= ReportHelper.getStartIdTrainingShared(context);
+                    if(!key.equals(ReportHelper.NONE_START_ID)){
+
+                        ArrayList<Ubication> locations=TrainingHelper.getLocationsReport(context,key);
+                        if(locations.size()>0)
+                        addCustomMarker(locations.get(0).getUbicacion(),R.drawable.icon_start_training,"Start Training");
+                        ToastManager.toastManager.showToast(""+locations.size());
+                        for(int i=1;i<locations.size();i++){
+                            map.addPolyline((new PolylineOptions())
+                                    .add(
+                                            locations.get(i-1).getUbicacion(),
+                                            locations.get(i).getUbicacion()
+                                    ).width(8).color(Color.CYAN));
+                        }
+                    }
+                    if(myPos!=null){
+                        zoomToUserLocation();
+                    }
+    }
+    private void loadMapTrainingReport(Context context){
+        if(myReport!=null){
+            //--------------- esto es para jalar datos de la nube de las ubicaciones de un reporte en específico
+        }
+    }
+
 }

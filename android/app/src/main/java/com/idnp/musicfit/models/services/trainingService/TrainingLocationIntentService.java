@@ -11,7 +11,10 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.maps.model.LatLng;
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.entities.Report;
+import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.views.toastManager.ToastManager;
 
 import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.CHANNEL_ID_1;
@@ -33,12 +36,15 @@ public class TrainingLocationIntentService extends IntentService {
                 double latitude = locationResult.getLastLocation().getLatitude();
                 double longitude = locationResult.getLastLocation().getLongitude();
 
-                Location locations=locationResult.getLastLocation();//---------TAMBIEN  se puede obtener solo una ubicación
-                TrainingHelper helper= new TrainingHelper(getApplicationContext(),locations);
-                helper.showTrainingNotification();//muestra la notificación de entrenamiento
-                helper.saveLastLocationUpdate();//guardar en shared preferences la posición
-//                goToLocation(latitude,longitude);
-//                showMarker(latitude,longitude);
+                Location location=locationResult.getLastLocation();//---------TAMBIEN  se puede obtener solo una ubicación
+
+                            //TrainingHelper.showTrainingNotification(getApplicationContext());//muestra la notificación de entrenamiento
+                            TrainingHelper.saveLastLocationDB(Ubication.NONE_BREAK_POINT,getApplicationContext(),new LatLng(location.getLatitude(),location.getLongitude()));
+                            ReportHelper.setKmTrainingShared(getApplicationContext(),location);
+                            TrainingHelper.saveLastLocationUpdateShared(getApplicationContext(),location);//guardar en shared preferences la posición
+
+
+
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
                         @Override
@@ -55,7 +61,7 @@ public class TrainingLocationIntentService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         stopForeground(false);
-        //ToastManager.toastManager.showToast("Destroy Service");
+       // ToastManager.toastManager.showToast("Destroy Service");
 
     }
     private Notification getNotification() {

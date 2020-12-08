@@ -13,34 +13,36 @@ import androidx.core.app.TaskStackBuilder;
 import com.google.android.gms.maps.model.LatLng;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
+import com.idnp.musicfit.models.entities.Training;
+import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
 import com.idnp.musicfit.views.fragments.trainingReportView.iTrainingReportView;
+import com.idnp.musicfit.views.toastManager.ToastManager;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 public class TrainingHelper {
 
-    public static final String KEY_LOCATION_SHARED_RESULT = "key-location-training";
-    public static final String IS_TRAINING_SHARED_KEY="key - shared - request";
-    public static final String KEY_TRAINING_ID_SHARED="key - shared - training- id";
-    public static final String NONE_TRAINING_VALUE="none";
-    public static final String NONE_POSITION="no-position";
+    public static final String KEY_LAST_LOCATION_SHARED = "key-location-training";
+    public static final String KEY_IS_TRAINING_SHARED="key - shared - request";
+    public static final String KEY_COUNT_POSITION_TRAINING_SHARED="count - position - training";
 
-    private Context mContext;
-    private Location mLocation;
 
-    public TrainingHelper(Context context,Location location){
-        this.mContext=context;
-        this.mLocation=location;
-    }
+    public static final boolean NO_TRAINING=false;
+    public static final boolean TRAINING=true;
+    public static final String NONE_LAST_LOCATION="no-position";
+    public static final int INIT_COUNT_POSITION=0;
 
-    public String getLocationResultText(){//Un string con todas las ubicaciones detectadas concatenadas
+
+
+    private static String getLocationResultText(Location mLocation){//Un string con la última ubicación detectada
         if(mLocation==null){
-            return  NONE_POSITION;
+            return  NONE_LAST_LOCATION;
         }else{
             StringBuilder sb= new StringBuilder();
                 sb.append(mLocation.getLatitude());
@@ -49,11 +51,12 @@ public class TrainingHelper {
             return sb.toString();
         }
     }
-    private CharSequence getLocationResultTitle(){
+
+    private static CharSequence getLocationResultTitle(){
         String result="Location ";
         return result+":"+ DateFormat.getDateInstance().format(new Date());
     }
-    public void showTrainingNotification(){
+    public static void  showTrainingNotification(Context mContext){
         Intent notificationIntent = new Intent(mContext, TrainingReportFragment.class);
         TaskStackBuilder stackBuilder= TaskStackBuilder.create(mContext);
         stackBuilder.addParentStack(MainActivity.class);
@@ -64,65 +67,102 @@ public class TrainingHelper {
         NotificationCompat.Builder noficationBuilder=null;
         noficationBuilder= new NotificationCompat.Builder(mContext,NotificationTraining.CHANNEL_ID_1)
                 .setContentTitle(getLocationResultTitle())
-                .setContentText(getLocationResultText())
+                .setContentText("You training starts")
                 .setSmallIcon(R.drawable.rp_icon_running)
                 .setAutoCancel(true)
                 .setContentIntent(pendingIntent);
-        getNotificationManager().notify(0,noficationBuilder.build());
+        getNotificationManager(mContext).notify(0,noficationBuilder.build());
     }
-    private  NotificationManager getNotificationManager(){
+    private static NotificationManager getNotificationManager(Context mContext){
         NotificationManager manager = (NotificationManager)mContext.getSystemService(Context.NOTIFICATION_SERVICE);
         return manager;
     }
-    public void saveTrainingPositionDB(){
-        LatLng latLng= new LatLng(mLocation.getLatitude(),mLocation.getLongitude());//cambiar por ubicación
+
+    public static void saveLastLocationDB(int breakPointStatus,Context mContext,LatLng mLocation){
         if(TrainingHelper.getLocationRequestStatus(mContext)){
-            if(!TrainingHelper.getTrainingStartedRequestId(mContext).equals(NONE_TRAINING_VALUE)){
-                //se puede guardar en sqlite
+            String idTrainingReport=ReportHelper.getStartIdTrainingShared(mContext);
+            if(!idTrainingReport.equals(ReportHelper.NONE_START_ID)){
+
+                ToastManager.toastManager.showToast("saving data");
+                int countPosition=TrainingHelper.getCountPositionsTrainingReport(mContext);
+                DBManager dbManager = new DBManager(mContext);
+                dbManager.open();
+                dbManager.insertUbication(new Ubication(
+                        idTrainingReport,
+                        countPosition,
+                        mLocation,
+                        breakPointStatus));
+                TrainingHelper.setCountPositionsTrainingReport(mContext,countPosition+1);
+                dbManager.close();
             }
         }
     }
-    public static void saveStartTrainingDB(Report report){//---------- guarda en la BD el objeto Report
 
-    }
-    public static void saveEndTrainingDB(Report report){//---------- guarda en la BD el objeto Report
-
-    }
+    //-----------------------------------------------------------------------------------------------
+    //--------------------               IS TRAINING                  ------------------------------
+    //-----------------------------------------------------------------------------------------------
 
     public static boolean getLocationRequestStatus(Context context){
        return PreferenceManager.getDefaultSharedPreferences(context)
-                .getBoolean(IS_TRAINING_SHARED_KEY,false);
+                .getBoolean(KEY_IS_TRAINING_SHARED, TrainingHelper.NO_TRAINING);
     }
     public static  void setLocationRequestStatus(Context context, boolean isTraining){
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putBoolean(IS_TRAINING_SHARED_KEY,isTraining)
+                .putBoolean(KEY_IS_TRAINING_SHARED,isTraining)
                 .apply();
     }
-    public static String getTrainingStartedRequestId(Context context){
+
+    //-----------------------------------------------------------------------------------------------
+    //--------------------       COUNT LOCATIONS TO SAVE IN ORDER        ------------------------------
+    //-----------------------------------------------------------------------------------------------
+    public static int getCountPositionsTrainingReport(Context context){
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(KEY_TRAINING_ID_SHARED,NONE_TRAINING_VALUE);
+                .getInt(KEY_COUNT_POSITION_TRAINING_SHARED,INIT_COUNT_POSITION);
     }
-    public static  void setTrainingStartedRequestId(Context context, String id){
+    public static void setCountPositionsTrainingReport(Context context, int count){
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
-                .putString(KEY_TRAINING_ID_SHARED,id)
+                .putInt(KEY_COUNT_POSITION_TRAINING_SHARED,count)
                 .apply();
     }
-    public void saveLastLocationUpdate(){
+    //-----------------------------------------------------------------------------------------------
+    //--------------------          SAVE LAST LOCATION UPDATE          ------------------------------
+    //-----------------------------------------------------------------------------------------------
+
+    public static void saveLastLocationUpdateShared(Context mContext,Location mLocation){//----------------------------------------------------------ok
+        if(ReportHelper.getStartPositionTrainingShared(mContext).equals(ReportHelper.NONE_START_POSITION_TRAINING))
+        {
+            ReportHelper.setStartPositionTrainingShared(mContext, ""+mLocation.getLatitude()+"/"+mLocation.getLongitude());
+        }
         if(TrainingHelper.getLocationRequestStatus(mContext)){
             PreferenceManager.getDefaultSharedPreferences(mContext)
                     .edit()
-                    .putString(KEY_LOCATION_SHARED_RESULT,getLocationResultText())
+                    .putString(KEY_LAST_LOCATION_SHARED,getLocationResultText(mLocation))
                     .apply();
         }
-
-
     }
-    public static String getSavedLastLocationUpdate(Context context){
+    public static String getSavedLastLocationUpdateShared(Context context){//------------------------------ok
         return PreferenceManager.getDefaultSharedPreferences(context)
-                .getString(KEY_LOCATION_SHARED_RESULT,NONE_POSITION);
+                .getString(KEY_LAST_LOCATION_SHARED,NONE_LAST_LOCATION);
     }
+
+
+    public static String getDateAndTime(){
+        Calendar cal= Calendar.getInstance();
+        int day=cal.get(Calendar.DAY_OF_MONTH);
+        int month=cal.get(Calendar.MONTH)+1;
+        int year=cal.get(Calendar.YEAR);
+        Date time=cal.getTime();
+        double sec= Math.ceil(Math.random());
+        double min= Math.ceil(Math.random());
+        double hour= Math.ceil(Math.random());
+//        String sec= DateFormat.getDateInstance(DateFormat.SECOND_FIELD).format(time);
+//        String min= DateFormat.getDateInstance(DateFormat.MINUTE_FIELD).format(time);
+//        String hour= DateFormat.getDateInstance(DateFormat.HOUR1_FIELD).format(time);
+        return ""+year+"/"+month+"/"+day+"/"+hour+"/"+min+"/"+sec;
+    }
+
     public static ArrayList<Report> getTrainingList(){
         //obtener la lista de entrenamientos desde la base de datos en nube
 
@@ -153,8 +193,22 @@ public class TrainingHelper {
         trainings.add(nuevo5);
         trainings.add(nuevo6);
         trainings.add(nuevo7);
-
         return  trainings;
+    }
+    //-----------getters----------------------------------
+    public static ArrayList<Ubication> getLocationsReport(Context context, String idReport){
+        DBManager dbManager= new DBManager(context);
+        dbManager.open();
+        ArrayList<Ubication> ret=dbManager.getUbications(idReport);
+        dbManager.close();
+        return ret;
+    }
+    public static ArrayList<Report> getReports(Context context){
+        DBManager dbManager= new DBManager(context);
+        dbManager.open();
+        ArrayList<Report> ret=dbManager.getReports();
+        dbManager.close();
+        return ret;
     }
 
 }

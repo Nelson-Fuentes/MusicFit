@@ -24,6 +24,7 @@ import com.idnp.musicfit.presenter.trainingReportListPresenter.TrainingReportLis
 import com.idnp.musicfit.presenter.trainingReportListPresenter.iTrainingReportListPresenter;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -65,6 +66,7 @@ public class TrainingReportListFragment extends Fragment implements iTrainingRep
     final int day=cal.get(Calendar.DAY_OF_MONTH);
     final int month=cal.get(Calendar.MONTH);
     final int year=cal.get(Calendar.YEAR);
+
     //evento de click al date picker inicial
     View.OnClickListener onClickDateIni= new View.OnClickListener(){
         @Override

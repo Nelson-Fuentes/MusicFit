@@ -18,7 +18,7 @@ public class Report {
     private int durationMin;
     private int durationSec;
 
-    private boolean isEnd=false;//si se terminó el entrenamiento
+    private int isEnd=0;//si se terminó el entrenamiento // 0 - false 1 - true
     private LatLng startP;//--
     private LatLng endP;
     private String ID;//--
@@ -116,11 +116,11 @@ public class Report {
         this.durationSec = durationSec;
     }
 
-    public boolean isEnd() {
+    public int isEnd() {
         return isEnd;
     }
 
-    public void setEnd(boolean end) {
+    public void setEnd(int end) {
         isEnd = end;
     }
 
@@ -172,5 +172,8 @@ public class Report {
     }
     public void stop(){
 
+    }
+    public String toString(){
+        return "ID: "+getID()+ " - START DAY: "+getStartDay()+ " - START MONTH: "+getStartMonth();
     }
 }

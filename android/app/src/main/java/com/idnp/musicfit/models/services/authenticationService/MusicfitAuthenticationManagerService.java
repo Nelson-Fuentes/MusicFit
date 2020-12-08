@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 
 import androidx.fragment.app.FragmentActivity;
 
+import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -101,8 +102,9 @@ public class MusicfitAuthenticationManagerService {
         this.addAccountToManager(INCOGNITE_AUTH_USERNAME, INCOGNITE_AUTH_TOKEN);
         return INCOGNITE_AUTH_TOKEN;
     }
-    public boolean authenticationFacebook(){
-        this.writeToken(FACEBOOK_AUTH_TOKEN);
+    public boolean authenticationFacebook(String facebook_username, String facebook_token){
+        this.writeToken(facebook_token);
+        this.addAccountToManager(facebook_username, facebook_token);
         return true;
     }
 
@@ -122,6 +124,9 @@ public class MusicfitAuthenticationManagerService {
     }
 
     public void logout(){
+        if (LoginManager.getInstance() != null){
+            LoginManager.getInstance().logOut();
+        }
         SharedPreferences preferences = MusicfitPreferencesService.musicfitPreferencesService.openSharedPreferencesFile(PREFERENCES_FILE);
         MusicfitPreferencesService.musicfitPreferencesService.removePreference(preferences, PREFERENCES_TOKEN_KEY);
         this.accountManager.removeAccount(this.account, null, null);

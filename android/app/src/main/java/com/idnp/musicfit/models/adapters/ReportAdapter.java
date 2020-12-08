@@ -54,7 +54,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportHold
 
         String startPlaceName="";
         String endPlaceName="";
-        try {
+        /*try {
             List<Address> addresses = geocoder.getFromLocation(report.getStartP().latitude, report.getStartP().longitude, 1);
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
@@ -71,7 +71,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportHold
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }
+        }*/
         holder.startplace.setText(startPlaceName);
         holder.endplace.setText(endPlaceName);
 

@@ -44,11 +44,17 @@
     <string name="auth_sucess">Credendenciales valdiades ¡Bienvenid@!.</string>
     <string name="report_list_filter_label_from">Desde</string>
     <string name="report_list_filter_label_to">Hasta</string>
-    <string name="training_report_view_label_duration">Duración</string>
-    <string name="training_report_view_label_kilometros">KMs</string>
+    <string name="training_report_view_label_duration_sec">Sec</string>
+    <string name="training_report_view_label_duration_min">Min</string>
+    <string name="training_report_view_label_duration_hour">Hour</string>
+    <string name="training_report_view_label_kilometros">KM</string>
     <string name="training_report_view_label_kilocalorias">KCal</string>
     <string name="login">Iniciar sesión</string>
     <string name="register">Registrarse</string>
     <string name="google_conection_failed">Conexión con Google fallo</string>
     <string name="google_singin_failed">Inicio de Sesión con Google Fallo</string>
+    <string name="facebook_app_id">414691896568072</string>
+    <string name="facebook_login_cancelled">Inicio de sesión con Facebook cancelado</string>
+    <string name="facebook_login_error">No se pudo iniciar sesión con Facebook</string>
+
 </resources>
