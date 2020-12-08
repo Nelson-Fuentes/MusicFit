@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.location.Location;
 import android.preference.PreferenceManager;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
@@ -82,13 +83,13 @@ public class TrainingHelper {
         if(TrainingHelper.getLocationRequestStatus(mContext)){
             String idTrainingReport=ReportHelper.getStartIdTrainingShared(mContext);
             if(!idTrainingReport.equals(ReportHelper.NONE_START_ID)){
-
-                ToastManager.toastManager.showToast("saving data");
+                String id=ReportHelper.refactorId(idTrainingReport);
+                Log.d("example","saving data with id: "+id);
                 int countPosition=TrainingHelper.getCountPositionsTrainingReport(mContext);
                 DBManager dbManager = new DBManager(mContext);
                 dbManager.open();
                 dbManager.insertUbication(new Ubication(
-                        idTrainingReport,
+                        id,
                         countPosition,
                         mLocation,
                         breakPointStatus));
@@ -131,8 +132,10 @@ public class TrainingHelper {
     //-----------------------------------------------------------------------------------------------
 
     public static void saveLastLocationUpdateShared(Context mContext,Location mLocation){//----------------------------------------------------------ok
+
         if(ReportHelper.getStartPositionTrainingShared(mContext).equals(ReportHelper.NONE_START_POSITION_TRAINING))
         {
+
             ReportHelper.setStartPositionTrainingShared(mContext, ""+mLocation.getLatitude()+"/"+mLocation.getLongitude());
         }
         if(TrainingHelper.getLocationRequestStatus(mContext)){
@@ -154,9 +157,9 @@ public class TrainingHelper {
         int month=cal.get(Calendar.MONTH)+1;
         int year=cal.get(Calendar.YEAR);
         Date time=cal.getTime();
-        double sec= Math.ceil(Math.random());
-        double min= Math.ceil(Math.random());
-        double hour= Math.ceil(Math.random());
+        int sec= (int)Math.ceil(Math.random());
+        int min= (int)Math.ceil(Math.random());
+        int hour= (int)Math.ceil(Math.random());
 //        String sec= DateFormat.getDateInstance(DateFormat.SECOND_FIELD).format(time);
 //        String min= DateFormat.getDateInstance(DateFormat.MINUTE_FIELD).format(time);
 //        String hour= DateFormat.getDateInstance(DateFormat.HOUR1_FIELD).format(time);
@@ -197,9 +200,12 @@ public class TrainingHelper {
     }
     //-----------getters----------------------------------
     public static ArrayList<Ubication> getLocationsReport(Context context, String idReport){
+        String id=ReportHelper.refactorId(idReport);
+        Log.d("example","getting data with id: "+id);
         DBManager dbManager= new DBManager(context);
         dbManager.open();
-        ArrayList<Ubication> ret=dbManager.getUbications(idReport);
+        ArrayList<Ubication> ret=dbManager.getUbications(id);
+        Log.d("example","getting data with size: "+ret.size());
         dbManager.close();
         return ret;
     }
@@ -210,5 +216,4 @@ public class TrainingHelper {
         dbManager.close();
         return ret;
     }
-
 }

@@ -25,6 +25,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -262,8 +263,9 @@ public class TrainingReportFragment extends Fragment implements
         if(TrainingHelper.getLocationRequestStatus(getContext())){
             pauseTrainingService(view);
         }else{
-            boolean bol=ReportHelper.getStartIdTrainingShared (getContext()).equals(ReportHelper.NONE_START_ID);
-            if(bol){
+            String bol=ReportHelper.getStartIdTrainingShared(getContext());
+            Log.d("example","existe id: "+bol);
+            if(bol.equals(ReportHelper.NONE_START_ID)){
                 ReportHelper.startTrainingVarsShared(getContext());
                 button_stop.setVisibility(View.VISIBLE);//----------para que se actualice en myPos el valor de la posición inicial
             }

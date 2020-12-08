@@ -17,7 +17,6 @@ public class ReportHelper {
     public static final String KEY_KM_TRAINING_SHARED="key-km-training";
     public static final float NONE_KM_VALUE =0;
 
-
     //------------------------ START ID TRAINING----------------------
     public static final String START_ID_TRAINING_SHARED ="start-time-userid-reportid-training-shared";
     public static final String NONE_START_ID="none-start-time-uiserid-reportid";
@@ -33,7 +32,6 @@ public class ReportHelper {
     //--------------------FINAL POSITION -------------------
     public static final String KEY_FINAL_POSITION_TRAINING_SHARED="key-final-position-shared";
     public static final String NONE_FINAL_POSITION_TRAINING="none-final-position";
-
 
     //---------------------------------------------------------------------------------------------
     //-------------------------             KM          -------------------------------------------
@@ -233,6 +231,7 @@ public class ReportHelper {
     //---------------------------------------------------------------------------------------------
 
     public static void startTrainingVarsShared(Context context){
+        ReportHelper.resetStartPositionTrainingShared(context);
         ReportHelper.setStartIdTrainingShared(context);
         TrainingHelper.setCountPositionsTrainingReport(context,TrainingHelper.INIT_COUNT_POSITION);
         TrainingHelper.setLocationRequestStatus(context,TrainingHelper.TRAINING);
@@ -259,6 +258,7 @@ public class ReportHelper {
         ReportHelper.resetKmTrainingShared(context);
         ReportHelper.setFinalPositionTrainingShared(context,location);
 
+
     }
 
     public static void initReferences(Context context){
@@ -266,6 +266,10 @@ public class ReportHelper {
                 .edit()
                 .putString(ReportHelper.START_ID_TRAINING_SHARED,ReportHelper.NONE_START_ID)
                 .apply();
+    }
+    public static String refactorId(String id){
+        String[] ID=id.split("/");
+        return ID[0]+ID[1]+ID[2]+ID[3]+ID[4]+ID[5];
     }
 
 

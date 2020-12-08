@@ -19,6 +19,7 @@ import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.models.services.trainingService.DBManager;
+import com.idnp.musicfit.models.services.trainingService.ReportHelper;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.trainingControllerPresenter.iTrainingControllerPresenter;
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
@@ -213,7 +214,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
                 Log.d("exampleUbi3", "deleting ubicacion");
                 DBManager db = new DBManager(getActivity());
                 db.open();
-                db.deleteUbications("111111");
+                db.deleteUbications(ReportHelper.refactorId(ReportHelper.getStartIdTrainingShared(getContext())));
                 db.close();
 
             }

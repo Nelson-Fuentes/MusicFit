@@ -96,6 +96,13 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
         }
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 20));
     }
+    private void zoomToAnyLocation(LatLng location) {//---------------------ok
+        if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 20));
+    }
+
     private void drawPolyline(double lat, double lng){//----------------------ok
         map.addPolyline((new PolylineOptions()).add(myPos,new LatLng(lat,lng)).width(8).color(Color.CYAN));
     }
@@ -146,7 +153,8 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
         markerOptions.title(title);
         markerOptions.icon(BitmapDescriptorFactory.fromResource(marker));//para agregar el icono al marker
         markerOptions.anchor((float)0.5,(float)0.5);
-        map.addMarker(markerOptions);
+        Marker custom=map.addMarker(markerOptions);
+        custom.showInfoWindow();
     }
     @Override
     public void onStart(){
@@ -237,8 +245,10 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                     if(!key.equals(ReportHelper.NONE_START_ID)){
 
                         ArrayList<Ubication> locations=TrainingHelper.getLocationsReport(context,key);
-                        if(locations.size()>0)
-                        addCustomMarker(locations.get(0).getUbicacion(),R.drawable.icon_start_training,"Start Training");
+                        if(locations.size()>0) {
+                            zoomToAnyLocation(locations.get(0).getUbicacion());
+                            addCustomMarker(locations.get(0).getUbicacion(), R.drawable.icon_start_training, "Start Training");
+                        }
                         ToastManager.toastManager.showToast(""+locations.size());
                         for(int i=1;i<locations.size();i++){
                             map.addPolyline((new PolylineOptions())
@@ -247,9 +257,6 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                                             locations.get(i).getUbicacion()
                                     ).width(8).color(Color.CYAN));
                         }
-                    }
-                    if(myPos!=null){
-                        zoomToUserLocation();
                     }
     }
     private void loadMapTrainingReport(Context context){
