@@ -17,7 +17,7 @@ public class MusicfitFacebookAuthCallBack implements FacebookCallback<LoginResul
 
     @Override
     public void onSuccess(LoginResult loginResult) {
-        this.loginPresenter.authFacebook(loginResult.getAccessToken().getUserId(), loginResult.getAccessToken().getToken());
+        this.loginPresenter.authFacebook(loginResult.getAccessToken().getToken());
 //        LoginManager.getInstance().logOut();
     }
 

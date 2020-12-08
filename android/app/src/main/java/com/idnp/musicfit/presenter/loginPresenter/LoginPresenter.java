@@ -31,6 +31,21 @@ public class LoginPresenter implements iLoginPresenter {
         return  this.callbackManager;
     }
 
+    @Override
+    public void handleSignInSucess() {
+        this.loginView.authValid();
+    }
+
+    @Override
+    public void handleSignInFacebookSucess() {
+        this.loginView.authFacebook();
+    }
+
+    @Override
+    public void handleSignInGoogleSucess() {
+        this.loginView.authGoogle();
+    }
+
     private boolean validateAuthenticationCredentials(String username, String password){
         if (username.trim().length() == 0){
             this.loginView.showError("Ingrese un nombre de usuario.");
@@ -45,8 +60,7 @@ public class LoginPresenter implements iLoginPresenter {
     public void auth(String username, String password) {
         if (this.validateAuthenticationCredentials(username, password)) {
             try {
-                MusicfitAuthenticationManagerService.authenticationService.auth(username, password);
-                this.loginView.authValid();
+                MusicfitAuthenticationManagerService.authenticationService.auth(username, password, this);
             } catch (Exception e) {
                 this.handleException(e);
             }
@@ -90,26 +104,22 @@ public class LoginPresenter implements iLoginPresenter {
     }
 
     @Override
-    public void authFacebook(String username, String token) {
-        MusicfitAuthenticationManagerService.authenticationService.authenticationFacebook(username, token);
-        this.loginView.authFacebook();
+    public void authFacebook(String token) {
+        MusicfitAuthenticationManagerService.authenticationService.authenticationFacebook(token, this);
     }
 
     @Override
     public void authGoogle(Context context, FragmentActivity fragmentActivity, GoogleApiClient.OnConnectionFailedListener onConnectionFailedListener ) {
         Intent intent = MusicfitAuthenticationManagerService.authenticationService.authenticationGoogle(context, fragmentActivity, onConnectionFailedListener);
         this.loginView.startActivityResult(intent, MusicfitAuthenticationManagerService.GOOGLE_AUTH_RESULT);
-//        this.loginView.authGoogle();
-//        this.loginView.showError("Soy un error");
     }
 
     @Override
     public void handleSignInResultGoogle(GoogleSignInResult result) {
         if (result.isSuccess()){
-            System.out.println("---------------------------" + result.getSignInAccount().getEmail());
+            MusicfitAuthenticationManagerService.authenticationService.handleSuccessAuthenticationGoogle(result, this);
         } else {
             this.loginView.showError(R.string.google_singin_failed);
-            System.out.println("---------------------------" + result.getStatus());
         }
     }
 

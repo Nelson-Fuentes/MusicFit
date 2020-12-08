@@ -23,11 +23,7 @@ public class RegisterPresenter implements iRegisterPresenter {
         this.registerView = registerView;
     }
 
-    public boolean validateUserData(String username,  String firstname, String lastname, String email, String password, String password2){
-        if (username.isEmpty()){
-            this.registerView.showError(R.string.username_error_label);
-            return false;
-        }
+    public boolean validateUserData(String firstname, String lastname, String email, String password, String password2){
         if (firstname.isEmpty()){
             this.registerView.showError(R.string.firstname_error_label);
             return false;
@@ -52,12 +48,11 @@ public class RegisterPresenter implements iRegisterPresenter {
     }
 
     @Override
-    public void registerUser(String username,  String firstname, String lastname, String email, String password, String password2) {
-        if (validateUserData(username, firstname, lastname, email, password, password2)){
+    public void registerUser(String firstname, String lastname, String email, String password, String password2) {
+        if (validateUserData(firstname, lastname, email, password, password2)){
             User user_registered = null;
             try {
-                user_registered = UserService.userService.registerUser(username, firstname, lastname, email, password);
-                this.registerView.successfullyRegister();
+                user_registered = UserService.userService.registerUser(firstname, lastname, email, password, this);
             } catch (ExecutionException e) {
                 this.registerView.showError(R.string.execution_exception);
             } catch (InterruptedException e) {
@@ -74,5 +69,10 @@ public class RegisterPresenter implements iRegisterPresenter {
                 this.registerView.showError(e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void handleRegisterSuccess() {
+        this.registerView.successfullyRegister();
     }
 }
