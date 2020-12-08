@@ -52,8 +52,7 @@ public class RegisterPresenter implements iRegisterPresenter {
         if (validateUserData(firstname, lastname, email, password, password2)){
             User user_registered = null;
             try {
-                user_registered = UserService.userService.registerUser(firstname, lastname, email, password);
-                this.registerView.successfullyRegister();
+                user_registered = UserService.userService.registerUser(firstname, lastname, email, password, this);
             } catch (ExecutionException e) {
                 this.registerView.showError(R.string.execution_exception);
             } catch (InterruptedException e) {
@@ -70,5 +69,10 @@ public class RegisterPresenter implements iRegisterPresenter {
                 this.registerView.showError(e.getMessage());
             }
         }
+    }
+
+    @Override
+    public void handleRegisterSuccess() {
+        this.registerView.successfullyRegister();
     }
 }

@@ -13,6 +13,7 @@ import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitResponse;
 import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
 import com.idnp.musicfit.models.services.musicfitFirebase.MusicfitFireBase;
+import com.idnp.musicfit.presenter.registerPresenter.iRegisterPresenter;
 import com.idnp.musicfit.views.toastManager.ToastManager;
 
 import org.json.JSONArray;
@@ -39,7 +40,7 @@ public class UserService {
         this.auth = fireBase.getAuth();
     }
 
-    public User registerUser(String firstname, String lastname, String email, String password) throws Exception {
+    public User registerUser(String firstname, String lastname, String email, String password , iRegisterPresenter presenter) throws Exception {
         User new_user = new User(firstname, lastname);
         this.auth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(new OnCompleteListener<AuthResult>() {
@@ -51,6 +52,7 @@ public class UserService {
                                     .setDisplayName(firstname + " " + lastname).build();
                             task.getResult().getUser().updateProfile(profileUpdates);
                             auth.signOut();
+                            presenter.handleRegisterSuccess();
                         } else {
                             ToastManager.toastManager.showToast(task.getException().getMessage());
                         }
