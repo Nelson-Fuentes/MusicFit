@@ -49,7 +49,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.Circle;
 import com.google.android.gms.maps.model.CircleOptions;
-import com.google.android.gms.maps.model.LatLng;
+
+//import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -59,6 +60,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.maps.android.PolyUtil;
 import com.idnp.musicfit.R;
 
+import com.idnp.musicfit.models.entities.LatLng;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Training;
 import com.idnp.musicfit.models.entities.Ubication;
@@ -109,17 +111,20 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(myPos, 20));
+        //changing here
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(myPos.latitude,myPos.longitude), 20));
     }
     private void zoomToAnyLocation(LatLng location) {//---------------------ok
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 20));
+        //changing here
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(location.latitude,location.longitude), 20));
     }
 
     private void drawPolyline(double lat, double lng){//----------------------ok
-        polylines.add(map.addPolyline((new PolylineOptions()).add(myPos,new LatLng(lat,lng)).width(8).color(Color.CYAN)));
+        //changing here
+        polylines.add(map.addPolyline((new PolylineOptions()).add(new com.google.android.gms.maps.model.LatLng(myPos.latitude,myPos.longitude),new com.google.android.gms.maps.model.LatLng(lat,lng)).width(8).color(Color.CYAN)));
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -151,20 +156,25 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
 
         if(userLocationMarker==null){// si es nulo creamo un nuevo marcador
             MarkerOptions markerOptions= new MarkerOptions();
-            markerOptions.position(latLng);//para actualizar la posición
+            //changing here
+            markerOptions.position(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude));//para actualizar la posición
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.usermarker));//para agregar el icono al marker
             markerOptions.anchor((float)0.5,(float)0.5);
             userLocationMarker= map.addMarker(markerOptions);
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));
+            //changing here
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude),17));
         }else{//quiere decir que ya se creó previamente
-            userLocationMarker.setPosition(latLng);//para actualizar la posición
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,17));//para posicionar la cámara en el usuario
+            //changing here
+            userLocationMarker.setPosition(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude));//para actualizar la posición
+            //changing here
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude),17));//para posicionar la cámara en el usuario
         }
     }
 
     private void addCustomMarker(LatLng latLng, int marker,String title,int type_marker){
         MarkerOptions markerOptions= new MarkerOptions();
-        markerOptions.position(latLng);//para actualizar la posición
+        //changing here
+        markerOptions.position(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude));//para actualizar la posición
         markerOptions.title(title);
         markerOptions.icon(BitmapDescriptorFactory.fromResource(marker));//para agregar el icono al marker
         markerOptions.anchor((float)0.5,(float)0.5);
@@ -264,15 +274,19 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
 
                         ArrayList<Ubication> locations=TrainingHelper.getLocationsReport(context,key);
                         if(locations.size()>0) {
-                            zoomToAnyLocation(locations.get(0).getUbicacion());
-                            addCustomMarker(locations.get(0).getUbicacion(), R.drawable.icon_start_training, "Start Training",START_MARKER);
+                            zoomToAnyLocation(locations.get(0).getPosition());
+                            addCustomMarker(locations.get(0).getPosition(), R.drawable.icon_start_training, "Start Training",START_MARKER);
                         }
                         ToastManager.toastManager.showToast(""+locations.size());
                         for(int i=1;i<locations.size();i++){
                             map.addPolyline((new PolylineOptions())
                                     .add(
-                                            locations.get(i-1).getUbicacion(),
-                                            locations.get(i).getUbicacion()
+                                            //CHANGING HERE
+                                            new com.google.android.gms.maps.model.LatLng(locations.get(i-1).getPosition().latitude,locations.get(i-1).getPosition().longitude),
+                                            new com.google.android.gms.maps.model.LatLng(locations.get(i).getPosition().latitude,locations.get(i).getPosition().longitude)
+
+//                                            locations.get(i-1).getPosition(),
+//                                            locations.get(i).getPosition()
                                     ).width(8).color(Color.CYAN));
                         }
                     }

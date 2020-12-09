@@ -1,6 +1,6 @@
 package com.idnp.musicfit.models.entities;
 
-import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Date;

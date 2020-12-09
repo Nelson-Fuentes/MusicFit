@@ -6,7 +6,8 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.LatLng;
+import com.idnp.musicfit.models.entities.LatLng;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Ubication;
 
@@ -40,8 +41,8 @@ public class DBManager {
         ContentValues contentValues = new ContentValues();
         contentValues.put(DataBaseHelper.TABLE1_COL_IDREPORT,u.getIdReport());
         contentValues.put(DataBaseHelper.TABLE1_COL_ORDEN,u.getOrden());
-        contentValues.put(DataBaseHelper.TABLE1_COL_UBICATIONLAT,u.getUbicacion().latitude);
-        contentValues.put(DataBaseHelper.TABLE1_COL_UBICATIONLON,u.getUbicacion().longitude);
+        contentValues.put(DataBaseHelper.TABLE1_COL_UBICATIONLAT,u.getPosition().latitude);
+        contentValues.put(DataBaseHelper.TABLE1_COL_UBICATIONLON,u.getPosition().longitude);
         contentValues.put(DataBaseHelper.TABLE1_COL_IS_BREAKPOINT,u.isBreakPoint());
         database.insert(DataBaseHelper.TABLE1_NAME,null, contentValues);
 

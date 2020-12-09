@@ -15,11 +15,12 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.LatLng;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.ValueEventListener;
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.entities.LatLng;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.models.services.musicfitFirebase.MusicfitFireBase;
@@ -269,23 +270,18 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         rep_show_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ArrayList<Report> reportes = new ArrayList<Report>();
-            //    ArrayList<Person> persons = new ArrayList<Person>();
-                Log.d("exampleRepFire2", "showing reports");
-                MusicfitFireBase musicfitFireBase = new MusicfitFireBase();
 
-                musicfitFireBase.getChild("reports").addValueEventListener(new ValueEventListener() {
-             //   musicfitFireBase.getChild("Persons").addValueEventListener(new ValueEventListener() {
+                ArrayList<Ubication> ubications = new ArrayList<Ubication>();
+                Log.d("exampleRepFire2", "showing ubications");
+                MusicfitFireBase musicfitFireBase = new MusicfitFireBase();
+                musicfitFireBase.getChild("ubications").child("idReport-clave-unica").addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                //        persons.clear();
-                        reportes.clear();;
-                        for(DataSnapshot objSnaptshot : snapshot.getChildren()){
-                            Report r = objSnaptshot.getValue(Report.class);
-                //            Person p = objSnaptshot.getValue(Person.class);
-                            Log.d("exampleRepFire2", r.toString()+"<<--- reportes lista");
-                            reportes.add(r);
-              //              persons.add(p);
+                        ubications.clear();
+                        for(DataSnapshot dataSnapshot: snapshot.getChildren()){
+                            Ubication u = dataSnapshot.getValue(Ubication.class);
+                            Log.d("exampleRepFire2", u.toString()+" <-- data");
+                            ubications.add(u);
                         }
                     }
 
@@ -294,6 +290,33 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
 
                     }
                 });
+                Log.d("exampleRepFire2", ubications+" <-- data");
+
+//                ArrayList<Report> reportes = new ArrayList<Report>();
+//            //    ArrayList<Person> persons = new ArrayList<Person>();
+//                Log.d("exampleRepFire2", "showing reports");
+//                MusicfitFireBase musicfitFireBase = new MusicfitFireBase();
+//
+//                musicfitFireBase.getChild("reports").addValueEventListener(new ValueEventListener() {
+//             //   musicfitFireBase.getChild("Persons").addValueEventListener(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                //        persons.clear();
+//                        reportes.clear();
+//                        for(DataSnapshot objSnaptshot : snapshot.getChildren()){
+//                            Report r = objSnaptshot.getValue(Report.class);
+//                //            Person p = objSnaptshot.getValue(Person.class);
+//                            Log.d("exampleRepFire2", r.toString()+"<<--- reportes lista");
+//                            reportes.add(r);
+//              //              persons.add(p);
+//                        }
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull DatabaseError error) {
+//
+//                    }
+//                });
             }
         });
 

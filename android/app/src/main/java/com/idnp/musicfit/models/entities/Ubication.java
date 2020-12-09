@@ -1,22 +1,27 @@
 package com.idnp.musicfit.models.entities;
 
-import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.LatLng;
+
+import java.util.UUID;
 
 public class Ubication {
 
+    private String id;
     private String idReport;
     private int orden;
-    private LatLng ubicacion;
+    private LatLng position;
     private int isBreakPoint;
     public static final int BREAK_POINT=1;
     public static final int NONE_BREAK_POINT=0;
 
 
-    public Ubication(String idReport, int orden, LatLng ubicacion,int isBreakPoint){
+    public Ubication(){}
+    public Ubication(String idReport, int orden, LatLng position, int isBreakPoint){
         this.idReport = idReport;
         this.orden = orden;
-        this.ubicacion = ubicacion;
+        this.position = position;
         this.isBreakPoint=isBreakPoint;
+        this.id = UUID.randomUUID().toString();
     }
 
     public String getIdReport() {
@@ -35,16 +40,16 @@ public class Ubication {
         this.orden = orden;
     }
 
-    public LatLng getUbicacion() {
-        return ubicacion;
+    public LatLng getPosition() {
+        return position;
     }
 
-    public void setUbicacion(LatLng ubicacion) {
-        this.ubicacion = ubicacion;
+    public void setPosition(LatLng position) {
+        this.position = position;
     }
 
     public String toString(){
-        return "idReport: "+getIdReport()+" - orden: "+getOrden()+" - ubicacion: "+getUbicacion();
+        return "idReport: "+getIdReport()+" - orden: "+getOrden()+" - ubicacion: "+ getPosition().toString();
     }
 
     public int isBreakPoint() {

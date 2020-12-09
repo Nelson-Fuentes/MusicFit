@@ -14,8 +14,9 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.TaskStackBuilder;
 
-import com.google.android.gms.maps.model.LatLng;
+//import com.google.android.gms.maps.model.LatLng;
 import com.idnp.musicfit.R;
+import com.idnp.musicfit.models.entities.LatLng;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Training;
 import com.idnp.musicfit.models.entities.Ubication;
@@ -82,7 +83,7 @@ public class TrainingHelper {
         return manager;
     }
 
-    public static void saveLastLocationDB(int breakPointStatus,Context mContext,LatLng mLocation){
+    public static void saveLastLocationDB(int breakPointStatus, Context mContext, LatLng mLocation){
         if(TrainingHelper.getLocationRequestStatus(mContext)){
             String idTrainingReport=ReportHelper.getStartIdTrainingShared(mContext);
             if(!idTrainingReport.equals(ReportHelper.NONE_START_ID)){
