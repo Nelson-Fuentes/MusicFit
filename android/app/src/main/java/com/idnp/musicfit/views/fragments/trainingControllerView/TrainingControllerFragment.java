@@ -3,6 +3,7 @@ package com.idnp.musicfit.views.fragments.trainingControllerView;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -15,9 +16,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.gms.maps.model.LatLng;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Ubication;
+import com.idnp.musicfit.models.services.musicfitFirebase.MusicfitFireBase;
 import com.idnp.musicfit.models.services.trainingService.DBManager;
 import com.idnp.musicfit.models.services.trainingService.ReportHelper;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
@@ -25,6 +30,7 @@ import com.idnp.musicfit.presenter.trainingControllerPresenter.iTrainingControll
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
 
 import java.util.ArrayList;
+import java.util.UUID;
 
 
 public class TrainingControllerFragment extends Fragment implements iTrainingControllerView {
@@ -45,6 +51,7 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
 
     private Button delete_button, update_button;
     private Button ubi_add_button, ubi_show_button, ubi_delete_button;
+    private Button rep_add_button, rep_show_button, rep_del_button;
 
     /*private DBModelStretchRoute modelDBRouteStretch;
     private boolean controllAsync;*/
@@ -219,6 +226,82 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
 
             }
         });
+
+        rep_add_button = view.findViewById(R.id.report_add);
+        rep_show_button = view.findViewById(R.id.report_show);
+        rep_del_button = view.findViewById(R.id.report_delete);
+
+        rep_add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("exampleRepFire1", "adding report");
+               //report auxiliar
+                Report auxReport = new Report(1,6,3,4,6,10,new LatLng(1,4));
+                auxReport.setDurationHour(4);
+                auxReport.setDurationMin(6);
+                auxReport.setDurationSec(5);
+                auxReport.setEnd(1);
+                auxReport.setEndP(new LatLng(1,12.312314));
+                auxReport.setKM(19);
+                auxReport.setKcal(391);
+
+                //instancia de la base de datos firebase
+                MusicfitFireBase musicfitFireBase = new MusicfitFireBase();
+
+                //generando claves aleatorias
+                String aleatorio = UUID.randomUUID().toString();
+
+                //obteniendo referencias especificas
+                musicfitFireBase.getChild("reports").child(aleatorio).setValue(auxReport);
+                String aleatorio2 = UUID.randomUUID().toString();
+                String aleatorio3 = UUID.randomUUID().toString();
+                Ubication auxUbication = new Ubication("112111",3,new LatLng(5,3),Ubication.NONE_BREAK_POINT);
+                Ubication auxUbication2 = new Ubication("112111",5,new LatLng(15,4),Ubication.NONE_BREAK_POINT);
+                musicfitFireBase.getChild("reports").child(aleatorio).child("ubications").child(aleatorio2).setValue(auxUbication);
+                musicfitFireBase.getChild("reports").child(aleatorio).child("ubications").child(aleatorio3).setValue(auxUbication2);
+
+            }
+        });
+
+        rep_show_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ArrayList<Report> reportes = new ArrayList<Report>();
+            //    ArrayList<Person> persons = new ArrayList<Person>();
+                Log.d("exampleRepFire2", "showing reports");
+                MusicfitFireBase musicfitFireBase = new MusicfitFireBase();
+
+                musicfitFireBase.getChild("reports").addValueEventListener(new ValueEventListener() {
+             //   musicfitFireBase.getChild("Persons").addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                //        persons.clear();
+                        reportes.clear();;
+                        for(DataSnapshot objSnaptshot : snapshot.getChildren()){
+                            Report r = objSnaptshot.getValue(Report.class);
+                //            Person p = objSnaptshot.getValue(Person.class);
+                            Log.d("exampleRepFire2", r.toString()+"<<--- reportes lista");
+                            reportes.add(r);
+              //              persons.add(p);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+        });
+
+        rep_del_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d("exampleRepFire2", "deleting report");
+            }
+        });
+
+
 
 //        //controllAsync=false;
 //        /*modelDBRouteStretch= new DBModelStretchRoute();
@@ -455,5 +538,19 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
 //        editor = prefs.edit();
 //        editor.putLong("time_gone", 0);
 //        editor.apply();
+    }
+
+}
+class Person{
+    public String name;
+    public int age;
+
+    Person(){}
+    Person (String name, int age){
+        this.name = name;
+        this.age = age;
+    }
+    public String toString (){
+        return "name: "+this.name+ " - age: "+this.age;
     }
 }
