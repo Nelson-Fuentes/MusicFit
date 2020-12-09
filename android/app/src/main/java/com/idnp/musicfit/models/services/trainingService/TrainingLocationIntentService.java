@@ -11,9 +11,8 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.LocationResult;
-//import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLng;
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.entities.LatLng;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.views.toastManager.ToastManager;

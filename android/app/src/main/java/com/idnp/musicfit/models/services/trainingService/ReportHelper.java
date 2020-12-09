@@ -5,8 +5,7 @@ import android.content.SharedPreferences;
 import android.location.Location;
 import android.preference.PreferenceManager;
 
-//import com.google.android.gms.maps.model.LatLng;
-import com.idnp.musicfit.models.entities.LatLng;
+import com.google.android.gms.maps.model.LatLng;
 import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
 import com.idnp.musicfit.views.toastManager.ToastManager;
