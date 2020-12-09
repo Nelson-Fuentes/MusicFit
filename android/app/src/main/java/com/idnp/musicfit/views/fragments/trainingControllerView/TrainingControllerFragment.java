@@ -211,10 +211,13 @@ public class TrainingControllerFragment extends Fragment implements iTrainingCon
         ubi_delete_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("exampleUbi3", "deleting ubicacion");
+
+                String id=ReportHelper.getStartIdTrainingShared(getContext());
+                Log.d("exampleUbi3", "deleting ubicacion"+id);
                 DBManager db = new DBManager(getActivity());
                 db.open();
-                db.deleteUbications(ReportHelper.refactorId(ReportHelper.getStartIdTrainingShared(getContext())));
+
+                db.deleteUbications(ReportHelper.refactorId(id));
                 db.close();
 
             }

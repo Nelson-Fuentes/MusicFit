@@ -33,6 +33,8 @@ public class ReportHelper {
     public static final String KEY_FINAL_POSITION_TRAINING_SHARED="key-final-position-shared";
     public static final String NONE_FINAL_POSITION_TRAINING="none-final-position";
 
+    public static final String NONE_USER_ID="nouserid";
+
     //---------------------------------------------------------------------------------------------
     //-------------------------             KM          -------------------------------------------
     //---------------------------------------------------------------------------------------------
@@ -122,12 +124,16 @@ public class ReportHelper {
     //---------------------------------------------------------------------------------------------
 
     public static void setStartIdTrainingShared(Context context){
-//        +MusicfitAuthenticationManagerService.authenticationService.getCurrentUserId();
-        PreferenceManager.getDefaultSharedPreferences(context)
+       String userid=ReportHelper.NONE_USER_ID;
+       String user=MusicfitAuthenticationManagerService.authenticationService.getCurrentUserId();
+       if(user!=null){
+           userid=user;
+       }
+       PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(
                         START_ID_TRAINING_SHARED,
-                        TrainingHelper.getDateAndTime())
+                        TrainingHelper.getDateAndTime()+"/"+userid)
                 .apply();
     }
 
@@ -251,12 +257,13 @@ public class ReportHelper {
         }
     }
     public static  void stopTrainingVarsShared(Context context,String location){
+        ReportHelper.setFinalPositionTrainingShared(context,location);
         ReportHelper.resetStartIdTrainingShared(context);
         TrainingHelper.setLocationRequestStatus(context,TrainingHelper.NO_TRAINING);
         ReportHelper.resetDurationTrainingShared(context);
         TrainingHelper.setCountPositionsTrainingReport(context,TrainingHelper.INIT_COUNT_POSITION);
         ReportHelper.resetKmTrainingShared(context);
-        ReportHelper.setFinalPositionTrainingShared(context,location);
+
 
 
     }
@@ -269,7 +276,7 @@ public class ReportHelper {
     }
     public static String refactorId(String id){
         String[] ID=id.split("/");
-        return ID[0]+ID[1]+ID[2]+ID[3]+ID[4]+ID[5];
+        return ID[0]+ID[1]+ID[2]+ID[3]+ID[4]+ID[5]+ID[6];
     }
 
 

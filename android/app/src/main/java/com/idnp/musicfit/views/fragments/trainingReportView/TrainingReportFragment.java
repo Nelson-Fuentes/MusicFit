@@ -2,6 +2,8 @@ package com.idnp.musicfit.views.fragments.trainingReportView;
 
 import android.Manifest;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.PendingIntent;
 
 import android.content.Context;
@@ -11,9 +13,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 
 import android.location.Location;
+import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.Nullable;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -25,6 +29,7 @@ import android.os.Handler;
 import android.os.SystemClock;
 import android.preference.PreferenceManager;
 
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,6 +39,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
@@ -45,11 +52,12 @@ import com.idnp.musicfit.models.services.trainingService.TrainingHelper;
 import com.idnp.musicfit.models.services.trainingService.TrainingLocationIntentService;
 import com.idnp.musicfit.models.services.trainingService.TrainingNotificationDataView;
 
+import com.idnp.musicfit.models.services.trainingService.TrainingServiceConstants;
 import com.idnp.musicfit.views.fragments.fragmentManager.FragmentManager;
 import com.idnp.musicfit.presenter.trainingReportPresenter.TrainingReportPresenter;
 import com.idnp.musicfit.presenter.trainingReportPresenter.iTrainingReportPresenter;
 import com.idnp.musicfit.views.fragments.trainingReportListView.TrainingReportListFragment;
-
+import com.idnp.musicfit.views.toastManager.ToastManager;
 
 
 public class TrainingReportFragment extends Fragment implements
@@ -118,7 +126,7 @@ public class TrainingReportFragment extends Fragment implements
 
         //-----------------Circle labels ----------------------
 
-        /*cl_hour=(ConstraintLayout)this.view.findViewById(R.id.cl_11);
+        cl_hour=(ConstraintLayout)this.view.findViewById(R.id.cl_11);
         tv_hour=(TextView)this.view.findViewById(R.id.report_view_hour);
         tv_hour_l=(TextView)this.view.findViewById(R.id.label_hour);
 
@@ -136,7 +144,7 @@ public class TrainingReportFragment extends Fragment implements
 
         cl_cal=(ConstraintLayout)this.view.findViewById(R.id.cl_3);
         tv_cal=(TextView)this.view.findViewById(R.id.report_view_kcal);
-        tv_cal_l=(TextView)this.view.findViewById(R.id.label_kcal);*/
+        tv_cal_l=(TextView)this.view.findViewById(R.id.label_kcal);
 
         //--------------End Circle labels
 
@@ -263,16 +271,19 @@ public class TrainingReportFragment extends Fragment implements
         if(TrainingHelper.getLocationRequestStatus(getContext())){
             pauseTrainingService(view);
         }else{
-            String bol=ReportHelper.getStartIdTrainingShared(getContext());
-            Log.d("example","existe id: "+bol);
-            if(bol.equals(ReportHelper.NONE_START_ID)){
-                ReportHelper.startTrainingVarsShared(getContext());
-                button_stop.setVisibility(View.VISIBLE);//----------para que se actualice en myPos el valor de la posición inicial
+            if(isGPSEnabled()){
+                String bol=ReportHelper.getStartIdTrainingShared(getContext());
+                Log.d("example","existe id: "+bol);
+                if(bol.equals(ReportHelper.NONE_START_ID)){
+                    ReportHelper.startTrainingVarsShared(getContext());
+                    button_stop.setVisibility(View.VISIBLE);//----------para que se actualice en myPos el valor de la posición inicial
+                }
+                requestLocationUpdate();//------------------start update location service intent
+                TrainingHelper.setLocationRequestStatus(getContext(),TrainingHelper.TRAINING);
+                setButtonVisibleState(true);
+                chronoPlay();//--
             }
-            requestLocationUpdate();//------------------start update location service intent
-            TrainingHelper.setLocationRequestStatus(getContext(),TrainingHelper.TRAINING);
-            setButtonVisibleState(true);
-            chronoPlay();//--
+
         }
     }
 
@@ -291,12 +302,24 @@ public class TrainingReportFragment extends Fragment implements
             if (task.isSuccessful()) {
                 Location location = task.getResult();
                 if(location!=null){
+                    Log.d("example", "se encontró ubicación para terminar");
                     ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
                 }
             }
         });
     }
     public void stopTrainingService(View view){//--------------------------------------------------ok
+
+        AlertDialog alertDialog= new AlertDialog.Builder(getContext())
+                .setTitle("Guardar Entrenamiento")
+                .setMessage("¿Desea guardar sus resultados de entrenamiento en la nube?")
+                .setPositiveButton("Si",((dialogInterface, i) -> {
+                    //Guardar datos en la nube
+
+                }))
+                .setCancelable(false)
+                .setIcon(R.drawable.rp_icon_running)
+                .show();
 
         TrainingHelper.setLocationRequestStatus(getContext(),TrainingHelper.NO_TRAINING);
         startEndLocation();
@@ -342,7 +365,6 @@ public class TrainingReportFragment extends Fragment implements
 
     private void requestLocationUpdate(){//--------------------------------------------------ok
 
-
         LocationRequest locationRequest = LocationRequest.create();
         locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
         locationRequest.setInterval(5000);//secc to refresh location
@@ -383,6 +405,8 @@ public class TrainingReportFragment extends Fragment implements
             //moutput.setText(TrainingHelper.getSavedLocationResults(getContext()));
         }else if(key.equals(TrainingHelper.KEY_IS_TRAINING_SHARED)){
             setButtonVisibleState(TrainingHelper.getLocationRequestStatus(getContext()));
+        }else if(key.equals(ReportHelper.KEY_KM_TRAINING_SHARED)){
+            tv_km.setText(""+ReportHelper.getKmTrainingShared(getContext()));
         }
     }
 
@@ -406,6 +430,87 @@ public class TrainingReportFragment extends Fragment implements
 
         }
     }
+
+    //---------------------GPS
+
+    private boolean isGPSEnabled(){
+        LocationManager locationManager=(LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+        boolean providerEnabled=locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        if(providerEnabled){
+            return true;
+        }else{
+            AlertDialog alertDialog= new AlertDialog.Builder(getContext())
+                    .setTitle("GPS Permissions")
+                    .setMessage("GPS es necesario para esta aplicación, Por favor actívelo")
+                    .setPositiveButton("Yes",((dialogInterface, i) -> {
+                        Intent intent= new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivityForResult(intent, TrainingServiceConstants.GPS_REQUEST_CODE);
+                    }))
+                    .setCancelable(false)
+                    .show();
+        }
+        return false;
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==TrainingServiceConstants.GPS_REQUEST_CODE){
+            LocationManager locationManager=(LocationManager)getActivity().getSystemService(Context.LOCATION_SERVICE);
+            boolean providerEnabled=locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+            if(providerEnabled){
+                ToastManager.toastManager.showToast("GPS está activado");
+            }else{
+                ToastManager.toastManager.showToast("GPS no está activado");
+            }
+        }
+    }
+    //----------------------------Permissions
+//    private boolean checkLocationsPermissions(){
+//        return ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION)==PackageManager.PERMISSION_GRANTED;
+//    }
+//    private boolean isServicesOk(){
+//        GoogleApiAvailability googleApi=GoogleApiAvailability.getInstance();
+//        int result=googleApi.isGooglePlayServicesAvailable(getContext());
+//        if(result== ConnectionResult.SUCCESS){
+//            return true;
+//        } else if (googleApi.isUserResolvableError(result)) {
+//            Dialog dialog=googleApi.getErrorDialog(getActivity(),result,TrainingServiceConstants.PLAY_SERVICES_ERROR_CODE);
+//            dialog.show();
+//        }
+//        return false;
+//    }
+//    private void requestLocationPermission(){
+//        if(ContextCompat.checkSelfPermission(getContext(),Manifest.permission.ACCESS_FINE_LOCATION)!=PackageManager.PERMISSION_GRANTED){
+//            if(Build.VERSION.SDK_INT>=Build.VERSION_CODES.M)
+//                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION},TrainingServiceConstants.PERMISSION_REQUEST_CODE);
+//        }
+//    }
+
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode,String perissions[],int[] grantResults){
+//        if(requestCode==TrainingServiceConstants.PERMISSION_REQUEST_CODE){
+//            if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
+//                enableUserLocation();
+////                zoomToUserLocation();
+//            }else{
+//                //PODEMOS MOSTRAR UN MENSAJE DE DIALO DE QUE ESTOS PERMISOS NO SON GRANTED
+//            }
+//        }
+//    }
+
+
+//    private void initGoogleMap(){
+//        if(isServicesOk()){
+//            if(isGPSEnabled()){
+//                if(checkLocationsPermissions()){
+//                    ToastManager.toastManager.showToast("Map Ready");
+//                }else{
+//                    requestLocationPermission();
+//                }
+//            }
+//        }
+//    }
 
 
 }
