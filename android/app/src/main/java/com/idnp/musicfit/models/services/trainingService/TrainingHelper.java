@@ -4,7 +4,10 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.icu.text.SimpleDateFormat;
+import android.icu.util.TimeZone;
 import android.location.Location;
+import android.os.Build;
 import android.preference.PreferenceManager;
 import android.util.Log;
 
@@ -156,14 +159,20 @@ public class TrainingHelper {
         int day=cal.get(Calendar.DAY_OF_MONTH);
         int month=cal.get(Calendar.MONTH)+1;
         int year=cal.get(Calendar.YEAR);
-        Date time=cal.getTime();
+       /* Date time=cal.getTime();
         int sec= (int)Math.ceil(Math.random());
         int min= (int)Math.ceil(Math.random());
-        int hour= (int)Math.ceil(Math.random());
-//        String sec= DateFormat.getDateInstance(DateFormat.SECOND_FIELD).format(time);
-//        String min= DateFormat.getDateInstance(DateFormat.MINUTE_FIELD).format(time);
-//        String hour= DateFormat.getDateInstance(DateFormat.HOUR1_FIELD).format(time);
-        return ""+year+"/"+month+"/"+day+"/"+hour+"/"+min+"/"+sec;
+        int hour= (int)Math.ceil(Math.random());*/
+
+        String formated="";
+        SimpleDateFormat dateFormat = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            dateFormat = new SimpleDateFormat("HH/mm/ss");
+            dateFormat.setTimeZone(TimeZone.getTimeZone("GMT-5:00"));
+            Date today = Calendar.getInstance().getTime();
+            formated= dateFormat.format(today);
+        }
+        return ""+year+"/"+month+"/"+day+"/"+formated;
     }
 
     public static ArrayList<Report> getTrainingList(){

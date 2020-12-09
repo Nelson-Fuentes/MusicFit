@@ -7,16 +7,22 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
+import android.location.LocationManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
 import android.preference.PreferenceManager;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -26,6 +32,8 @@ import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
@@ -57,6 +65,7 @@ import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.models.services.trainingService.DBManager;
 import com.idnp.musicfit.models.services.trainingService.ReportHelper;
 import com.idnp.musicfit.models.services.trainingService.TrainingHelper;
+import com.idnp.musicfit.models.services.trainingService.TrainingServiceConstants;
 import com.idnp.musicfit.views.toastManager.ToastManager;
 
 import org.json.JSONArray;
@@ -73,13 +82,19 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
     private GoogleMap map;//guardará la referencia al Map
     private LatLng myPos;// esta variable guardará siempre mi pocisión
     private int ACCESS_LOCATION_REQUEST_CODE = 10001;
+    private final int START_MARKER=1;
+    private final int END_MARKER=2;
     private boolean training=false;
     Marker userLocationMarker;
+    private ArrayList<Polyline> polylines;
+    private Marker marker_start;
+    private Marker marker_end;
 
     private Report myReport;
 
     public TrainingMapFragment(Report report){
         myReport=report;
+        polylines= new ArrayList<>();
     }
 
 
@@ -104,7 +119,7 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
     }
 
     private void drawPolyline(double lat, double lng){//----------------------ok
-        map.addPolyline((new PolylineOptions()).add(myPos,new LatLng(lat,lng)).width(8).color(Color.CYAN));
+        polylines.add(map.addPolyline((new PolylineOptions()).add(myPos,new LatLng(lat,lng)).width(8).color(Color.CYAN)));
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -147,14 +162,19 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
         }
     }
 
-    private void addCustomMarker(LatLng latLng, int marker,String title){
+    private void addCustomMarker(LatLng latLng, int marker,String title,int type_marker){
         MarkerOptions markerOptions= new MarkerOptions();
         markerOptions.position(latLng);//para actualizar la posición
         markerOptions.title(title);
         markerOptions.icon(BitmapDescriptorFactory.fromResource(marker));//para agregar el icono al marker
         markerOptions.anchor((float)0.5,(float)0.5);
-        Marker custom=map.addMarker(markerOptions);
-        custom.showInfoWindow();
+        if(type_marker==START_MARKER) {
+            marker_start = map.addMarker(markerOptions);
+            marker_start.showInfoWindow();
+        }else{
+            marker_end = map.addMarker(markerOptions);
+            marker_end.showInfoWindow();
+        }
     }
     @Override
     public void onStart(){
@@ -168,18 +188,7 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .unregisterOnSharedPreferenceChangeListener(this);
     }
-    @Override
-    public void onRequestPermissionsResult(int requestCode,String perissions[],int[] grantResults){
 
-        if(requestCode==ACCESS_LOCATION_REQUEST_CODE){
-            if(grantResults.length>0&&grantResults[0]==PackageManager.PERMISSION_GRANTED){
-                enableUserLocation();
-                zoomToUserLocation();
-            }else{
-                //PODEMOS MOSTRAR UN MENSAJE DE DIALO DE QUE ESTOS PERMISOS NO SON GRANTED
-            }
-        }
-    }
 
     @Nullable
     @Override
@@ -226,7 +235,7 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                         String [] pos=position.split("/");
                         double lat= Double.parseDouble(pos[0]);
                         double lng= Double.parseDouble(pos[1]);
-                        addCustomMarker(new LatLng(lat,lng),R.drawable.icon_start_training,"start Training");
+                        addCustomMarker(new LatLng(lat,lng),R.drawable.icon_start_training,"start Training",START_MARKER);
                     }
                 }
                 else if(key.equals(ReportHelper.KEY_FINAL_POSITION_TRAINING_SHARED)){
@@ -235,7 +244,16 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                         String [] pos=position.split("/");
                         double lat= Double.parseDouble(pos[0]);
                         double lng= Double.parseDouble(pos[1]);
-                        addCustomMarker(new LatLng(lat,lng),R.drawable.icon_end_training,"End Training");
+                        addCustomMarker(new LatLng(lat,lng),R.drawable.icon_end_training,"End Training",END_MARKER);
+                    }
+                }else if(key.equals(ReportHelper.START_ID_TRAINING_SHARED)){
+                    if(ReportHelper.getStartIdTrainingShared(getContext()).equals(ReportHelper.NONE_START_ID)){
+                        marker_start.remove();
+                        marker_end.remove();
+                        for(Polyline lines:polylines){
+                            lines.remove();
+                        }
+                        polylines.clear();
                     }
                 }
 
@@ -247,7 +265,7 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                         ArrayList<Ubication> locations=TrainingHelper.getLocationsReport(context,key);
                         if(locations.size()>0) {
                             zoomToAnyLocation(locations.get(0).getUbicacion());
-                            addCustomMarker(locations.get(0).getUbicacion(), R.drawable.icon_start_training, "Start Training");
+                            addCustomMarker(locations.get(0).getUbicacion(), R.drawable.icon_start_training, "Start Training",START_MARKER);
                         }
                         ToastManager.toastManager.showToast(""+locations.size());
                         for(int i=1;i<locations.size();i++){
@@ -264,5 +282,8 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
             //--------------- esto es para jalar datos de la nube de las ubicaciones de un reporte en específico
         }
     }
+
+
+
 
 }
