@@ -42,11 +42,9 @@ public class MusicPlayerService extends Service {
     public static MediaPlayer mediaPlayer=new MediaPlayer();
 
     /*PARA LAS NOTIFICACIONES*/
-    public IBinder musicPlayerBinder = new MusicPlayerIBinder();
+    private IBinder musicPlayerBinder = new MusicPlayerBinder();
     /*FIN DE NOTIFICACIONES*/
-    public static final String ACTION_PLAY="PLAY";
-    public static final String ACTION_NEXT="NEXT";
-    public static final String ACTION_PREV="PREV";
+
     
     public MusicPlayerService(){
 
@@ -57,39 +55,22 @@ public class MusicPlayerService extends Service {
         repeat_state=REPEAT_DISABLED;
     }
 
-
-    public class MusicPlayerIBinder extends Binder{
-        public MusicPlayerService getServicio(){
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
+    }
+    public class MusicPlayerBinder extends Binder{
+        public MusicPlayerService getService(){
             return MusicPlayerService.this;
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        String actionName = intent.getStringExtra("myActionName");
         Song music = getCurrentMusic();
-        if (actionName != null) {
-            if (actionName != null) {
-                switch (actionName) {
-                    case ACTION_PLAY:
-                        play_pause();
-                        MusicPlayerControllerFragment.musicPlayerControllerFragment.loadSelectedMusic();
-                        break;
-                    case ACTION_NEXT:
-                        advance();
-                        MusicPlayerControllerFragment.musicPlayerControllerFragment.loadSelectedMusic();
-                        break;
-                    case ACTION_PREV:
-                        back();
-                        MusicPlayerControllerFragment.musicPlayerControllerFragment.loadSelectedMusic();
-                        break;
-                }
-            }
-        } else {
-            mediaPlayer = MediaPlayer.create(context, music.getMusic());
-            mediaPlayer.start();
-            return START_STICKY;
-        }
+        mediaPlayer=MediaPlayer.create(context,music.getMusic());
+        mediaPlayer.start();
         return START_STICKY;
     }
 
@@ -97,12 +78,6 @@ public class MusicPlayerService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mediaPlayer.stop();
-    }
-
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
     }
 
     public void loadMusicPlayList(){
@@ -120,16 +95,6 @@ public class MusicPlayerService extends Service {
         MusicPlayList list=new MusicPlayList();
         musicList=list.getMusicPlayList();
         return musicList.get(position);
-    }
-    public void play_pause(){
-        if(mediaPlayer.isPlaying()){
-            MusicPlayerControllerFragment.musicPlayerControllerFragment.pause();
-            pause();
-        }
-        else{
-            MusicPlayerControllerFragment.musicPlayerControllerFragment.play();
-            play();
-        }
     }
 
     public Song play(){
