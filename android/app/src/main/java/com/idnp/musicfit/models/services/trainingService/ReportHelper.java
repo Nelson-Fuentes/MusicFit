@@ -4,10 +4,8 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.location.Location;
 import android.preference.PreferenceManager;
-import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
-import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
 import com.idnp.musicfit.views.toastManager.ToastManager;
@@ -281,39 +279,5 @@ public class ReportHelper {
         return ID[0]+ID[1]+ID[2]+ID[3]+ID[4]+ID[5]+ID[6];
     }
 
-    public static void loadReportToSendFirebase(Context context,Location location){
-        String id=ReportHelper.getStartIdTrainingShared(context);
-        String []idArray=id.split("/");
-        int year=Integer.parseInt(idArray[0]);
-        int month=Integer.parseInt(idArray[1]);
-        int day=Integer.parseInt(idArray[2]);
-        int hour=Integer.parseInt(idArray[3]);
-        int min=Integer.parseInt(idArray[4]);
-        int sec=Integer.parseInt(idArray[5]);
-        String idUser=idArray[6];
-        String [] startPosition=ReportHelper.getStartPositionTrainingShared(context).split("/");
-        double lat=Double.parseDouble(startPosition[0]);
-        double lon=Double.parseDouble(startPosition[1]);
-        com.idnp.musicfit.models.entities.LatLng startLocation=new com.idnp.musicfit.models.entities.LatLng(lat,lon);
-
-        Report nuevo= new Report(day,month,year,hour,min,sec,startLocation);
-        nuevo.setEndP(new com.idnp.musicfit.models.entities.LatLng(location.getLatitude(),location.getLongitude()));
-        String reportIdString=ReportHelper.refactorId(id);
-        nuevo.setID(reportIdString);
-        nuevo.setKM(1);
-        nuevo.setKcal(1);
-        nuevo.setEnd(1);
-        nuevo.setDurationHour(12);
-        nuevo.setDurationMin(15);
-        nuevo.setDurationSec(12);
-
-        FireBaseReportHelper base=new FireBaseReportHelper();
-        base.saveReportTraining(
-                idUser,
-                nuevo
-                );
-        base.saveLocationsTraining(reportIdString,TrainingHelper.getLocationsReport(context,reportIdString));
-        Log.d("example","subiendo la info a firebase");
-    }
 
 }

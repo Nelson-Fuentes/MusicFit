@@ -47,7 +47,6 @@ import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
-import com.idnp.musicfit.models.services.trainingService.FireBaseReportHelper;
 import com.idnp.musicfit.models.services.trainingService.ReportHelper;
 import com.idnp.musicfit.models.services.trainingService.TrainingHelper;
 import com.idnp.musicfit.models.services.trainingService.TrainingLocationIntentService;
@@ -303,22 +302,24 @@ public class TrainingReportFragment extends Fragment implements
             if (task.isSuccessful()) {
                 Location location = task.getResult();
                 if(location!=null){
-                    AlertDialog alertDialog= new AlertDialog.Builder(getContext())
-                            .setTitle("Guardar Entrenamiento")
-                            .setMessage("¿Desea guardar sus resultados de entrenamiento en la nube?")
-                            .setPositiveButton("Si",((dialogInterface, i) -> {
-                                //Guardar datos en la nube
-                                ReportHelper.loadReportToSendFirebase(getContext(),location);
-                                ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
-                            }))
-                            .setCancelable(false)
-                            .setIcon(R.drawable.rp_icon_running)
-                            .show();
-                    }
+                    Log.d("example", "se encontró ubicación para terminar");
+                    ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
+                }
             }
         });
     }
     public void stopTrainingService(View view){//--------------------------------------------------ok
+
+        AlertDialog alertDialog= new AlertDialog.Builder(getContext())
+                .setTitle("Guardar Entrenamiento")
+                .setMessage("¿Desea guardar sus resultados de entrenamiento en la nube?")
+                .setPositiveButton("Si",((dialogInterface, i) -> {
+                    //Guardar datos en la nube
+
+                }))
+                .setCancelable(false)
+                .setIcon(R.drawable.rp_icon_running)
+                .show();
 
         TrainingHelper.setLocationRequestStatus(getContext(),TrainingHelper.NO_TRAINING);
         startEndLocation();
@@ -408,6 +409,7 @@ public class TrainingReportFragment extends Fragment implements
             tv_km.setText(""+ReportHelper.getKmTrainingShared(getContext()));
         }
     }
+
     private void setModeReportView(boolean isModeViewReport){
         if(isModeViewReport){
             cl_hour.setVisibility(View.VISIBLE);
