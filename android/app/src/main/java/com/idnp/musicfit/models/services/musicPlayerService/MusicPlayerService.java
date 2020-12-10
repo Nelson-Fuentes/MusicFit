@@ -77,11 +77,11 @@ public class MusicPlayerService extends Service {
                         break;
                     case ACTION_NEXT:
                         advance();
-                        MusicPlayerControllerFragment.musicPlayerControllerFragment.loadSelectedMusic();
+                        MusicPlayerControllerFragment.musicPlayerControllerFragment.advance();
                         break;
                     case ACTION_PREV:
                         back();
-                        MusicPlayerControllerFragment.musicPlayerControllerFragment.loadSelectedMusic();
+                        MusicPlayerControllerFragment.musicPlayerControllerFragment.back();
                         break;
                 }
             }
@@ -152,8 +152,8 @@ public class MusicPlayerService extends Service {
         else{
             position--;
         }
-        Song music = getCurrentMusic();
         mediaPlayer.stop();
+        Song music = getCurrentMusic();
         mediaPlayer=MediaPlayer.create(context,music.getMusic());
         mediaPlayer.start();
     }

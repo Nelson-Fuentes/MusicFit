@@ -9,7 +9,7 @@ public class NotificationMusicPlayer extends Application {
     public static final String CHANNEL_ID_2="CHANNEL_2";
     public static final String ACTION_NEXT="NEXT";
     public static final String ACTION_PLAY="PLAY";
-    public static final String ACTION_PREV="PREVIOUS";
+    public static final String ACTION_PREV="PREV";
 
     @Override
     public void onCreate(){

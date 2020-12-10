@@ -256,12 +256,14 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     public void back() {
         loadSelectedMusic();
         play();
+
     }
 
     @Override
     public void advance() {
         loadSelectedMusic();
         play();
+
     }
 
     private Runnable updateSongTime = new Runnable(){
