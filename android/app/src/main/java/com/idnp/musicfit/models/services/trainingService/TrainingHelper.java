@@ -20,7 +20,9 @@ import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Training;
 import com.idnp.musicfit.models.entities.Ubication;
+import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
+import com.idnp.musicfit.views.fragments.trainingReportListView.iTrainingReportListView;
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
 import com.idnp.musicfit.views.fragments.trainingReportView.iTrainingReportView;
 import com.idnp.musicfit.views.toastManager.ToastManager;
@@ -176,36 +178,37 @@ public class TrainingHelper {
         return ""+year+"/"+month+"/"+day+"/"+formated;
     }
 
-    public static ArrayList<Report> getTrainingList(){
+    public static ArrayList<Report> getTrainingList(iTrainingReportListView trainingReportListView){
         //obtener la lista de entrenamientos desde la base de datos en nube
+        FireBaseReportHelper baseHelper=new FireBaseReportHelper();
+        ArrayList<Report> trainings=baseHelper.getSaveReportsTraining(MusicfitAuthenticationManagerService.authenticationService.getCurrentUserId(),trainingReportListView);
 
-        ArrayList<Report> trainings = new ArrayList<Report>();
-
-        Report nuevo = new Report(19,11,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
-        nuevo.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
-        Report nuevo1 = new Report(12,10,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
-        nuevo1.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
-        Report nuevo2 = new Report(9,11,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
-        nuevo2.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
-        Report nuevo3 = new Report(15,11,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
-        nuevo3.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
-        Report nuevo4 = new Report(23,10,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
-        nuevo4.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
-        Report nuevo5 = new Report(15,11,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
-        nuevo5.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
-        Report nuevo6 = new Report(23,9,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
-        nuevo6.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
-        Report nuevo7 = new Report(30,2,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
-        nuevo7.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
-
-        trainings.add(nuevo);
-        trainings.add(nuevo1);
-        trainings.add(nuevo2);
-        trainings.add(nuevo3);
-        trainings.add(nuevo4);
-        trainings.add(nuevo5);
-        trainings.add(nuevo6);
-        trainings.add(nuevo7);
+        Log.d("example",""+trainings.size());
+        //        Report nuevo = new Report(19,11,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
+//        nuevo.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
+//        Report nuevo1 = new Report(12,10,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
+//        nuevo1.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
+//        Report nuevo2 = new Report(9,11,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
+//        nuevo2.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
+//        Report nuevo3 = new Report(15,11,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
+//        nuevo3.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
+//        Report nuevo4 = new Report(23,10,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
+//        nuevo4.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
+//        Report nuevo5 = new Report(15,11,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
+//        nuevo5.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
+//        Report nuevo6 = new Report(23,9,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
+//        nuevo6.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
+//        Report nuevo7 = new Report(30,2,2020,11,17,52,new com.idnp.musicfit.models.entities.LatLng(-16.4322583,-71.5642415));
+//        nuevo7.setEndP(new com.idnp.musicfit.models.entities.LatLng(-16.4356583,-71.5651415));
+//
+//        trainings.add(nuevo);
+//        trainings.add(nuevo1);
+//        trainings.add(nuevo2);
+//        trainings.add(nuevo3);
+//        trainings.add(nuevo4);
+//        trainings.add(nuevo5);
+//        trainings.add(nuevo6);
+//        trainings.add(nuevo7);
         return  trainings;
     }
     //-----------getters----------------------------------

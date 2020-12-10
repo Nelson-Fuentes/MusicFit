@@ -24,7 +24,9 @@ public class Report {
     private String ID;//--
     private int KM;//--
     private int kcal;//--
+    public Report(){
 
+    }
     public Report(int startDay, int startMonth, int startYear, int startHour,int startMin,int startSec,LatLng startPosition) {
         this.startSec=startSec;
         this.startMin=startMin;
@@ -33,7 +35,6 @@ public class Report {
         this.startMonth=startMonth;
         this.startYear=startYear;
         this.startP=startPosition;
-        this.ID=""+startSec+""+startMin+""+startHour+""+startDay+""+startMonth+""+startYear;
 
         this.durationHour=0;
         this.durationMin=0;

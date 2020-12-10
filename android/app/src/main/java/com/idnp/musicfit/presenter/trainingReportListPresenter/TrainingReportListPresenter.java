@@ -18,7 +18,7 @@ public class TrainingReportListPresenter implements iTrainingReportListPresenter
 
     @Override
     public void loadTrainingList(int dayStart,int monthStart, int yearStart,int dayEnd,int monthEnd, int yearEnd) {
-        ArrayList<Report> reports= TrainingHelper.getTrainingList();
+        ArrayList<Report> reports= TrainingHelper.getTrainingList(trainingReportListView);
         ArrayList<Report> returnReports= new ArrayList<Report>();
 
         System.out.println("("+dayStart+","+monthStart+","+yearStart+"),("+dayEnd+","+monthEnd+","+yearEnd+")");
@@ -53,6 +53,6 @@ public class TrainingReportListPresenter implements iTrainingReportListPresenter
                 returnReports.add(current);
             }
         }
-        this.trainingReportListView.showReportList(returnReports);//filtro
+        //this.trainingReportListView.showReportList(returnReports);//filtro
     }
 }
