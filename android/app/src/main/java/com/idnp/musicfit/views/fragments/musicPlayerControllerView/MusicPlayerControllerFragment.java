@@ -41,16 +41,10 @@ import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerCon
 import com.idnp.musicfit.presenter.musicPlayerPresenter.MusicPlayerPresenter;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
 
-<<<<<<< Updated upstream
-import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.ACTION_PLAY;
-import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.ACTION_STOP;
-import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.CHANNEL_ID_2;
-=======
-import java.util.Objects;
->>>>>>> Stashed changes
 
-import static com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerNotificationReceiver.CHANNEL_ID_2;
-import static com.idnp.musicfit.presenter.musicPlayerPresenter.NotificationMusicPlayer.ACTION_PLAY;
+import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.ACTION_PLAY;
+import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.CHANNEL_ID_2;
+
 import static com.idnp.musicfit.presenter.musicPlayerPresenter.NotificationMusicPlayer.ACTION_NEXT;
 import static com.idnp.musicfit.presenter.musicPlayerPresenter.NotificationMusicPlayer.ACTION_PREV;
 
@@ -176,14 +170,6 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         }
 
         MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
-
-<<<<<<< Updated upstream
-        //Intent intent= new Intent(this.getActivity(), TrainingService.class);
-        //this.getActivity().bindService(intent,this, Context.BIND_AUTO_CREATE);
-=======
-        Intent intent= new Intent(this.getActivity(), TrainingService.class);
-        this.getActivity().bindService(intent,this, Context.BIND_AUTO_CREATE);
->>>>>>> Stashed changes
 
     }
 

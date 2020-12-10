@@ -36,7 +36,8 @@ public class TrainingService extends Service {
 
 
     public Report makeTraining(){ // para guardar el reporte
-        return new Report(23,11,2020,11,17,52,new LatLng(-16.4322583,-71.5642415));
+        //return new Report(23,11,2020,11,17,52,new LatLng(-16.4322583,-71.5642415));
+        return null;
     }
     public void startTraining(Report training){
         training.start();
@@ -57,7 +58,7 @@ public class TrainingService extends Service {
 
         ArrayList<Report> trainings = new ArrayList<Report>();
 
-        Report nuevo = new Report(19,11,2020,11,17,52,new LatLng(-16.4322583,-71.5642415));
+        /*Report nuevo = new Report(19,11,2020,11,17,52,new LatLng(-16.4322583,-71.5642415));
         nuevo.setEndP(new LatLng(-16.4356583,-71.5651415));
         Report nuevo1 = new Report(12,10,2020,11,17,52,new LatLng(-16.4322583,-71.5642415));
         nuevo1.setEndP(new LatLng(-16.4356583,-71.5651415));
@@ -81,7 +82,7 @@ public class TrainingService extends Service {
         trainings.add(nuevo4);
         trainings.add(nuevo5);
         trainings.add(nuevo6);
-        trainings.add(nuevo7);
+        trainings.add(nuevo7);*/
 
         return  trainings;
     }
@@ -98,12 +99,12 @@ public class TrainingService extends Service {
             switch (actionName){
                 case ACTION_PLAY:
                     if(actionTraining!=null){
-                        actionTraining.startTraining();
+                        //actionTraining.startTraining();
                     }
                     break;
                 case ACTION_STOP:
                     if(actionTraining!=null){
-                        actionTraining.stopTraining();
+                        //actionTraining.stopTraining();
                     }
                     break;
             }
