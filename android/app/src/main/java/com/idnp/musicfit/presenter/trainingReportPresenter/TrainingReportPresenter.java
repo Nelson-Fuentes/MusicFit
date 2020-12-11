@@ -9,10 +9,10 @@ import com.idnp.musicfit.views.fragments.trainingReportView.iTrainingReportView;
 public class TrainingReportPresenter implements iTrainingReportPresenter {
 
     private iTrainingReportView trainingReportView;
-    private Report training;
 
-    public TrainingReportPresenter(iTrainingReportView trainingReportView, Report training){
-        this.training = training;
+
+    public TrainingReportPresenter(iTrainingReportView trainingReportView){
+
         this.trainingReportView = trainingReportView;
     }
 

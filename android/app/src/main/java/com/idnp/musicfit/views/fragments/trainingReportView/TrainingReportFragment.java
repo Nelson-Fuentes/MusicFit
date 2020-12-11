@@ -83,6 +83,8 @@ public class TrainingReportFragment extends Fragment implements
 
     //-----------circle labels
 
+
+
     private ConstraintLayout cl_hour;
     private TextView tv_hour;
     private TextView tv_hour_l;
@@ -106,9 +108,11 @@ public class TrainingReportFragment extends Fragment implements
 
     //------------------------------------DATA TO SHOW REPORT------------------------
 
-
+    public TrainingReportFragment() {//--------------------------------------------------ok
+        this.trainingReportPresenter = new TrainingReportPresenter(this);
+    }
     public TrainingReportFragment(Report training) {//--------------------------------------------------ok
-        this.trainingReportPresenter = new TrainingReportPresenter(this, training);
+        this.trainingReportPresenter = new TrainingReportPresenter(this);
         this.report=training;
     }
 
@@ -163,6 +167,7 @@ public class TrainingReportFragment extends Fragment implements
 
         // this.trainingReportPresenter.loadDataNotificationTraining();//carga los datos de los estados (play training, pause training)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
+        setModeStartMapTraining(true);
 
         reportList.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -278,6 +283,7 @@ public class TrainingReportFragment extends Fragment implements
                 if(bol.equals(ReportHelper.NONE_START_ID)){
                     ReportHelper.startTrainingVarsShared(getContext());
                     button_stop.setVisibility(View.VISIBLE);//----------para que se actualice en myPos el valor de la posición inicial
+                    setModeReportView(true);
                 }
                 requestLocationUpdate();//------------------start update location service intent
                 TrainingHelper.setLocationRequestStatus(getContext(),TrainingHelper.TRAINING);
@@ -422,7 +428,42 @@ public class TrainingReportFragment extends Fragment implements
             tv_sec.setVisibility(View.VISIBLE);
             tv_sec_l.setVisibility(View.VISIBLE);
 
+            cl_km.setVisibility(View.VISIBLE);
+            tv_km.setVisibility(View.VISIBLE);
+            tv_km_l.setVisibility(View.VISIBLE);
+
+            cl_cal.setVisibility(View.VISIBLE);
+            tv_cal.setVisibility(View.VISIBLE);
+            tv_cal_l.setVisibility(View.VISIBLE);
+
             button_play_pause.setVisibility(View.INVISIBLE);
+            button_stop.setVisibility(View.INVISIBLE);
+            chronometer.setVisibility(View.INVISIBLE);
+
+        }
+    }
+    private void setModeStartMapTraining(boolean isModeViewReport){
+        if(isModeViewReport){
+            cl_hour.setVisibility(View.INVISIBLE);
+            tv_hour.setVisibility(View.INVISIBLE);
+            tv_hour_l.setVisibility(View.INVISIBLE);
+
+            cl_min.setVisibility(View.INVISIBLE);
+            tv_min.setVisibility(View.INVISIBLE);
+            tv_min_l.setVisibility(View.INVISIBLE);
+
+            cl_sec.setVisibility(View.INVISIBLE);
+            tv_sec.setVisibility(View.INVISIBLE);
+            tv_sec_l.setVisibility(View.INVISIBLE);
+            cl_km.setVisibility(View.INVISIBLE);
+            tv_km.setVisibility(View.INVISIBLE);
+            tv_km_l.setVisibility(View.INVISIBLE);
+
+            cl_cal.setVisibility(View.INVISIBLE);
+            tv_cal.setVisibility(View.INVISIBLE);
+            tv_cal_l.setVisibility(View.INVISIBLE);
+
+            button_play_pause.setVisibility(View.VISIBLE);
             button_stop.setVisibility(View.INVISIBLE);
             chronometer.setVisibility(View.INVISIBLE);
 

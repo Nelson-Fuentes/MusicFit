@@ -18,12 +18,11 @@ public class TrainingReportListPresenter implements iTrainingReportListPresenter
 
     @Override
     public void loadTrainingList(int dayStart,int monthStart, int yearStart,int dayEnd,int monthEnd, int yearEnd) {
-        ArrayList<Report> reports= TrainingHelper.getTrainingList(trainingReportListView);
-        ArrayList<Report> returnReports= new ArrayList<Report>();
+
 
         System.out.println("("+dayStart+","+monthStart+","+yearStart+"),("+dayEnd+","+monthEnd+","+yearEnd+")");
 
-
+/*
         for(int i=0;i<reports.size();i++){
             Report current=reports.get(i);
             boolean condStart=false;
@@ -52,7 +51,7 @@ public class TrainingReportListPresenter implements iTrainingReportListPresenter
             if(condStart&&condEnd){
                 returnReports.add(current);
             }
-        }
+        }*/
         //this.trainingReportListView.showReportList(returnReports);//filtro
     }
 }

@@ -3,6 +3,7 @@ package com.idnp.musicfit.models.adapters;
 import android.content.Context;
 import android.location.Address;
 import android.location.Geocoder;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.RecyclerView;
-
+import com.firebase.ui.database.FirebaseRecyclerAdapter;
+import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.Report;
@@ -21,40 +23,36 @@ import com.idnp.musicfit.views.fragments.trainingReportListView.TrainingReportLi
 import com.idnp.musicfit.views.fragments.trainingReportView.TrainingReportFragment;
 
 import java.io.IOException;
-import java.text.DateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
-public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportHolder> {
+public class ReportAdapter extends FirebaseRecyclerAdapter<Report,ReportAdapter.ReportHolder> {
 
-    private ArrayList<Report> reportes;
     private Geocoder geocoder;
-    private Context context;
-    public ReportAdapter(Context context) {
-        this.context=context;
-        this.reportes = new ArrayList<Report>();
+
+
+    public ReportAdapter(@NonNull FirebaseRecyclerOptions<Report> options,Context context) {
+        super(options);
         geocoder=new Geocoder(context);
     }
 
-    public void setDataSet(ArrayList<Report> reportes){
+    /*public void setDataSet(ArrayList<Report> reportes){
         this.reportes=reportes;
         this.notifyDataSetChanged();
-    }
+    }*/
     @NonNull
     @Override
     public ReportHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_training_list,parent,false);
         return new ReportHolder(view);
     }
+
     @Override
-    public void onBindViewHolder(@NonNull ReportHolder holder, int position) {
-
-        Report report = reportes.get(position);
-
+    protected void onBindViewHolder(@NonNull ReportHolder holder, int position, @NonNull Report report) {
+        Log.d("example","GGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGGG");
         String startPlaceName="";
         String endPlaceName="";
-        /*try {
+        try {
             List<Address> addresses = geocoder.getFromLocation(report.getStartP().latitude, report.getStartP().longitude, 1);
             if (addresses.size() > 0) {
                 Address address = addresses.get(0);
@@ -71,7 +69,7 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportHold
             }
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
         holder.startplace.setText(startPlaceName);
         holder.endplace.setText(endPlaceName);
 
@@ -100,14 +98,8 @@ public class ReportAdapter extends RecyclerView.Adapter<ReportAdapter.ReportHold
                 FragmentManager.fragmentManager.changeFragment( new TrainingReportFragment(report));
             }
         });
-
     }
 
-
-    @Override
-    public int getItemCount() {
-        return reportes.size();
-    }
 
     public static  class ReportHolder extends  RecyclerView.ViewHolder{
         private TextView dateday;

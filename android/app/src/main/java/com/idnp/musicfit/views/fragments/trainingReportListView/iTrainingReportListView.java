@@ -7,5 +7,5 @@ import java.util.ArrayList;
 
 public interface iTrainingReportListView {
 
-    public void showReportList(ArrayList<Report> trainings);
+    //public void showReportList(ArrayList<Report> trainings);
 }

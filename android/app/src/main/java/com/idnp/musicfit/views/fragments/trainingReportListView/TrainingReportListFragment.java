@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -17,9 +18,14 @@ import android.widget.DatePicker;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.firebase.ui.database.FirebaseRecyclerOptions;
+import com.google.firebase.database.FirebaseDatabase;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.adapters.ReportAdapter;
 import com.idnp.musicfit.models.entities.Report;
+import com.idnp.musicfit.models.services.authenticationService.MusicfitAuthenticationManagerService;
+import com.idnp.musicfit.models.services.musicfitFirebase.MusicfitFireBase;
+import com.idnp.musicfit.models.services.trainingService.FireBaseReportHelper;
 import com.idnp.musicfit.presenter.trainingReportListPresenter.TrainingReportListPresenter;
 import com.idnp.musicfit.presenter.trainingReportListPresenter.iTrainingReportListPresenter;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
@@ -119,19 +125,35 @@ public class TrainingReportListFragment extends Fragment implements iTrainingRep
         button_date_ini.setOnClickListener(onClickDateIni);//date picker inicial evento
         button_date_end.setOnClickListener(onClickDateEnd);//date picker final evento
         //vinculando el recyclerview
-        this.reportListView = view.findViewById(R.id.training_list);
 
+        this.reportListView = view.findViewById(R.id.training_list);
         LinearLayoutManager manager=new LinearLayoutManager(this.getContext());
         reportListView.setLayoutManager(manager);
         //crear el adaptador
-        this.reportAdapter = new ReportAdapter(this.getContext());
+
+        FirebaseRecyclerOptions<Report> reportOption = new FirebaseRecyclerOptions.Builder<Report>()
+                .setQuery(
+                        FirebaseDatabase.getInstance()
+                                .getReference()
+                                .child(FireBaseReportHelper.FIREBASE_CHILD_REPORT_COLLECTION)
+                                .child(MusicfitAuthenticationManagerService.authenticationService.getCurrentUserId()),
+                        Report.class)
+                .build();
+        this.reportAdapter = new ReportAdapter(reportOption,this.getContext());
         //agrega adaptador
         this.reportListView.setAdapter(this.reportAdapter);
         this.trainingReportListPresenter = new TrainingReportListPresenter(this);//crea el presentador de esta clase
         this.trainingReportListPresenter.loadTrainingList(day,month,year,day,month+1,year);//carga la lista de reportes de entrenamiento
     }
     @Override
-    public void showReportList(ArrayList<Report> reportes) {
-        this.reportAdapter.setDataSet(reportes);
+    public void onStart() {
+        super.onStart();
+        reportAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        reportAdapter.stopListening();
     }
 }

@@ -258,8 +258,10 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                     }
                 }else if(key.equals(ReportHelper.START_ID_TRAINING_SHARED)){
                     if(ReportHelper.getStartIdTrainingShared(getContext()).equals(ReportHelper.NONE_START_ID)){
-                        marker_start.remove();
-                        marker_end.remove();
+                        if(marker_start!=null)
+                            marker_start.remove();
+                        if(marker_end!=null)
+                            marker_end.remove();
                         for(Polyline lines:polylines){
                             lines.remove();
                         }

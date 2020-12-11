@@ -28,35 +28,13 @@ public class FireBaseReportHelper {
         musicfitFireBase.getChild(FIREBASE_CHILD_REPORT_COLLECTION).child(idUser).child(report.getID()).setValue(report);
     }
 
-    public ArrayList<Report> getSaveReportsTraining(String idUser, iTrainingReportListView trainingReportListView){
-        ArrayList<Report> reports = new ArrayList<>();
-        musicfitFireBase.getChild(FIREBASE_CHILD_REPORT_COLLECTION).child(idUser).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                reports.clear();
-                for(DataSnapshot dataSnapshot: snapshot.getChildren()){
-                    Report u = dataSnapshot.getValue(Report.class);
-                    Log.d("example reports", u.toString()+" <-- data");
-                    reports.add(u);
-                }
-                trainingReportListView.showReportList(reports);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-        return reports;
-    }
-
     public void saveLocationsTraining(String idReport, ArrayList<Ubication> locationsTraining){
         DatabaseReference childReference=musicfitFireBase.getChild(FIREBASE_CHILD_LOCATION_COLLECTION).child(idReport);
         for(Ubication location:locationsTraining){
             childReference.child(""+location.getOrden()).setValue(location);
         }
     }
-    public ArrayList<Ubication> getSaveLocationTraining(String idReport){
+    /*public ArrayList<Ubication> getSaveLocationTraining(String idReport){
         ArrayList<Ubication> ubications = new ArrayList<Ubication>();
         musicfitFireBase.getChild(FIREBASE_CHILD_LOCATION_COLLECTION).child(idReport).addValueEventListener(new ValueEventListener() {
             @Override
@@ -75,6 +53,6 @@ public class FireBaseReportHelper {
             }
         });
         return ubications;
-    }
+    }*/
 
 }
