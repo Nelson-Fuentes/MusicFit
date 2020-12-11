@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
 
+import com.facebook.AccessToken;
 import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
@@ -24,17 +25,11 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
 import com.idnp.musicfit.R;
 import com.idnp.musicfit.models.entities.User;
-import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitException;
-import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitResponse;
-import com.idnp.musicfit.models.services.musicFitRemoteService.MusicFitService;
 import com.idnp.musicfit.models.services.musicfitFirebase.MusicfitFireBase;
 import com.idnp.musicfit.models.services.musicfitPreferences.MusicfitPreferencesService;
 import com.idnp.musicfit.models.services.userService.UserService;
 import com.idnp.musicfit.presenter.loginPresenter.iLoginPresenter;
 import com.idnp.musicfit.views.toastManager.ToastManager;
-
-import org.json.JSONObject;
-import java.net.HttpURLConnection;
 
 public class MusicfitAuthenticationManagerService {
 
@@ -202,7 +197,11 @@ public class MusicfitAuthenticationManagerService {
     public void logout(){
         Auth.GoogleSignInApi.signOut(this.googleApiClient);
         if (LoginManager.getInstance() != null){
+            if(AccessToken.getCurrentAccessToken()!=null){
+                AccessToken.setCurrentAccessToken(null);
+            }
             LoginManager.getInstance().logOut();
+
         }
         if (auth.getCurrentUser() !=null){
             auth.signOut();
