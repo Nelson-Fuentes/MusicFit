@@ -4,6 +4,8 @@ import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 
+import com.facebook.FacebookSdk;
+
 
 public class NotificationTraining extends Application {
     public static final String CHANNEL_ID_1="CHANNEL_1";
@@ -15,6 +17,7 @@ public class NotificationTraining extends Application {
     public void onCreate(){
         super.onCreate();
         createNotificationChannel();
+        FacebookSdk.sdkInitialize(this.getApplicationContext());
     }
     private void createNotificationChannel(){
 

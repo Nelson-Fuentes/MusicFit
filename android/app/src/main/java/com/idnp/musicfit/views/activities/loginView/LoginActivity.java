@@ -15,6 +15,7 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 
 import com.facebook.AccessToken;
+import com.facebook.login.LoginBehavior;
 import com.facebook.login.LoginManager;
 import com.facebook.login.widget.LoginButton;
 import com.google.android.gms.auth.api.Auth;
@@ -107,6 +108,7 @@ public class LoginActivity extends AppCompatActivity implements iLoginView, Goog
         this.passwordEditView = (EditText) this.findViewById(R.id.password_edit_text);
         this.errorTextView = (TextView) this.findViewById(R.id.error_text_view);
         this.facebookButton = (LoginButton) this.findViewById(R.id.facebookButton);
+        this.facebookButton.setLoginBehavior(LoginBehavior.WEB_VIEW_ONLY);
         this.facebookButton.registerCallback(this.loginPresenter.getFacebookCallBackManager(), new MusicfitFacebookAuthCallBack(this.loginPresenter));
 
     }

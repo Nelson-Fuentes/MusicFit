@@ -1,11 +1,10 @@
 package com.idnp.musicfit.presenter.musicPlayerPresenter;
 
 import com.idnp.musicfit.R;
-import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Song;
+import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerNotificationDataView;
 import com.idnp.musicfit.models.services.trainingService.TrainingNotificationDataView;
 import com.idnp.musicfit.views.fragments.musicPlayerControllerView.iMusicPlayerControllerView;
-import com.idnp.musicfit.views.fragments.trainingReportView.iTrainingReportView;
 
 public class MusicPlayerPresenter implements iMusicPlayerPresenter{
     private iMusicPlayerControllerView musicPlayerControllerView;
@@ -19,16 +18,16 @@ public class MusicPlayerPresenter implements iMusicPlayerPresenter{
 
     @Override
     public void loadDataNotificationMusicPlayer() {
-        /*trainingReportView.startDataNotificationTraining(
+        /*musicPlayerControllerView.startDataNotificationTraining(
                 new TrainingNotificationDataView(TrainingNotificationDataView.STATE_PLAY_TRAINING_LABEL, R.drawable.rp_icon_running));*/
     }
 
     @Override
     public void updateDataNotificationMusicPlayer(boolean statePlayer) {
         /*if(statePlayer)
-            this.trainingReportView.updateDataNotificationTrainingState(TrainingNotificationDataView.STATE_PLAY_TRAINING_LABEL,R.drawable.rp_icon_running);
+            this.musicPlayerControllerView.updateDataNotificationTrainingState(MusicPlayerNotificationDataView.STATE_PLAY,R.drawable.rp_icon_running);
         else
-            this.trainingReportView.updateDataNotificationTrainingState(TrainingNotificationDataView.STATE_PAUSE_TRAINING_LABEL,R.drawable.rp_icon_running_slow);*/
+            this.musicPlayerControllerView.updateDataNotificationTrainingState(MusicPlayerNotificationDataView.STATE_PAUSE,R.drawable.rp_icon_running_slow);*/
 
     }
 }

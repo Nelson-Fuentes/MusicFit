@@ -11,22 +11,19 @@ import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.media.session.MediaSession;
 import android.os.Bundle;
 
-import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.os.Handler;
 import android.os.IBinder;
+import android.support.v4.media.session.MediaSessionCompat;
 import android.util.Log;
-import android.view.Display;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
@@ -36,17 +33,24 @@ import com.idnp.musicfit.R;
 
 import com.idnp.musicfit.models.entities.Song;
 
+import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerNotificationReceiver;
 import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerService;
+import com.idnp.musicfit.models.services.musicPlayerService.MusicPlayerNotificationDataView;
 import com.idnp.musicfit.models.services.trainingService.TrainingNotificationReceiver;
 import com.idnp.musicfit.presenter.musicPlayerControllerPresenter.MusicPlayerControllerPresenter;
+import com.idnp.musicfit.presenter.musicPlayerPresenter.MusicPlayerPresenter;
 import com.idnp.musicfit.views.activities.mainView.MainActivity;
 
+
 import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.ACTION_PLAY;
-import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.ACTION_STOP;
 import static com.idnp.musicfit.models.services.trainingService.NotificationTraining.CHANNEL_ID_2;
 
+import static com.idnp.musicfit.presenter.musicPlayerPresenter.NotificationMusicPlayer.ACTION_NEXT;
+import static com.idnp.musicfit.presenter.musicPlayerPresenter.NotificationMusicPlayer.ACTION_PREV;
 
-public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView {
+
+
+public class MusicPlayerControllerFragment extends Fragment implements iMusicPlayerControllerView,ServiceConnection {
 
     public static final int STOPPED = -1;
     public static final int PAUSED = 0;
@@ -66,13 +70,18 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     private Song music;
     private int selectMusic;
     private MusicPlayerService musicPlayerService;
+    private MusicPlayerPresenter musicPlayerPresenter;
+    private MusicPlayerNotificationDataView playMusicNotificationDataView;
+    private boolean isPlay=false;
+    MediaSessionCompat mediaSession;
+    public static MusicPlayerControllerFragment musicPlayerControllerFragment;
 
     public MusicPlayerControllerFragment(){
 
     }
     public MusicPlayerControllerFragment(int selectMusic){
         this.selectMusic=selectMusic;
-
+        musicPlayerControllerFragment=this;
     }
 
     @Override
@@ -147,7 +156,7 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         this.currentTime=(TextView) view.findViewById(R.id.current_time_player);
         //TIEMPO COMPLETO DE LA CANCION
         this.completeTime=(TextView) view.findViewById(R.id.end_time_player);
-
+        mediaSession=new MediaSessionCompat(this.getContext(),"PlayAudio");
         return  this.view;
     }
 
@@ -161,9 +170,6 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         }
 
         MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
-
-        //Intent intent= new Intent(this.getActivity(), TrainingService.class);
-        //this.getActivity().bindService(intent,this, Context.BIND_AUTO_CREATE);
 
     }
 
@@ -212,12 +218,14 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     @Override
     public void play() {
         this.playButton.setBackgroundResource(R.drawable.button_player_pause_mp3);
+        showNotification(R.drawable.icon_player_pause_mp3);
 
     }
 
     @Override
     public void pause() {
         this.playButton.setBackgroundResource(R.drawable.button_player_play_mp3);
+        showNotification(R.drawable.icon_player_play_mp3);
     }
 
     @Override
@@ -247,11 +255,15 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     @Override
     public void back() {
         loadSelectedMusic();
+        play();
+
     }
 
     @Override
     public void advance() {
         loadSelectedMusic();
+        play();
+
     }
 
     private Runnable updateSongTime = new Runnable(){
@@ -283,36 +295,39 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
 
     }
 
-    /*@Override
+    @Override
     public void onServiceConnected(ComponentName componentName, IBinder iBinder) {
-        MusicPlayerService.MusicPlayerBinder binder = (MusicPlayerService.MusicPlayerBinder)iBinder;
-        musicPlayerService = binder.getService();
-    }*/
+        MusicPlayerService.MusicPlayerIBinder playerIbinder = (MusicPlayerService.MusicPlayerIBinder)iBinder;
+        musicPlayerService = playerIbinder.getServicio();
+    }
 
-    /*@Override
+    @Override
     public void onServiceDisconnected(ComponentName componentName) {
         musicPlayerService=null;
-    }*/
+    }
 
     public void showNotification(int playPauseButton){
 
-        /*Intent intent= new Intent(this.getContext(), MainActivity.class);
+        Intent intent= new Intent(this.getContext(), MainActivity.class);
         PendingIntent contentIntent= PendingIntent.getActivity(this.getContext(),0,intent,0);
 
-        this.trainingReportPresenter.updateDataNotificationTraining(this.isTraining);//actualizamos los datos a mostrar en la notificacion
+        //this.musicPlayerPresenter.updateDataNotificationMusicPlayer(this.isPlay);//actualizamos los datos a mostrar en la notificacion
 
-        Intent playIntent= new Intent(this.getContext(), TrainingNotificationReceiver.class).setAction(ACTION_PLAY);
-        Intent stopIntent= new Intent(this.getContext(),TrainingNotificationReceiver.class).setAction(ACTION_STOP);
+        Intent playIntent= new Intent(this.getContext(), MusicPlayerNotificationReceiver.class).setAction(ACTION_PLAY);
+        Intent nextIntent= new Intent(this.getContext(),MusicPlayerNotificationReceiver.class).setAction(ACTION_NEXT);
+        Intent prevIntent= new Intent(this.getContext(),MusicPlayerNotificationReceiver.class).setAction(ACTION_PREV);
         PendingIntent playPendingIntent= PendingIntent.getBroadcast(this.getContext(),0,playIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-        PendingIntent stopPendingIntent= PendingIntent.getBroadcast(this.getContext(),0,stopIntent,PendingIntent.FLAG_UPDATE_CURRENT);
-
-        Bitmap picture= BitmapFactory.decodeResource(getResources(),stateTraining.getBackgroundStatus());
-        Notification trainingNotification= new NotificationCompat.Builder(this.getContext(),CHANNEL_ID_2)
-                .setSmallIcon(this.stateTraining.getBackgroundStatus())
+        PendingIntent nextPendingIntent= PendingIntent.getBroadcast(this.getContext(),0,nextIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent prevPendingIntent= PendingIntent.getBroadcast(this.getContext(),0,prevIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+        Song music=MusicPlayerService.musicPlayerService.getCurrentMusic();
+        Bitmap picture= BitmapFactory.decodeResource(getResources(),R.drawable.image_albun_practice);
+        Notification musicPlayerNotification= new NotificationCompat.Builder(this.getContext(),CHANNEL_ID_2)
+                .setSmallIcon(R.drawable.button_player_list_mp3)
                 .setLargeIcon(picture)
-                .setContentTitle(this.stateTraining.getStatusTitle())
-                .addAction(playPauseButton,"play_pause",playPendingIntent)
-                .addAction(R.drawable.ic_baseline_stop_circle_24,"stop",stopPendingIntent)
+                .setContentTitle(music.getName())
+                .addAction(R.drawable.button_player_back_mp3,"Previous",prevPendingIntent)
+                .addAction(playPauseButton,"Play",playPendingIntent)
+                .addAction(R.drawable.button_player_advance_mp3,"Next",nextPendingIntent)
                 .setStyle(new androidx.media.app.NotificationCompat.MediaStyle()
                         .setMediaSession(mediaSession.getSessionToken()))
                 .setPriority(NotificationCompat.PRIORITY_LOW)
@@ -321,7 +336,15 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
                 .build();
         NotificationManager notificationManager= (NotificationManager)
                 this.getActivity().getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(0,trainingNotification);*/
+        notificationManager.notify(0,musicPlayerNotification);
 
+    }
+    public void startDataNotificationMusicPlayer(MusicPlayerNotificationDataView stateTraining){
+        this.playMusicNotificationDataView=stateTraining;
+    }
+    @Override
+    public void updateDataNotificationMusicPlayer(String stateTrainingTitle,int backgroundTrainingState){
+        this.playMusicNotificationDataView.setStatusTitle(stateTrainingTitle);
+        this.playMusicNotificationDataView.setBackgroundStatus(backgroundTrainingState);
     }
 }

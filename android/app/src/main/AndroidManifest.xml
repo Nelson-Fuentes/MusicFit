@@ -27,6 +27,7 @@
         android:usesCleartextTraffic="true">
 
 
+
         <service
             android:name=".models.services.authenticationService.MusicfitAuthenticationService"
             android:enabled="true"
@@ -53,6 +54,14 @@
             <intent-filter>
                 <action android:name="PLAY" />
                 <action android:name="STOP" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".models.services.musicPlayerService.MusicPlayerNotificationReceiver"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="NEXT"/>
+                <action android:name="PREVIOUS"/>
+                <action android:name="PLAY"/>
             </intent-filter>
         </receiver>
         <!--

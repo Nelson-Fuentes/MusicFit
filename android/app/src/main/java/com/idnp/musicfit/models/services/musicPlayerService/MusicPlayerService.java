@@ -42,9 +42,11 @@ public class MusicPlayerService extends Service {
     public static MediaPlayer mediaPlayer=new MediaPlayer();
 
     /*PARA LAS NOTIFICACIONES*/
-    private IBinder musicPlayerBinder = new MusicPlayerBinder();
+    public IBinder musicPlayerBinder = new MusicPlayerIBinder();
     /*FIN DE NOTIFICACIONES*/
-
+    public static final String ACTION_PLAY="PLAY";
+    public static final String ACTION_NEXT="NEXT";
+    public static final String ACTION_PREV="PREV";
     
     public MusicPlayerService(){
 
@@ -55,22 +57,39 @@ public class MusicPlayerService extends Service {
         repeat_state=REPEAT_DISABLED;
     }
 
-    @Nullable
-    @Override
-    public IBinder onBind(Intent intent) {
-        return null;
-    }
-    public class MusicPlayerBinder extends Binder{
-        public MusicPlayerService getService(){
+
+    public class MusicPlayerIBinder extends Binder{
+        public MusicPlayerService getServicio(){
             return MusicPlayerService.this;
         }
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
+        String actionName = intent.getStringExtra("myActionName");
         Song music = getCurrentMusic();
-        mediaPlayer=MediaPlayer.create(context,music.getMusic());
-        mediaPlayer.start();
+        if (actionName != null) {
+            if (actionName != null) {
+                switch (actionName) {
+                    case ACTION_PLAY:
+                        play_pause();
+                        MusicPlayerControllerFragment.musicPlayerControllerFragment.loadSelectedMusic();
+                        break;
+                    case ACTION_NEXT:
+                        advance();
+                        MusicPlayerControllerFragment.musicPlayerControllerFragment.advance();
+                        break;
+                    case ACTION_PREV:
+                        back();
+                        MusicPlayerControllerFragment.musicPlayerControllerFragment.back();
+                        break;
+                }
+            }
+        } else {
+            mediaPlayer = MediaPlayer.create(context, music.getMusic());
+            mediaPlayer.start();
+            return START_STICKY;
+        }
         return START_STICKY;
     }
 
@@ -78,6 +97,12 @@ public class MusicPlayerService extends Service {
     public void onDestroy() {
         super.onDestroy();
         mediaPlayer.stop();
+    }
+
+    @Nullable
+    @Override
+    public IBinder onBind(Intent intent) {
+        return null;
     }
 
     public void loadMusicPlayList(){
@@ -95,6 +120,16 @@ public class MusicPlayerService extends Service {
         MusicPlayList list=new MusicPlayList();
         musicList=list.getMusicPlayList();
         return musicList.get(position);
+    }
+    public void play_pause(){
+        if(mediaPlayer.isPlaying()){
+            MusicPlayerControllerFragment.musicPlayerControllerFragment.pause();
+            pause();
+        }
+        else{
+            MusicPlayerControllerFragment.musicPlayerControllerFragment.play();
+            play();
+        }
     }
 
     public Song play(){
@@ -117,8 +152,8 @@ public class MusicPlayerService extends Service {
         else{
             position--;
         }
-        Song music = getCurrentMusic();
         mediaPlayer.stop();
+        Song music = getCurrentMusic();
         mediaPlayer=MediaPlayer.create(context,music.getMusic());
         mediaPlayer.start();
     }
