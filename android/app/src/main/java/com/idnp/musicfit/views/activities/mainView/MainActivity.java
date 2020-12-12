@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity  implements  iMainView{
     }
 
     public void logout(){
-        this.recreate();
+        this.showNoOpenSessionFoundAction();
     }
 
     @Override

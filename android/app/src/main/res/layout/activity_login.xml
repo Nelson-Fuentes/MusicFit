@@ -83,7 +83,7 @@
                     android:ems="10"
                     android:foregroundTint="@android:color/transparent"
                     android:foregroundTintMode="add"
-                    android:hint="@string/username_label"
+                    android:hint="@string/email_value"
                     android:inputType="textPersonName"
                     android:paddingTop="12dp"
                     android:paddingBottom="0dp"
