@@ -66,10 +66,10 @@ public class TrainingReportFragment extends Fragment implements
         SharedPreferences.OnSharedPreferenceChangeListener {
     private View view;
     private iTrainingReportPresenter trainingReportPresenter;
-    private ImageButton reportList;
+    private ImageView reportList;
     private FusedLocationProviderClient fusedLocationProviderClient;
 
-    private ImageView button_play_pause, button_stop;//para el control del entrenamiento
+    private ImageView button_play_pause, button_stop,button_training_view;//para el control del entrenamiento
     private TrainingNotificationDataView stateTraining;//guarda datos de la notificación sea entrenando o pause
     private boolean isTraining = false;//-----------para verificar si está activo el entrenamiento
 
@@ -83,7 +83,13 @@ public class TrainingReportFragment extends Fragment implements
 
     //-----------circle labels
 
+    private ConstraintLayout cl_start;
+    private ImageView report_view_start;
+    private TextView label_start;
 
+    private ConstraintLayout cl_end;
+    private ImageView report_view_end;
+    private TextView label_end;
 
     private ConstraintLayout cl_hour;
     private TextView tv_hour;
@@ -131,6 +137,14 @@ public class TrainingReportFragment extends Fragment implements
 
         //-----------------Circle labels ----------------------
 
+        cl_start=(ConstraintLayout)this.view.findViewById(R.id.cl_start);
+        report_view_start=(ImageView)this.view.findViewById(R.id.report_view_start);
+        label_start=(TextView)this.view.findViewById(R.id.label_start);
+
+        cl_end=(ConstraintLayout)this.view.findViewById(R.id.cl_end);
+        report_view_end=(ImageView)this.view.findViewById(R.id.report_view_end);
+        label_end=(TextView)this.view.findViewById(R.id.label_end);
+
         cl_hour=(ConstraintLayout)this.view.findViewById(R.id.cl_11);
         tv_hour=(TextView)this.view.findViewById(R.id.report_view_hour);
         tv_hour_l=(TextView)this.view.findViewById(R.id.label_hour);
@@ -153,35 +167,48 @@ public class TrainingReportFragment extends Fragment implements
 
         //--------------End Circle labels
 
-        reportList = (ImageButton) this.view.findViewById(R.id.buttonlist);
+        reportList = (ImageView) this.view.findViewById(R.id.buttonlist);
         button_play_pause = (ImageView) this.view.findViewById(R.id.button_training_play_pause);
         button_stop = (ImageView) this.view.findViewById(R.id.button_training_stop);
+        button_training_view=(ImageView)this.view.findViewById(R.id.button_training_view);
         chronometer = (Chronometer) view.findViewById(R.id.chronometer);
 
         chronometer.setOnChronometerTickListener(eventChrono);
         button_play_pause.setOnClickListener(play_pause_training);
         button_stop.setOnClickListener(stop_training);
+        button_training_view.setOnClickListener(reLoadMapView);
 
         chronometer.setBase(SystemClock.elapsedRealtime());
         chronometer.setText("00:00:00");
 
         // this.trainingReportPresenter.loadDataNotificationTraining();//carga los datos de los estados (play training, pause training)
         fusedLocationProviderClient = LocationServices.getFusedLocationProviderClient(getContext());
-        setModeStartMapTraining(true);
 
         reportList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FragmentManager.fragmentManager.show(new TrainingReportListFragment());
+                FragmentManager.fragmentManager.changeFragment(new TrainingReportListFragment());
             }
         });
         return this.view;
     }
 
+    View.OnClickListener reLoadMapView=new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            viewModeLoadMapTraining();
+        }
+    };
     View.OnClickListener play_pause_training = new View.OnClickListener() {//--------------------------------------------------ok
         @Override
         public void onClick(View view) {
-            startTrainingService(view);
+
+            if(TrainingHelper.getLocationRequestStatus(getContext())) {
+                pauseTrainingService(view);
+            }else{
+                startTrainingService(view);
+            }
+
         }
     };
 
@@ -215,7 +242,8 @@ public class TrainingReportFragment extends Fragment implements
         super.onStart();
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .registerOnSharedPreferenceChangeListener(this);
-        stopButtonVisibility();
+        requestLocationUpdate();
+
         prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
         chronometer.setBase(prefs.getLong("getBase", 0));
         time_gone = SystemClock.elapsedRealtime() - chronometer.getBase();
@@ -227,13 +255,8 @@ public class TrainingReportFragment extends Fragment implements
             startTrainingService(view);
         } else {
             time_gone = -100;
-
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    pauseTrainingService(view);
-                }
-            }, 100);
+            if(!ReportHelper.getStartIdTrainingShared(getContext()).equals(ReportHelper.NONE_START_ID))
+                pauseTrainingService(view);
         }
         time_gone = 0;
         prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
@@ -244,7 +267,7 @@ public class TrainingReportFragment extends Fragment implements
     }
 
     @Override
-    public void onStop() {//--------------------------------------------------ok
+    public void onStop() {//--------------------------------------------------------------------CHECK
         super.onStop();
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .unregisterOnSharedPreferenceChangeListener(this);
@@ -255,7 +278,6 @@ public class TrainingReportFragment extends Fragment implements
         editor.putLong("time_gone", SystemClock.elapsedRealtime());
         editor.putLong("getBase", chronometer.getBase());
         editor.putLong("pauseOffSet", pauseOffSet);
-        editor.putBoolean("running", isTraining);
         editor.apply();
     }
 
@@ -268,37 +290,38 @@ public class TrainingReportFragment extends Fragment implements
             return PendingIntent.getService(getContext(), 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
     }
+    private void startLocation() {//-----------PARA GUARDAR EL INICIO DE ENTRENAMIENTO
+        if (ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getContext(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            return;
+        }
+        fusedLocationProviderClient.getLastLocation().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                Location location = task.getResult();
 
-
-
-
+                if(location!=null){
+                    ReportHelper.startTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
+                }
+            }
+        });
+    }
     public void startTrainingService(View view){//--------------------------------------------------ok
-
-        if(TrainingHelper.getLocationRequestStatus(getContext())){
-            pauseTrainingService(view);
-        }else{
             if(isGPSEnabled()){
                 String bol=ReportHelper.getStartIdTrainingShared(getContext());
                 Log.d("example","existe id: "+bol);
                 if(bol.equals(ReportHelper.NONE_START_ID)){
-                    ReportHelper.startTrainingVarsShared(getContext());
-                    button_stop.setVisibility(View.VISIBLE);//----------para que se actualice en myPos el valor de la posición inicial
-                    setModeReportView(true);
+                    startLocation();
                 }
-                requestLocationUpdate();//------------------start update location service intent
+                viewModeStartTraining();//--view
+                setButtonVisibleState(true);//--view
                 TrainingHelper.setLocationRequestStatus(getContext(),TrainingHelper.TRAINING);
-                setButtonVisibleState(true);
                 chronoPlay();//--
             }
-
-        }
     }
-
     @Override
     public void pauseTrainingService(View view) {
         //fusedLocationProviderClient.removeLocationUpdates(getPendingIntent());
         ReportHelper.pauseTrainingVarsShared(getContext());
-        setButtonVisibleState(false);
+        setButtonVisibleState(TrainingHelper.NO_TRAINING);
         chronoPause();
     }
     private void startEndLocation() {//-----------PARA GUARDAR EL INICIO DE ENTRENAMIENTO
@@ -317,6 +340,11 @@ public class TrainingReportFragment extends Fragment implements
                                 ReportHelper.loadReportToSendFirebase(getContext(),location);
                                 ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
                             }))
+                            .setNegativeButton("No",((dialogInterface, i) -> {
+                                //borrar datos
+//                                ReportHelper.loadReportToSendFirebase(getContext(),location);
+                                ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
+                            }))
                             .setCancelable(false)
                             .setIcon(R.drawable.rp_icon_running)
                             .show();
@@ -325,29 +353,14 @@ public class TrainingReportFragment extends Fragment implements
         });
     }
     public void stopTrainingService(View view){//--------------------------------------------------ok
-
-        TrainingHelper.setLocationRequestStatus(getContext(),TrainingHelper.NO_TRAINING);
         startEndLocation();
         setButtonVisibleState(false);
         chronoStop();
-        button_stop.setVisibility(View.INVISIBLE);
-
+        viewModeStopTraining();
     }
-
-    private void stopButtonVisibility(){//-----------------------------------ok
-//        boolean bol=!ReportHelper.getStartIdTrainingShared(getContext()).equals(ReportHelper.NONE_START_ID);
-//
-//        if(bol){
-            button_stop.setVisibility(View.VISIBLE);
-            chronometer.setVisibility(View.VISIBLE);
-//        }
-    }
-
     private void chronoPlay(){
         chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffSet - time_gone);
         chronometer.start();
-        chronometer.setVisibility(View.VISIBLE);
-
     }
     private void chronoPause(){
         chronometer.stop();
@@ -364,7 +377,6 @@ public class TrainingReportFragment extends Fragment implements
         editor = prefs.edit();
         editor.putLong("pauseOffSet", 0);
         editor.apply();
-        chronometer.setVisibility(View.INVISIBLE);
     }
 
 
@@ -392,9 +404,9 @@ public class TrainingReportFragment extends Fragment implements
     @Override
     public void onResume() {//--------------------------------------------------ok
         super.onResume();
-        //output.setText(TrainingHelper.getSavedLocationResults(this))
-        setButtonVisibleState(TrainingHelper.getLocationRequestStatus(getContext()));
-        stopButtonVisibility();
+        boolean training=!ReportHelper.getStartIdTrainingShared(getContext()).equals(ReportHelper.NONE_START_ID);
+        if(training)viewModeStartTraining();
+        setButtonVisibleState(training);
     }
 
     private void setButtonVisibleState(boolean isTraining){//--------------------------------------------------ok
@@ -406,16 +418,21 @@ public class TrainingReportFragment extends Fragment implements
     }
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key){//--------------------------------------------------ok
-        if(key.equals(TrainingHelper.KEY_LAST_LOCATION_SHARED)){
-            //moutput.setText(TrainingHelper.getSavedLocationResults(getContext()));
-        }else if(key.equals(TrainingHelper.KEY_IS_TRAINING_SHARED)){
-            setButtonVisibleState(TrainingHelper.getLocationRequestStatus(getContext()));
-        }else if(key.equals(ReportHelper.KEY_KM_TRAINING_SHARED)){
+        if(key.equals(ReportHelper.KEY_KM_TRAINING_SHARED)){
             tv_km.setText(""+ReportHelper.getKmTrainingShared(getContext()));
         }
     }
-    private void setModeReportView(boolean isModeViewReport){
-        if(isModeViewReport){
+
+    //-------------------------------------VISIBILITY-----------------
+    private void viewModeReportView(){
+            cl_start.setVisibility(View.VISIBLE);
+            label_start.setVisibility(View.VISIBLE);
+            report_view_start.setVisibility(View.VISIBLE);
+
+            cl_end.setVisibility(View.VISIBLE);
+            label_end.setVisibility(View.VISIBLE);
+            report_view_end.setVisibility(View.VISIBLE);
+
             cl_hour.setVisibility(View.VISIBLE);
             tv_hour.setVisibility(View.VISIBLE);
             tv_hour_l.setVisibility(View.VISIBLE);
@@ -439,11 +456,59 @@ public class TrainingReportFragment extends Fragment implements
             button_play_pause.setVisibility(View.INVISIBLE);
             button_stop.setVisibility(View.INVISIBLE);
             chronometer.setVisibility(View.INVISIBLE);
-
-        }
+            button_training_view.setVisibility(View.VISIBLE);
     }
-    private void setModeStartMapTraining(boolean isModeViewReport){
-        if(isModeViewReport){
+    private void viewModeStartTraining(){
+        chronometer.setVisibility(View.VISIBLE);
+        button_stop.setVisibility(View.VISIBLE);
+
+        cl_start.setVisibility(View.VISIBLE);
+        label_start.setVisibility(View.VISIBLE);
+        report_view_start.setVisibility(View.VISIBLE);
+
+        cl_end.setVisibility(View.VISIBLE);
+        label_end.setVisibility(View.VISIBLE);
+        report_view_end.setVisibility(View.VISIBLE);
+
+        cl_km.setVisibility(View.VISIBLE);
+        tv_km.setVisibility(View.VISIBLE);
+        tv_km_l.setVisibility(View.VISIBLE);
+
+        cl_cal.setVisibility(View.VISIBLE);
+        tv_cal.setVisibility(View.VISIBLE);
+        tv_cal_l.setVisibility(View.VISIBLE);
+    }
+
+    private void viewModeStopTraining(){
+        chronometer.setVisibility(View.INVISIBLE);
+        button_stop.setVisibility(View.INVISIBLE);
+        button_play_pause.setVisibility(View.INVISIBLE);
+
+        button_training_view.setVisibility(View.VISIBLE);
+
+        cl_hour.setVisibility(View.VISIBLE);
+        tv_hour.setVisibility(View.VISIBLE);
+        tv_hour_l.setVisibility(View.VISIBLE);
+
+        cl_min.setVisibility(View.VISIBLE);
+        tv_min.setVisibility(View.VISIBLE);
+        tv_min_l.setVisibility(View.VISIBLE);
+
+        cl_sec.setVisibility(View.VISIBLE);
+        tv_sec.setVisibility(View.VISIBLE);
+        tv_sec_l.setVisibility(View.VISIBLE);
+    }
+    
+    private void viewModeLoadMapTraining(){
+
+            cl_start.setVisibility(View.INVISIBLE);
+            label_start.setVisibility(View.INVISIBLE);
+            report_view_start.setVisibility(View.INVISIBLE);
+
+            cl_end.setVisibility(View.INVISIBLE);
+            label_end.setVisibility(View.INVISIBLE);
+            report_view_end.setVisibility(View.INVISIBLE);
+
             cl_hour.setVisibility(View.INVISIBLE);
             tv_hour.setVisibility(View.INVISIBLE);
             tv_hour_l.setVisibility(View.INVISIBLE);
@@ -465,9 +530,8 @@ public class TrainingReportFragment extends Fragment implements
 
             button_play_pause.setVisibility(View.VISIBLE);
             button_stop.setVisibility(View.INVISIBLE);
+            button_training_view.setVisibility(View.INVISIBLE);
             chronometer.setVisibility(View.INVISIBLE);
-
-        }
     }
 
     //---------------------GPS

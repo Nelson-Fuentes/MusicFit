@@ -46,6 +46,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            android:visibility="invisible"
             >
 
             <TextView
@@ -61,6 +62,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 />
 
             <ImageView
@@ -75,7 +77,9 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
         <androidx.constraintlayout.widget.ConstraintLayout
@@ -87,6 +91,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_start"
+            android:visibility="invisible"
             >
 
             <TextView
@@ -101,6 +106,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 />
 
             <ImageView
@@ -114,7 +120,9 @@
                 app:layout_constraintBottom_toTopOf="@id/label_end"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                android:visibility="invisible"
+                />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -128,6 +136,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_end"
+            android:visibility="invisible"
             >
 
             <TextView
@@ -142,6 +151,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 />
 
             <TextView
@@ -157,6 +167,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/label_km"
+                android:visibility="invisible"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -170,6 +181,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_2"
+            android:visibility="invisible"
             >
 
             <TextView
@@ -184,6 +196,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 />
 
             <TextView
@@ -199,6 +212,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/label_kcal"
+                android:visibility="invisible"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -212,6 +226,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_3"
+            android:visibility="invisible"
             >
 
             <TextView
@@ -226,6 +241,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 />
 
             <TextView
@@ -241,6 +257,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/label_hour"
+                android:visibility="invisible"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -253,6 +270,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_11"
+            android:visibility="invisible"
             >
 
             <TextView
@@ -267,6 +285,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 />
 
             <TextView
@@ -282,6 +301,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/label_min"
+                android:visibility="invisible"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -294,6 +314,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/cl_12"
+            android:visibility="invisible"
             >
 
             <TextView
@@ -308,6 +329,7 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                android:visibility="invisible"
                 />
 
             <TextView
@@ -323,6 +345,7 @@
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintBottom_toTopOf="@id/label_sec"
+                android:visibility="invisible"
                 />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -342,7 +365,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         >
 
-        <ImageButton
+        <ImageView
             android:id="@+id/buttonlist"
             android:layout_width="50dp"
             android:layout_height="50dp"
@@ -352,6 +375,7 @@
 
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/button_training_play_pause"
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
@@ -374,6 +398,17 @@
             android:visibility="invisible"
             android:background="@drawable/background_report_detail_bottom"
             app:srcCompat="@drawable/ic_baseline_stop_circle_24"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/button_training_play_pause"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"/>
+        <ImageView
+            android:id="@+id/button_training_view"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:visibility="invisible"
+            android:background="@drawable/background_report_detail_bottom"
+            app:srcCompat="@drawable/rp_icon_running"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/button_training_play_pause"
             app:layout_constraintTop_toTopOf="parent"

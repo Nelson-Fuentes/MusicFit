@@ -138,25 +138,15 @@ public class TrainingHelper {
     //-----------------------------------------------------------------------------------------------
 
     public static void saveLastLocationUpdateShared(Context mContext,Location mLocation){//----------------------------------------------------------ok
-
-        if(ReportHelper.getStartPositionTrainingShared(mContext).equals(ReportHelper.NONE_START_POSITION_TRAINING))
-        {
-
-            ReportHelper.setStartPositionTrainingShared(mContext, ""+mLocation.getLatitude()+"/"+mLocation.getLongitude());
-        }
-        if(TrainingHelper.getLocationRequestStatus(mContext)){
             PreferenceManager.getDefaultSharedPreferences(mContext)
                     .edit()
                     .putString(KEY_LAST_LOCATION_SHARED,getLocationResultText(mLocation))
                     .apply();
-        }
     }
     public static String getSavedLastLocationUpdateShared(Context context){//------------------------------ok
         return PreferenceManager.getDefaultSharedPreferences(context)
                 .getString(KEY_LAST_LOCATION_SHARED,NONE_LAST_LOCATION);
     }
-
-
     public static String getDateAndTime(){
         Calendar cal= Calendar.getInstance();
         int day=cal.get(Calendar.DAY_OF_MONTH);

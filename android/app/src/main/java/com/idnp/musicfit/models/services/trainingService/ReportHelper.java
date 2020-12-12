@@ -41,22 +41,25 @@ public class ReportHelper {
     //-------------------------             KM          -------------------------------------------
     //---------------------------------------------------------------------------------------------
     public static void setKmTrainingShared(Context context,Location location){
-        String lastPosition=TrainingHelper.getSavedLastLocationUpdateShared(context);
-        if(!lastPosition.equals(TrainingHelper.NONE_LAST_LOCATION)){
-            String[] lastLocation=lastPosition.split("/");
-            float lastKm= ReportHelper.getKmTrainingShared(context);
-            PreferenceManager.getDefaultSharedPreferences(context)
-                    .edit()
-                    .putFloat(
-                            KEY_KM_TRAINING_SHARED,
-                            lastKm+ReportHelper.getDistanceKM(
-                                    Double.parseDouble(lastLocation[0]),
-                                    Double.parseDouble(lastLocation[1]),
-                                    location.getLatitude(),
-                                    location.getLongitude()
-                            )
-                    )
-                    .apply();
+        boolean training=TrainingHelper.getLocationRequestStatus(context);
+        if(training){
+            String lastPosition=TrainingHelper.getSavedLastLocationUpdateShared(context);
+            if(!lastPosition.equals(TrainingHelper.NONE_LAST_LOCATION)){
+                String[] lastLocation=lastPosition.split("/");
+                float lastKm= ReportHelper.getKmTrainingShared(context);
+                PreferenceManager.getDefaultSharedPreferences(context)
+                        .edit()
+                        .putFloat(
+                                KEY_KM_TRAINING_SHARED,
+                                lastKm+ReportHelper.getDistanceKM(
+                                        Double.parseDouble(lastLocation[0]),
+                                        Double.parseDouble(lastLocation[1]),
+                                        location.getLatitude(),
+                                        location.getLongitude()
+                                )
+                        )
+                        .apply();
+            }
         }
     }
 
@@ -184,6 +187,7 @@ public class ReportHelper {
     //---------------------------------------------------------------------------------------------
 
     public static void setStartPositionTrainingShared(Context context,String location){
+
         PreferenceManager.getDefaultSharedPreferences(context)
                 .edit()
                 .putString(
@@ -238,9 +242,9 @@ public class ReportHelper {
     //----------------------     START PAUSE RESUME TRAINING      ---------------------------------
     //---------------------------------------------------------------------------------------------
 
-    public static void startTrainingVarsShared(Context context){
-        ReportHelper.resetStartPositionTrainingShared(context);
+    public static void startTrainingVarsShared(Context context,String location){
         ReportHelper.setStartIdTrainingShared(context);
+        ReportHelper.setStartPositionTrainingShared(context,location);
         TrainingHelper.setCountPositionsTrainingReport(context,TrainingHelper.INIT_COUNT_POSITION);
         TrainingHelper.setLocationRequestStatus(context,TrainingHelper.TRAINING);
         ReportHelper.resetKmTrainingShared(context);
@@ -265,9 +269,6 @@ public class ReportHelper {
         ReportHelper.resetDurationTrainingShared(context);
         TrainingHelper.setCountPositionsTrainingReport(context,TrainingHelper.INIT_COUNT_POSITION);
         ReportHelper.resetKmTrainingShared(context);
-
-
-
     }
 
     public static void initReferences(Context context){

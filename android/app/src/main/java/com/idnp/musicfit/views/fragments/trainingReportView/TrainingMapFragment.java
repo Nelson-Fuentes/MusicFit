@@ -14,43 +14,23 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationManager;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Looper;
 import android.preference.PreferenceManager;
-import android.provider.Settings;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.widget.TextView;
 
-
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.GoogleApiAvailability;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationCallback;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.maps.model.Circle;
-import com.google.android.gms.maps.model.CircleOptions;
 
-//import com.google.android.gms.maps.model.LatLng;
+
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
@@ -60,9 +40,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.maps.android.PolyUtil;
 import com.idnp.musicfit.R;
 
-import com.idnp.musicfit.models.entities.LatLng;
 import com.idnp.musicfit.models.entities.Report;
-import com.idnp.musicfit.models.entities.Training;
 import com.idnp.musicfit.models.entities.Ubication;
 import com.idnp.musicfit.models.services.trainingService.DBManager;
 import com.idnp.musicfit.models.services.trainingService.ReportHelper;
@@ -112,19 +90,19 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
             return;
         }
         //changing here
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(myPos.latitude,myPos.longitude), 20));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myPos.latitude,myPos.longitude), 20));
     }
     private void zoomToAnyLocation(LatLng location) {//---------------------ok
         if (ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(getActivity(), Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             return;
         }
         //changing here
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(location.latitude,location.longitude), 20));
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.latitude,location.longitude), 20));
     }
 
     private void drawPolyline(double lat, double lng){//----------------------ok
         //changing here
-        polylines.add(map.addPolyline((new PolylineOptions()).add(new com.google.android.gms.maps.model.LatLng(myPos.latitude,myPos.longitude),new com.google.android.gms.maps.model.LatLng(lat,lng)).width(8).color(Color.CYAN)));
+        polylines.add(map.addPolyline((new PolylineOptions()).add(new LatLng(myPos.latitude,myPos.longitude),new com.google.android.gms.maps.model.LatLng(lat,lng)).width(8).color(Color.CYAN)));
     }
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
@@ -157,30 +135,32 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
         if(userLocationMarker==null){// si es nulo creamo un nuevo marcador
             MarkerOptions markerOptions= new MarkerOptions();
             //changing here
-            markerOptions.position(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude));//para actualizar la posición
+            markerOptions.position(new LatLng(latLng.latitude,latLng.longitude));//para actualizar la posición
             markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.usermarker));//para agregar el icono al marker
             markerOptions.anchor((float)0.5,(float)0.5);
             userLocationMarker= map.addMarker(markerOptions);
             //changing here
-            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude),17));
+            map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng.latitude,latLng.longitude),17));
         }else{//quiere decir que ya se creó previamente
             //changing here
-            userLocationMarker.setPosition(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude));//para actualizar la posición
+            userLocationMarker.setPosition(new LatLng(latLng.latitude,latLng.longitude));//para actualizar la posición
             //changing here
-            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude),17));//para posicionar la cámara en el usuario
+            map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(latLng.latitude,latLng.longitude),17));//para posicionar la cámara en el usuario
         }
     }
 
     private void addCustomMarker(LatLng latLng, int marker,String title,int type_marker){
         MarkerOptions markerOptions= new MarkerOptions();
         //changing here
-        markerOptions.position(new com.google.android.gms.maps.model.LatLng(latLng.latitude,latLng.longitude));//para actualizar la posición
+        markerOptions.position(latLng);//para actualizar la posición
         markerOptions.title(title);
         markerOptions.icon(BitmapDescriptorFactory.fromResource(marker));//para agregar el icono al marker
         markerOptions.anchor((float)0.5,(float)0.5);
+
         if(type_marker==START_MARKER) {
             marker_start = map.addMarker(markerOptions);
             marker_start.showInfoWindow();
+            Log.d("example","es nula la posición inicial "+latLng);
         }else{
             marker_end = map.addMarker(markerOptions);
             marker_end.showInfoWindow();
@@ -257,18 +237,21 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                         addCustomMarker(new LatLng(lat,lng),R.drawable.icon_end_training,"End Training",END_MARKER);
                     }
                 }else if(key.equals(ReportHelper.START_ID_TRAINING_SHARED)){
-                    if(ReportHelper.getStartIdTrainingShared(getContext()).equals(ReportHelper.NONE_START_ID)){
-                        if(marker_start!=null)
-                            marker_start.remove();
-                        if(marker_end!=null)
-                            marker_end.remove();
-                        for(Polyline lines:polylines){
-                            lines.remove();
-                        }
-                        polylines.clear();
+                    if(!ReportHelper.getStartIdTrainingShared(getContext()).equals(ReportHelper.NONE_START_ID)){
+                        removeDrawTraining();
                     }
                 }
 
+    }
+    private void removeDrawTraining(){
+        if(marker_start!=null)
+            marker_start.remove();
+        if(marker_end!=null)
+            marker_end.remove();
+        for(Polyline lines:polylines){
+            lines.remove();
+        }
+        polylines.clear();
     }
     private void loadMapTrainingProcess(Context context){
                     String key= ReportHelper.getStartIdTrainingShared(context);
@@ -276,16 +259,17 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
 
                         ArrayList<Ubication> locations=TrainingHelper.getLocationsReport(context,key);
                         if(locations.size()>0) {
-                            zoomToAnyLocation(locations.get(0).getPosition());
-                            addCustomMarker(locations.get(0).getPosition(), R.drawable.icon_start_training, "Start Training",START_MARKER);
+                            Ubication u= locations.get(0);
+                            zoomToAnyLocation(new LatLng( u.getPosition().latitude,u.getPosition().longitude));
+                            addCustomMarker(new LatLng( u.getPosition().latitude,u.getPosition().longitude), R.drawable.icon_start_training, "Start Training",START_MARKER);
                         }
                         ToastManager.toastManager.showToast(""+locations.size());
                         for(int i=1;i<locations.size();i++){
                             map.addPolyline((new PolylineOptions())
                                     .add(
                                             //CHANGING HERE
-                                            new com.google.android.gms.maps.model.LatLng(locations.get(i-1).getPosition().latitude,locations.get(i-1).getPosition().longitude),
-                                            new com.google.android.gms.maps.model.LatLng(locations.get(i).getPosition().latitude,locations.get(i).getPosition().longitude)
+                                            new LatLng(locations.get(i-1).getPosition().latitude,locations.get(i-1).getPosition().longitude),
+                                            new LatLng(locations.get(i).getPosition().latitude,locations.get(i).getPosition().longitude)
 
 //                                            locations.get(i-1).getPosition(),
 //                                            locations.get(i).getPosition()

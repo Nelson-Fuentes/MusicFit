@@ -29,6 +29,7 @@ public class FireBaseReportHelper {
     }
 
     public void saveLocationsTraining(String idReport, ArrayList<Ubication> locationsTraining){
+        Log.d("example", "tamagno de las ubicacion que se tienen que subir "+locationsTraining.size());
         DatabaseReference childReference=musicfitFireBase.getChild(FIREBASE_CHILD_LOCATION_COLLECTION).child(idReport);
         for(Ubication location:locationsTraining){
             childReference.child(""+location.getOrden()).setValue(location);

@@ -37,13 +37,10 @@ public class TrainingLocationIntentService extends IntentService {
                 double longitude = locationResult.getLastLocation().getLongitude();
 
                 Location location=locationResult.getLastLocation();//---------TAMBIEN  se puede obtener solo una ubicación
-
                             //TrainingHelper.showTrainingNotification(getApplicationContext());//muestra la notificación de entrenamiento
                             TrainingHelper.saveLastLocationDB(Ubication.NONE_BREAK_POINT,getApplicationContext(),new LatLng(location.getLatitude(),location.getLongitude()));
                             ReportHelper.setKmTrainingShared(getApplicationContext(),location);
                             TrainingHelper.saveLastLocationUpdateShared(getApplicationContext(),location);//guardar en shared preferences la posición
-
-
 
                     Handler handler = new Handler(Looper.getMainLooper());
                     handler.post(new Runnable() {
