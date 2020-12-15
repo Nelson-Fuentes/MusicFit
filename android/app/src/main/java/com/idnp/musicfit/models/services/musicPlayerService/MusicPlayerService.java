@@ -9,11 +9,14 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
@@ -86,7 +89,7 @@ public class MusicPlayerService extends Service {
                 }
             }
         } else {
-            mediaPlayer = MediaPlayer.create(context, music.getMusic());
+            mediaPlayer = MediaPlayer.create(context, Uri.parse(music.getMusic()));
             mediaPlayer.start();
             return START_STICKY;
         }
@@ -104,6 +107,7 @@ public class MusicPlayerService extends Service {
     public IBinder onBind(Intent intent) {
         return null;
     }
+
 
     public void loadMusicPlayList(){
         MusicPlayList list=new MusicPlayList();
@@ -154,7 +158,7 @@ public class MusicPlayerService extends Service {
         }
         mediaPlayer.stop();
         Song music = getCurrentMusic();
-        mediaPlayer=MediaPlayer.create(context,music.getMusic());
+        mediaPlayer=MediaPlayer.create(context,Uri.parse(music.getMusic()));
         mediaPlayer.start();
     }
     public void advance(){
@@ -166,7 +170,7 @@ public class MusicPlayerService extends Service {
         }
         mediaPlayer.stop();
         Song music = getCurrentMusic();
-        mediaPlayer=MediaPlayer.create(context,music.getMusic());
+        mediaPlayer=MediaPlayer.create(context,Uri.parse(music.getMusic()));
         mediaPlayer.start();
     }
     public boolean repeatState(){

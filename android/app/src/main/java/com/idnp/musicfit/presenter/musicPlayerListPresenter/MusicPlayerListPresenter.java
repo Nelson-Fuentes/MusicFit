@@ -1,5 +1,7 @@
 package com.idnp.musicfit.presenter.musicPlayerListPresenter;
 
+import android.content.Context;
+
 import com.idnp.musicfit.models.entities.MusicPlayList;
 
 import com.idnp.musicfit.views.fragments.musicPlayerListView.iMusicPlayerListView;
@@ -14,7 +16,7 @@ public class MusicPlayerListPresenter implements iMusicPlayerListPresenter{
     }
 
     @Override
-    public void loadMusicList() {
-        this.musicPlayerListView.showMusicList(new MusicPlayList().getMusicPlayList());
+    public void loadMusicList(Context context) {
+        this.musicPlayerListView.showMusicList(new MusicPlayList(context).getMusicPlayList());
     }
 }

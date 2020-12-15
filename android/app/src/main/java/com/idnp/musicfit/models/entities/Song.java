@@ -9,17 +9,21 @@ import java.io.File;
 
 public class Song {
 
-    private int music;
+    private String music;
     private String name;
     private String artist;
+    private String album;
+    private String duration;
 
-    public Song(int music, String name, String artist){
+    public Song(String music, String name, String artist, String album, String duration){
         this.music=music;
         this.name=name;
         this.artist=artist;
+        this.album=album;
+        this.duration=duration;
     }
 
-    public void setMusic(int music) {
+    public void setMusic(String music) {
         this.music = music;
     }
 
@@ -27,7 +31,7 @@ public class Song {
         this.name = name;
     }
 
-    public int getMusic() {
+    public String getMusic() {
         return music;
     }
 
@@ -43,5 +47,19 @@ public class Song {
         return artist;
     }
 
+    public String getAlbum() {
+        return album;
+    }
 
+    public void setAlbum(String album) {
+        this.album = album;
+    }
+
+    public String getDuration() {
+        return duration;
+    }
+
+    public void setDuration(String duration) {
+        this.duration = duration;
+    }
 }
