@@ -152,10 +152,6 @@ public class TrainingHelper {
         int day=cal.get(Calendar.DAY_OF_MONTH);
         int month=cal.get(Calendar.MONTH)+1;
         int year=cal.get(Calendar.YEAR);
-       /* Date time=cal.getTime();
-        int sec= (int)Math.ceil(Math.random());
-        int min= (int)Math.ceil(Math.random());
-        int hour= (int)Math.ceil(Math.random());*/
 
         String formated="";
         SimpleDateFormat dateFormat = null;
@@ -169,6 +165,7 @@ public class TrainingHelper {
     }
     //-----------getters----------------------------------
     public static ArrayList<Ubication> getLocationsReport(Context context, String idReport){
+
         Log.d("example","getting data with id: "+idReport);
         DBManager dbManager= new DBManager(context);
         dbManager.open();

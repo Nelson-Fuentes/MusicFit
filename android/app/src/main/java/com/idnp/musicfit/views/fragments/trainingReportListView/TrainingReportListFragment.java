@@ -130,18 +130,21 @@ public class TrainingReportListFragment extends Fragment implements iTrainingRep
         LinearLayoutManager manager=new LinearLayoutManager(this.getContext());
         reportListView.setLayoutManager(manager);
         //crear el adaptador
+        String currentIdUser=MusicfitAuthenticationManagerService.authenticationService.getCurrentUserId();
+        if(currentIdUser!=null){
+            FirebaseRecyclerOptions<Report> reportOption = new FirebaseRecyclerOptions.Builder<Report>()
+                    .setQuery(
+                            FirebaseDatabase.getInstance()
+                                    .getReference()
+                                    .child(FireBaseReportHelper.FIREBASE_CHILD_REPORT_COLLECTION)
+                                    .child(currentIdUser),
+                            Report.class)
+                    .build();
+            this.reportAdapter = new ReportAdapter(reportOption,this.getContext());
+            //agrega adaptador
+            this.reportListView.setAdapter(this.reportAdapter);
+        }
 
-        FirebaseRecyclerOptions<Report> reportOption = new FirebaseRecyclerOptions.Builder<Report>()
-                .setQuery(
-                        FirebaseDatabase.getInstance()
-                                .getReference()
-                                .child(FireBaseReportHelper.FIREBASE_CHILD_REPORT_COLLECTION)
-                                .child(MusicfitAuthenticationManagerService.authenticationService.getCurrentUserId()),
-                        Report.class)
-                .build();
-        this.reportAdapter = new ReportAdapter(reportOption,this.getContext());
-        //agrega adaptador
-        this.reportListView.setAdapter(this.reportAdapter);
         this.trainingReportListPresenter = new TrainingReportListPresenter(this);//crea el presentador de esta clase
         this.trainingReportListPresenter.loadTrainingList(day,month,year,day,month+1,year);//carga la lista de reportes de entrenamiento
     }

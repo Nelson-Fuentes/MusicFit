@@ -37,18 +37,18 @@ public class TrainingLocationIntentService extends IntentService {
                 double longitude = locationResult.getLastLocation().getLongitude();
 
                 Location location=locationResult.getLastLocation();//---------TAMBIEN  se puede obtener solo una ubicación
-                            //TrainingHelper.showTrainingNotification(getApplicationContext());//muestra la notificación de entrenamiento
-                            TrainingHelper.saveLastLocationDB(Ubication.NONE_BREAK_POINT,getApplicationContext(),new LatLng(location.getLatitude(),location.getLongitude()));
-                            ReportHelper.setKmTrainingShared(getApplicationContext(),location);
-                            TrainingHelper.saveLastLocationUpdateShared(getApplicationContext(),location);//guardar en shared preferences la posición
+                //TrainingHelper.showTrainingNotification(getApplicationContext());//muestra la notificación de entrenamiento
+                TrainingHelper.saveLastLocationDB(Ubication.NONE_BREAK_POINT,getApplicationContext(),new LatLng(location.getLatitude(),location.getLongitude()));
+                ReportHelper.setKmTrainingShared(getApplicationContext(),location);
+                TrainingHelper.saveLastLocationUpdateShared(getApplicationContext(),location);//guardar en shared preferences la posición
 
-                    Handler handler = new Handler(Looper.getMainLooper());
-                    handler.post(new Runnable() {
-                        @Override
-                        public void run() {
-                            ToastManager.toastManager.showToast("LOCATION UPDATE:(" + latitude + "," + longitude + ")");
-                        }
-                    });
+//                    Handler handler = new Handler(Looper.getMainLooper());
+//                    handler.post(new Runnable() {
+//                        @Override
+//                        public void run() {
+//                            ToastManager.toastManager.showToast("LOCATION UPDATE:(" + latitude + "," + longitude + ")");
+//                        }
+//                    });
 
               }
             }
@@ -58,11 +58,8 @@ public class TrainingLocationIntentService extends IntentService {
     public void onDestroy() {
         super.onDestroy();
         stopForeground(false);
-       // ToastManager.toastManager.showToast("Destroy Service");
-
     }
     private Notification getNotification() {
-
         NotificationCompat.Builder trainingNotification = new NotificationCompat.Builder(getApplicationContext(), CHANNEL_ID_1)
                 .setSmallIcon(R.drawable.rp_icon_running)
                 .setContentTitle("Training service running")

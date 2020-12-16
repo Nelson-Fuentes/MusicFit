@@ -107,10 +107,6 @@ public class TrainingReportFragment extends Fragment implements
     private TextView tv_km;
     private TextView tv_km_l;
 
-    private ConstraintLayout cl_cal;
-    private TextView tv_cal;
-    private TextView tv_cal_l;
-
 
     //------------------------------------DATA TO SHOW REPORT------------------------
 
@@ -161,9 +157,6 @@ public class TrainingReportFragment extends Fragment implements
         tv_km=(TextView)this.view.findViewById(R.id.report_view_km);
         tv_km_l=(TextView)this.view.findViewById(R.id.label_km);
 
-        cl_cal=(ConstraintLayout)this.view.findViewById(R.id.cl_3);
-        tv_cal=(TextView)this.view.findViewById(R.id.report_view_kcal);
-        tv_cal_l=(TextView)this.view.findViewById(R.id.label_kcal);
 
         //--------------End Circle labels
 
@@ -337,12 +330,13 @@ public class TrainingReportFragment extends Fragment implements
                             .setMessage("¿Desea guardar sus resultados de entrenamiento en la nube?")
                             .setPositiveButton("Si",((dialogInterface, i) -> {
                                 //Guardar datos en la nube
-                                ReportHelper.loadReportToSendFirebase(getContext(),location);
+                                if(!ReportHelper.loadReportToSendFirebase(getContext(),location)){
+                                    ToastManager.toastManager.showToast("Necesita estar registrado para guardar sus datos en la nube");
+                                };
                                 ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
+                                ToastManager.toastManager.showToast("Datos guardados correctamente");
                             }))
                             .setNegativeButton("No",((dialogInterface, i) -> {
-                                //borrar datos
-//                                ReportHelper.loadReportToSendFirebase(getContext(),location);
                                 ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
                             }))
                             .setCancelable(false)
@@ -449,10 +443,6 @@ public class TrainingReportFragment extends Fragment implements
             tv_km.setVisibility(View.VISIBLE);
             tv_km_l.setVisibility(View.VISIBLE);
 
-            cl_cal.setVisibility(View.VISIBLE);
-            tv_cal.setVisibility(View.VISIBLE);
-            tv_cal_l.setVisibility(View.VISIBLE);
-
             button_play_pause.setVisibility(View.INVISIBLE);
             button_stop.setVisibility(View.INVISIBLE);
             chronometer.setVisibility(View.INVISIBLE);
@@ -474,9 +464,6 @@ public class TrainingReportFragment extends Fragment implements
         tv_km.setVisibility(View.VISIBLE);
         tv_km_l.setVisibility(View.VISIBLE);
 
-        cl_cal.setVisibility(View.VISIBLE);
-        tv_cal.setVisibility(View.VISIBLE);
-        tv_cal_l.setVisibility(View.VISIBLE);
     }
 
     private void viewModeStopTraining(){
@@ -523,10 +510,6 @@ public class TrainingReportFragment extends Fragment implements
             cl_km.setVisibility(View.INVISIBLE);
             tv_km.setVisibility(View.INVISIBLE);
             tv_km_l.setVisibility(View.INVISIBLE);
-
-            cl_cal.setVisibility(View.INVISIBLE);
-            tv_cal.setVisibility(View.INVISIBLE);
-            tv_cal_l.setVisibility(View.INVISIBLE);
 
             button_play_pause.setVisibility(View.VISIBLE);
             button_stop.setVisibility(View.INVISIBLE);

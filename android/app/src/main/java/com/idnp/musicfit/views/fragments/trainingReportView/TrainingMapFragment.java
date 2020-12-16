@@ -171,6 +171,7 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
         super.onStart();
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .registerOnSharedPreferenceChangeListener(this);
+
     }
     @Override
     public void onStop(){
@@ -257,7 +258,7 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                     String key= ReportHelper.getStartIdTrainingShared(context);
                     if(!key.equals(ReportHelper.NONE_START_ID)){
 
-                        ArrayList<Ubication> locations=TrainingHelper.getLocationsReport(context,key);
+                        ArrayList<Ubication> locations=TrainingHelper.getLocationsReport(context,ReportHelper.refactorId( key));
                         if(locations.size()>0) {
                             Ubication u= locations.get(0);
                             zoomToAnyLocation(new LatLng( u.getPosition().latitude,u.getPosition().longitude));

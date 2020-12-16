@@ -249,7 +249,6 @@ public class ReportHelper {
         TrainingHelper.setLocationRequestStatus(context,TrainingHelper.TRAINING);
         ReportHelper.resetKmTrainingShared(context);
         ReportHelper.setDurationTrainingShared(context);
-        ToastManager.toastManager.showToast("agregando el inicio");
     }
 
     public static void pauseTrainingVarsShared(Context context){
@@ -282,8 +281,9 @@ public class ReportHelper {
         return ID[0]+ID[1]+ID[2]+ID[3]+ID[4]+ID[5]+ID[6];
     }
 
-    public static void loadReportToSendFirebase(Context context,Location location){
+    public static boolean loadReportToSendFirebase(Context context,Location location){
         String id=ReportHelper.getStartIdTrainingShared(context);
+
         String []idArray=id.split("/");
         int year=Integer.parseInt(idArray[0]);
         int month=Integer.parseInt(idArray[1]);
@@ -292,6 +292,8 @@ public class ReportHelper {
         int min=Integer.parseInt(idArray[4]);
         int sec=Integer.parseInt(idArray[5]);
         String idUser=idArray[6];
+        if(idUser.equals(ReportHelper.NONE_USER_ID)) return  false;
+
         String [] startPosition=ReportHelper.getStartPositionTrainingShared(context).split("/");
         double lat=Double.parseDouble(startPosition[0]);
         double lon=Double.parseDouble(startPosition[1]);
@@ -314,7 +316,7 @@ public class ReportHelper {
                 nuevo
                 );
         base.saveLocationsTraining(reportIdString,TrainingHelper.getLocationsReport(context,reportIdString));
-        Log.d("example","subiendo la info a firebase");
+        return true;
     }
 
 }
