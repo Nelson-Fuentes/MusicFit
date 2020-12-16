@@ -10,8 +10,10 @@ import android.content.Intent;
 import android.content.ServiceConnection;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.session.MediaSession;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.core.app.NotificationCompat;
@@ -29,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.idnp.musicfit.R;
 
 import com.idnp.musicfit.models.entities.Song;
@@ -157,6 +160,7 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         //TIEMPO COMPLETO DE LA CANCION
         this.completeTime=(TextView) view.findViewById(R.id.end_time_player);
         mediaSession=new MediaSessionCompat(this.getContext(),"PlayAudio");
+
         return  this.view;
     }
 
@@ -172,6 +176,13 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
 
     }
+    private byte[] getAlbumArt(String url){
+        MediaMetadataRetriever retriever = new MediaMetadataRetriever();
+        retriever.setDataSource(url.toString());
+        byte [] art=retriever.getEmbeddedPicture();
+        retriever.release();
+        return art;
+    }
 
     @SuppressLint("DefaultLocale")
     public void loadSelectedMusic(){
@@ -181,11 +192,18 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         Log.d("MUSicaseleccionada","MUSICA SELECCIONADA "+music.getName());
         this.name_song.setText(music.getName());
         this.name_artist.setText(music.getArtist());
-        mediaPlayer=MediaPlayer.create(getContext(),music.getMusic());
+        mediaPlayer=MediaPlayer.create(getContext(), Uri.parse(music.getMusic()));
         this.timeLine.setMax((int) mediaPlayer.getDuration());
         this.handler.postDelayed(updateSongTime,100);
         this.endTime=mediaPlayer.getDuration();
         this.completeTime.setText(createTimerLabel(endTime));
+        byte [] imageAlbum=getAlbumArt(music.getMusic());
+        if(imageAlbum!=null){
+            Glide.with(this).asBitmap().load(imageAlbum).into(imageSong);
+        }
+        else{
+            Glide.with(this).asBitmap().load(R.drawable.image_albun_practice).into(imageSong);
+        }
 
         this.timeLine.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
@@ -320,11 +338,18 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         PendingIntent nextPendingIntent= PendingIntent.getBroadcast(this.getContext(),0,nextIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         PendingIntent prevPendingIntent= PendingIntent.getBroadcast(this.getContext(),0,prevIntent,PendingIntent.FLAG_UPDATE_CURRENT);
         Song music=MusicPlayerService.musicPlayerService.getCurrentMusic();
-        Bitmap picture= BitmapFactory.decodeResource(getResources(),R.drawable.image_albun_practice);
+        byte [] album=getAlbumArt(music.getMusic());
+        Bitmap picture;
+        if(album!=null){
+            picture=BitmapFactory.decodeByteArray(album,0,album.length);
+        }
+        else{
+            picture= BitmapFactory.decodeResource(getResources(),R.drawable.image_albun_practice);
+        }
         Notification musicPlayerNotification= new NotificationCompat.Builder(this.getContext(),CHANNEL_ID_2)
                 .setSmallIcon(R.drawable.button_player_list_mp3)
                 .setLargeIcon(picture)
-                .setContentTitle(music.getName())
+                .setContentTitle(music.getName()+" - "+music.getArtist())
                 .addAction(R.drawable.button_player_back_mp3,"Previous",prevPendingIntent)
                 .addAction(playPauseButton,"Play",playPendingIntent)
                 .addAction(R.drawable.button_player_advance_mp3,"Next",nextPendingIntent)
