@@ -37,12 +37,17 @@ import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.ValueEventListener;
 import com.google.maps.android.PolyUtil;
 import com.idnp.musicfit.R;
 
 import com.idnp.musicfit.models.entities.Report;
 import com.idnp.musicfit.models.entities.Ubication;
+import com.idnp.musicfit.models.services.musicfitFirebase.MusicfitFireBase;
 import com.idnp.musicfit.models.services.trainingService.DBManager;
+import com.idnp.musicfit.models.services.trainingService.FireBaseReportHelper;
 import com.idnp.musicfit.models.services.trainingService.ReportHelper;
 import com.idnp.musicfit.models.services.trainingService.TrainingHelper;
 import com.idnp.musicfit.models.services.trainingService.TrainingServiceConstants;
@@ -124,8 +129,15 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
                     ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, ACCESS_LOCATION_REQUEST_CODE);
                 }
             }
+            if ( myReport!= null) {
 
-            loadMapTrainingProcess(getContext());
+                loadMapTrainingReport(getContext());
+
+            }else{
+                loadMapTrainingProcess(getContext());
+            }
+
+
 
         }
     };
@@ -281,6 +293,38 @@ public class TrainingMapFragment extends Fragment implements SharedPreferences.O
     private void loadMapTrainingReport(Context context){
         if(myReport!=null){
             //--------------- esto es para jalar datos de la nube de las ubicaciones de un reporte en específico
+            MusicfitFireBase base = new MusicfitFireBase();
+            base.getChild(FireBaseReportHelper.FIREBASE_CHILD_LOCATION_COLLECTION).child(myReport.getID())
+                    .addValueEventListener(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+
+                            removeDrawTraining();
+
+                            for(DataSnapshot snst: snapshot.getChildren()){
+                                Ubication u=snst.getValue(Ubication.class);
+                                if(myPos==null){
+                                    addCustomMarker(new LatLng(u.getPosition().latitude,u.getPosition().longitude),R.drawable.icon_start_training,"Inicio",START_MARKER);
+                                    zoomToAnyLocation(new LatLng( u.getPosition().latitude,u.getPosition().longitude));
+                                    myPos=new LatLng(u.getPosition().latitude,u.getPosition().longitude);
+                                }
+                                drawPolyline(u.getPosition().latitude,u.getPosition().longitude);
+                                map.addPolyline((new PolylineOptions())
+                                        .add(
+                                                //CHANGING HERE
+                                                new LatLng(u.getPosition().latitude,u.getPosition().longitude),
+                                                new LatLng(u.getPosition().latitude,u.getPosition().longitude)
+                                        ).width(8).color(Color.CYAN));
+                                myPos=new LatLng(u.getPosition().latitude,u.getPosition().longitude);
+                            }
+                            addCustomMarker(myPos,R.drawable.icon_end_training,"Final",END_MARKER);
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
         }
     }
 

@@ -72,7 +72,7 @@ public class TrainingReportFragment extends Fragment implements
     private ImageView button_play_pause, button_stop,button_training_view;//para el control del entrenamiento
     private TrainingNotificationDataView stateTraining;//guarda datos de la notificación sea entrenando o pause
     private boolean isTraining = false;//-----------para verificar si está activo el entrenamiento
-
+    private long time;
     private Chronometer chronometer;
     private long time_gone = 0;
     private long pauseOffSet;
@@ -214,7 +214,7 @@ public class TrainingReportFragment extends Fragment implements
     Chronometer.OnChronometerTickListener eventChrono = new Chronometer.OnChronometerTickListener() {//--------------------------------------------------ok
         @Override
         public void onChronometerTick(Chronometer chronometer) {
-            long time = SystemClock.elapsedRealtime() - chronometer.getBase();
+             time = SystemClock.elapsedRealtime() - chronometer.getBase();
             int h = (int) (time / 3600000);
             int m = (int) (time - h * 3600000) / 60000;
             int s = (int) (time - h * 3600000 - m * 60000) / 1000;
@@ -236,6 +236,7 @@ public class TrainingReportFragment extends Fragment implements
         PreferenceManager.getDefaultSharedPreferences(getContext())
                 .registerOnSharedPreferenceChangeListener(this);
         requestLocationUpdate();
+        loadCircleDataReport();
 
         prefs = this.getActivity().getSharedPreferences("prefsChrono", Context.MODE_PRIVATE);
         chronometer.setBase(prefs.getLong("getBase", 0));
@@ -246,7 +247,12 @@ public class TrainingReportFragment extends Fragment implements
         if (isTraining) {
             pauseOffSet = 0;
             startTrainingService(view);
+
+
         } else {
+            if(report!=null){
+                viewModeReportView();
+            }
             time_gone = -100;
             if(!ReportHelper.getStartIdTrainingShared(getContext()).equals(ReportHelper.NONE_START_ID))
                 pauseTrainingService(view);
@@ -330,14 +336,27 @@ public class TrainingReportFragment extends Fragment implements
                             .setMessage("¿Desea guardar sus resultados de entrenamiento en la nube?")
                             .setPositiveButton("Si",((dialogInterface, i) -> {
                                 //Guardar datos en la nube
-                                if(!ReportHelper.loadReportToSendFirebase(getContext(),location)){
+                                String[] times=chronometer.getText().toString().split(":");
+                                int hour=Integer.parseInt(times[0]);
+                                int min=Integer.parseInt(times[1]);
+                                int sec=Integer.parseInt(times[2]);
+                                Log.d("example","tiempo: "+time);
+                                if(!ReportHelper.loadReportToSendFirebase(getContext(),location,hour,min,sec)){
                                     ToastManager.toastManager.showToast("Necesita estar registrado para guardar sus datos en la nube");
                                 };
                                 ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
                                 ToastManager.toastManager.showToast("Datos guardados correctamente");
+                                setButtonVisibleState(false);
+
+                                viewModeStopTraining();
+                                chronoStop();
                             }))
                             .setNegativeButton("No",((dialogInterface, i) -> {
                                 ReportHelper.stopTrainingVarsShared(getContext(),""+location.getLatitude()+"/"+location.getLongitude());
+                                setButtonVisibleState(false);
+
+                                viewModeStopTraining();
+                                chronoStop();
                             }))
                             .setCancelable(false)
                             .setIcon(R.drawable.rp_icon_running)
@@ -348,9 +367,7 @@ public class TrainingReportFragment extends Fragment implements
     }
     public void stopTrainingService(View view){//--------------------------------------------------ok
         startEndLocation();
-        setButtonVisibleState(false);
-        chronoStop();
-        viewModeStopTraining();
+
     }
     private void chronoPlay(){
         chronometer.setBase(SystemClock.elapsedRealtime() - pauseOffSet - time_gone);
@@ -413,7 +430,15 @@ public class TrainingReportFragment extends Fragment implements
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,String key){//--------------------------------------------------ok
         if(key.equals(ReportHelper.KEY_KM_TRAINING_SHARED)){
-            tv_km.setText(""+ReportHelper.getKmTrainingShared(getContext()));
+            tv_km.setText(""+String.format("%.2f", ReportHelper.getKmTrainingShared(getContext())));
+        }
+    }
+    public void loadCircleDataReport(){
+        if(report!=null){
+            tv_km.setText(""+String.format("%.2f", report.getKM()));
+            tv_hour.setText(""+report.getDurationHour());
+            tv_min.setText(""+report.getDurationMin());
+            tv_sec.setText(""+report.getDurationSec());
         }
     }
 
@@ -484,6 +509,13 @@ public class TrainingReportFragment extends Fragment implements
         cl_sec.setVisibility(View.VISIBLE);
         tv_sec.setVisibility(View.VISIBLE);
         tv_sec_l.setVisibility(View.VISIBLE);
+        String[] times=chronometer.getText().toString().split(":");
+        int hour=Integer.parseInt(times[0]);
+        int min=Integer.parseInt(times[1]);
+        int sec=Integer.parseInt(times[2]);
+        tv_hour.setText(""+hour);
+        tv_min.setText(""+min);
+        tv_sec.setText(""+sec);
     }
     
     private void viewModeLoadMapTraining(){

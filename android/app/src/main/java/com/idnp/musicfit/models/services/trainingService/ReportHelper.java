@@ -281,7 +281,7 @@ public class ReportHelper {
         return ID[0]+ID[1]+ID[2]+ID[3]+ID[4]+ID[5]+ID[6];
     }
 
-    public static boolean loadReportToSendFirebase(Context context,Location location){
+    public static boolean loadReportToSendFirebase(Context context,Location location,int h,int m,int s){
         String id=ReportHelper.getStartIdTrainingShared(context);
 
         String []idArray=id.split("/");
@@ -303,12 +303,15 @@ public class ReportHelper {
         nuevo.setEndP(new com.idnp.musicfit.models.entities.LatLng(location.getLatitude(),location.getLongitude()));
         String reportIdString=ReportHelper.refactorId(id);
         nuevo.setID(reportIdString);
-        nuevo.setKM(1);
+        nuevo.setKM(ReportHelper.getKmTrainingShared(context));
         nuevo.setKcal(1);
         nuevo.setEnd(1);
-        nuevo.setDurationHour(12);
-        nuevo.setDurationMin(15);
-        nuevo.setDurationSec(12);
+
+
+
+        nuevo.setDurationHour(h);
+        nuevo.setDurationMin(m);
+        nuevo.setDurationSec(s);
 
         FireBaseReportHelper base=new FireBaseReportHelper();
         base.saveReportTraining(

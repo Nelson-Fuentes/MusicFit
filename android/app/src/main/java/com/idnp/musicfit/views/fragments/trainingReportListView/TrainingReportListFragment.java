@@ -143,11 +143,11 @@ public class TrainingReportListFragment extends Fragment implements iTrainingRep
             this.reportAdapter = new ReportAdapter(reportOption,this.getContext());
             //agrega adaptador
             this.reportListView.setAdapter(this.reportAdapter);
+            this.trainingReportListPresenter = new TrainingReportListPresenter(this,reportAdapter);//crea el presentador de esta clase
+            this.trainingReportListPresenter.loadTrainingList(day,month,year,day,month+1,year);//carga la lista de reportes de entrenamiento
         }
 
-        this.trainingReportListPresenter = new TrainingReportListPresenter(this);//crea el presentador de esta clase
-        this.trainingReportListPresenter.loadTrainingList(day,month,year,day,month+1,year);//carga la lista de reportes de entrenamiento
-    }
+        }
     @Override
     public void onStart() {
         super.onStart();

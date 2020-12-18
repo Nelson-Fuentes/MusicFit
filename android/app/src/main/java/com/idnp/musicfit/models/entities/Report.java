@@ -22,7 +22,7 @@ public class Report {
     private LatLng startP;//--
     private LatLng endP;
     private String ID;//--
-    private int KM;//--
+    private float KM;//--
     private int kcal;//--
     public Report(){
 
@@ -149,11 +149,11 @@ public class Report {
         this.ID = ID;
     }
 
-    public int getKM() {
+    public float getKM() {
         return KM;
     }
 
-    public void setKM(int KM) {
+    public void setKM(float KM) {
         this.KM = KM;
     }
 
