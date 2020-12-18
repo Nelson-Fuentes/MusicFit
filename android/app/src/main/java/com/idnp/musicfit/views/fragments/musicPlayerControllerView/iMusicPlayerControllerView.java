@@ -13,7 +13,7 @@ public interface iMusicPlayerControllerView {
     public void play();
     public void pause();
     public void stop();
-    public void random();
+    public void random(boolean state);
     public void repeat(boolean state);
     public void back();
     public void advance();

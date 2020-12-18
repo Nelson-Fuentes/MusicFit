@@ -36,8 +36,11 @@ public class MusicPlayerService extends Service {
     public static final int PLAYED = 1;
     public static final boolean REPEAT_ENABLED = true;
     public static final boolean REPEAT_DISABLED = false;
+    public static final boolean RANDOM_ENABLED = true;
+    public static final boolean RANDOM_DISABLED = false;
     private static int state=STOPPED;
     private static boolean repeat_state=REPEAT_DISABLED;
+    private static boolean random_state=RANDOM_DISABLED;
     private static ArrayList<Song> musicList=new ArrayList<Song>();
     public static Context context;
     public static int position=0;
@@ -184,9 +187,21 @@ public class MusicPlayerService extends Service {
             repeat_state=REPEAT_ENABLED;
         }
     }
-
     public int getState() {
 
         return state;
     }
+    public void changeRandom(){
+        if(random_state==RANDOM_ENABLED){
+            random_state=RANDOM_DISABLED;
+        }
+        else{
+            random_state=RANDOM_ENABLED;
+        }
+    }
+
+    public boolean randomState(){
+        return random_state;
+    }
+
 }

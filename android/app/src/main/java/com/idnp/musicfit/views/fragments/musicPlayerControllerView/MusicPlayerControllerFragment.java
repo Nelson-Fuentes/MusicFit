@@ -30,6 +30,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.idnp.musicfit.R;
@@ -164,16 +165,21 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
         return  this.view;
     }
 
-
     @Override
-    public void onResume() {
-        super.onResume();
+    public void onStart() {
+        super.onStart();
         MusicPlayerControllerPresenter.musicPlayerControllerPresenter=new MusicPlayerControllerPresenter(this,getContext());
         if(!MusicPlayerService.mediaPlayer.isPlaying()){
             MusicPlayerControllerPresenter.musicPlayerControllerPresenter.start();
         }
 
         MusicPlayerControllerPresenter.musicPlayerControllerPresenter.setView(this);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
 
     }
     private byte[] getAlbumArt(String url){
@@ -254,17 +260,26 @@ public class MusicPlayerControllerFragment extends Fragment implements iMusicPla
     }
 
     @Override
-    public void random() {
-
+    public void random(boolean state) {
+        if(state){
+            Toast.makeText(getContext(),"Modo Aleatorio Desactivado",Toast.LENGTH_SHORT).show();
+            this.randomButton.setBackgroundResource(R.drawable.button_player_random_disabled_mp3);
+        }
+        else {
+            Toast.makeText(getContext(),"Modo Aleatorio Activado",Toast.LENGTH_SHORT).show();
+            this.randomButton.setBackgroundResource(R.drawable.button_player_random_enabled_mp3);
+        }
     }
 
     @Override
     public void repeat(boolean state) {
         if(state){
+            Toast.makeText(getContext(),"No Repetir Cancion",Toast.LENGTH_SHORT).show();
             mediaPlayer.setLooping(false);
             this.repeatButton.setBackgroundResource(R.drawable.button_player_repeat_disabled_mp3);
         }
         else {
+            Toast.makeText(getContext(),"Repetir Cancion",Toast.LENGTH_SHORT).show();
             mediaPlayer.setLooping(true);
             this.repeatButton.setBackgroundResource(R.drawable.button_player_repeat_enabled_mp3);
         }
