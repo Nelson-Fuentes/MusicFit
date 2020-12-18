@@ -64,8 +64,8 @@ public class MusicPlayerListFragment extends Fragment implements iMusicPlayerLis
     }
 
     @Override
-    public void onStart() {
-        super.onStart();
+    public void onResume() {
+        super.onResume();
         permission();
     }
 

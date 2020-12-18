@@ -81,7 +81,9 @@ public class MusicPlayerControllerPresenter implements iMusicPlayerControllerPre
 
     @Override
     public void random() {
-
+        boolean state=MusicPlayerService.musicPlayerService.randomState();
+        this.musicPlayerControllerView.random(state);
+        MusicPlayerService.musicPlayerService.changeRandom();
     }
 
     @Override
